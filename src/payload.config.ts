@@ -5,6 +5,7 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import sharp from 'sharp'
+import { migrations } from './migrations'
 
 // Collections
 import { Users } from './collections/Users'
@@ -62,6 +63,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || 'postgresql://postgres:postgres@localhost:5432/velora_facilities',
       ssl: process.env.DATABASE_URI?.includes('supabase.co') ? { rejectUnauthorized: false } : false,
     },
+    prodMigrations: migrations,
   }),
   sharp,
   plugins: [

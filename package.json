@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "migrate": "payload migrate",
     "generate:types": "payload generate:types",
     "payload": "payload"
   },
