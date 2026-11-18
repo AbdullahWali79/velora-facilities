@@ -60,6 +60,7 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || 'postgresql://postgres:postgres@localhost:5432/velora_facilities',
+      ssl: process.env.DATABASE_URI?.includes('supabase.co') ? { rejectUnauthorized: false } : false,
     },
   }),
   sharp,
