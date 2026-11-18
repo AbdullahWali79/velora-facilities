@@ -28,6 +28,20 @@ import { TrackingSettings } from './globals/TrackingSettings'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const databaseURI =
+  process.env.DATABASE_URI || 'postgresql://postgres:postgres@localhost:5432/velora_facilities'
+const isSupabase = databaseURI.includes('supabase')
+
+// pg lets `sslmode` in the connection string replace the `ssl` pool option, so
+// it has to be removed for the Supabase SSL settings below to take effect.
+const getConnectionString = () => {
+  if (!isSupabase) return databaseURI
+
+  const url = new URL(databaseURI)
+  url.searchParams.delete('sslmode')
+  return url.toString()
+}
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -60,8 +74,12 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || 'temp-secret-key-at-least-32-chars-long-velora',
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || 'postgresql://postgres:postgres@localhost:5432/velora_facilities',
-      ssl: process.env.DATABASE_URI?.includes('supabase') ? { rejectUnauthorized: false } : false,
+      connectionString: getConnectionString(),
+      ssl: isSupabase ? { rejectUnauthorized: false } : false,
+      // Stay within Supabase's pooler limits. Payload keeps one client checked
+      // out for the life of the process, so this allows four for queries.
+      max: 5,
+      connectionTimeoutMillis: 10_000,
     },
     prodMigrations: migrations,
   }),
