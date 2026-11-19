@@ -6,6 +6,7 @@ import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { FloatingWhatsApp } from '@/components/FloatingWhatsApp'
 import { TrackingScripts } from '@/components/TrackingScripts'
+import { LuxuryEffects } from '@/components/LuxuryEffects'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -86,6 +87,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50 text-slate-900 flex flex-col min-h-screen`}>
+        <LuxuryEffects />
         <TrackingScripts settings={trackingSettings} />
         <Header settings={siteSettings} headerData={headerData} />
         <main className="flex-1">

@@ -69,15 +69,16 @@ export function HeroSlider({ banners, trustBadges, stats }: HeroSliderProps) {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
               <Link
                 href={slide?.primaryCtaUrl || '/book'}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-lg shadow-amber-500/25 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                className="relative group overflow-hidden inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-xl shadow-amber-500/25 transition-all hover:scale-[1.03] active:scale-[0.98]"
               >
-                <span>{slide?.primaryCtaText || 'Book a Service'}</span>
-                <ArrowRightIcon className="w-4 h-4" />
+                <span className="absolute inset-0 shimmer-gold opacity-40 pointer-events-none group-hover:opacity-75 transition-opacity" />
+                <span className="relative z-10">{slide?.primaryCtaText || 'Book a Service'}</span>
+                <ArrowRightIcon className="w-4 h-4 relative z-10 transition-transform group-hover:translate-x-1" />
               </Link>
 
               <Link
                 href={slide?.secondaryCtaUrl || '/quote'}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-sm text-amber-300 bg-black/60 hover:bg-black/80 border border-amber-500/40 hover:border-amber-400 transition-all hover:text-white"
+                className="relative group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-sm text-amber-300 bg-black/60 hover:bg-black/90 border border-amber-500/40 hover:border-amber-400 transition-all hover:text-white hover:scale-[1.02] shadow-sm hover:shadow-amber-500/10"
               >
                 <span>{slide?.secondaryCtaText || 'Request a Free Quote'}</span>
               </Link>
@@ -118,33 +119,34 @@ export function HeroSlider({ banners, trustBadges, stats }: HeroSliderProps) {
 
           {/* Right Column: Hero Visual from Client's Official Flyer */}
           <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto max-w-md lg:max-w-none">
-              {/* Outer decorative gold frame */}
-              <div className="absolute -inset-1.5 bg-gradient-to-tr from-amber-500/40 via-yellow-400/20 to-amber-600/40 rounded-3xl blur-md opacity-75 group-hover:opacity-100 transition duration-1000"></div>
+            <div className="relative mx-auto max-w-md lg:max-w-none animate-float-slow">
+              {/* Outer decorative breathing gold aura */}
+              <div className="absolute -inset-2 bg-gradient-to-tr from-amber-500/35 via-yellow-400/20 to-amber-600/35 rounded-3xl blur-xl opacity-70 animate-gold-pulse"></div>
               
-              <div className="relative rounded-2xl overflow-hidden border border-amber-500/30 bg-slate-900 shadow-2xl">
+              <div className="relative spotlight-card rounded-2xl overflow-hidden border border-amber-500/40 bg-slate-900 shadow-[0_15px_40px_-10px_rgba(197,160,89,0.3)] group transition-transform duration-500 hover:scale-[1.015]">
                 <Image
                   src="/images/hero-cleaner.jpg"
                   alt="Velora Elite - A Higher Standard of Clean"
                   width={600}
                   height={500}
-                  className="w-full h-auto object-cover object-center"
+                  className="w-full h-auto object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none" />
                 
                 {/* Floating banner on top of hero image */}
-                <div className="absolute bottom-4 left-4 right-4 bg-black/85 backdrop-blur-md border border-amber-500/30 rounded-xl p-3.5 flex items-center justify-between">
+                <div className="absolute bottom-4 left-4 right-4 bg-black/85 backdrop-blur-md border border-amber-500/40 rounded-xl p-3.5 flex items-center justify-between shadow-lg">
                   <div>
-                    <p className="text-[11px] uppercase tracking-wider text-amber-400 font-bold">
+                    <p className="text-[11px] uppercase tracking-wider text-amber-400 font-bold flex items-center gap-1.5">
+                      <SparklesIcon className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
                       A Higher Standard of Clean
                     </p>
-                    <p className="text-xs text-slate-300 font-medium">
+                    <p className="text-xs text-slate-200 font-medium mt-0.5">
                       Villa, Office & Deep Cleaning in Dubai
                     </p>
                   </div>
                   <div className="text-right">
-                    <span className="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full font-semibold">
+                    <span className="text-[10px] bg-amber-500/25 text-amber-300 border border-amber-400/50 px-2.5 py-1 rounded-full font-bold shadow-xs">
                       VIP Care
                     </span>
                   </div>

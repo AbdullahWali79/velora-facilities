@@ -142,7 +142,7 @@ export default async function HomePage() {
 
             {/* Right Feature Card Box */}
             <div className="relative">
-              <div className="bg-gradient-to-br from-black via-zinc-950 to-slate-950 rounded-3xl p-8 sm:p-10 text-white shadow-2xl border border-amber-500/30 space-y-8">
+              <div className="spotlight-card bg-gradient-to-br from-black via-zinc-950 to-slate-950 rounded-3xl p-8 sm:p-10 text-white shadow-2xl border border-amber-500/30 space-y-8">
                 <div className="space-y-2">
                   <span className="text-xs font-semibold uppercase tracking-widest text-amber-400">
                     Enterprise Capability

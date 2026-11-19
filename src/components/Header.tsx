@@ -133,9 +133,10 @@ export function Header({ settings, headerData }: HeaderProps) {
 
           <Link
             href={cta.url || '/book'}
-            className="inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-sm font-bold text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:via-yellow-300 hover:to-amber-400 shadow-md shadow-amber-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="relative group overflow-hidden inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-sm font-bold text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:via-yellow-300 hover:to-amber-400 shadow-md shadow-amber-500/25 transition-all hover:scale-[1.03] active:scale-[0.98]"
           >
-            {cta.text || 'Book Online'}
+            <span className="absolute inset-0 shimmer-gold opacity-40 pointer-events-none group-hover:opacity-80 transition-opacity" />
+            <span className="relative z-10">{cta.text || 'Book Online'}</span>
           </Link>
         </div>
 

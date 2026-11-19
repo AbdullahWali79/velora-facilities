@@ -56,7 +56,7 @@ export function ServiceCard({ service }: { service: ServiceItem }) {
   const priceUnit = service.pricing?.priceUnit ? PRICE_UNIT_LABELS[service.pricing.priceUnit] : 'Custom Quote'
 
   return (
-    <div className="flex flex-col bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-xl hover:border-amber-400/60 transition-all duration-300 hover:-translate-y-1 overflow-hidden group">
+    <div className="spotlight-card flex flex-col bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-2xl hover:border-amber-400/80 transition-all duration-300 hover:-translate-y-1.5 overflow-hidden group">
       {/* Top Banner Accent - Luxury Gold */}
       <div className="h-2.5 bg-gradient-to-r from-amber-600 via-amber-400 to-yellow-500" />
 
