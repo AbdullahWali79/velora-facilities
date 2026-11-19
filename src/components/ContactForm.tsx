@@ -21,7 +21,7 @@ export function ContactForm() {
     <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl p-8 sm:p-10">
       {state.success ? (
         <div className="text-center py-12 space-y-5">
-          <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
+          <div className="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto shadow-inner">
             <CheckCircleIcon className="w-10 h-10" />
           </div>
           <h3 className="text-2xl font-bold text-slate-900">
@@ -64,7 +64,7 @@ export function ContactForm() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                Your Full Name <span className="text-emerald-600">*</span>
+                Your Full Name <span className="text-amber-600">*</span>
               </label>
               <input
                 type="text"
@@ -73,7 +73,7 @@ export function ContactForm() {
                 placeholder="e.g. James Campbell"
                 className={`w-full px-4 py-3 rounded-xl border ${
                   state.errors?.fullName ? 'border-red-400 bg-red-50/30' : 'border-slate-300'
-                } focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm`}
+                } focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm`}
               />
               {state.errors?.fullName && (
                 <p className="text-xs text-red-600 mt-1">{state.errors.fullName}</p>
@@ -82,7 +82,7 @@ export function ContactForm() {
 
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                Email Address <span className="text-emerald-600">*</span>
+                Email Address <span className="text-amber-600">*</span>
               </label>
               <input
                 type="email"
@@ -91,7 +91,7 @@ export function ContactForm() {
                 placeholder="e.g. james@example.ae"
                 className={`w-full px-4 py-3 rounded-xl border ${
                   state.errors?.email ? 'border-red-400 bg-red-50/30' : 'border-slate-300'
-                } focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm`}
+                } focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm`}
               />
               {state.errors?.email && (
                 <p className="text-xs text-red-600 mt-1">{state.errors.email}</p>
@@ -109,22 +109,22 @@ export function ContactForm() {
                 type="tel"
                 name="phone"
                 placeholder="+971 50 000 0000"
-                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm"
               />
             </div>
 
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                Inquiry Subject <span className="text-emerald-600">*</span>
+                Inquiry Subject <span className="text-amber-600">*</span>
               </label>
               <input
                 type="text"
                 name="subject"
                 required
-                placeholder="e.g. Villa Deep Cleaning in Emirates Hills"
+                placeholder="e.g. Villa Deep Cleaning in Palm Jumeirah"
                 className={`w-full px-4 py-3 rounded-xl border ${
                   state.errors?.subject ? 'border-red-400 bg-red-50/30' : 'border-slate-300'
-                } focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm`}
+                } focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm`}
               />
               {state.errors?.subject && (
                 <p className="text-xs text-red-600 mt-1">{state.errors.subject}</p>
@@ -135,16 +135,16 @@ export function ContactForm() {
           {/* Message Textarea */}
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-              Message <span className="text-emerald-600">*</span>
+              Message <span className="text-amber-600">*</span>
             </label>
             <textarea
               name="message"
               required
               rows={5}
-              placeholder="How can Velora Facilities assist you today? Please share any relevant property or schedule details..."
+              placeholder="How can Velora Elite assist you today? Please share any relevant property or schedule details..."
               className={`w-full px-4 py-3 rounded-xl border ${
                 state.errors?.message ? 'border-red-400 bg-red-50/30' : 'border-slate-300'
-              } focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm`}
+              } focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm`}
             />
             {state.errors?.message && (
               <p className="text-xs text-red-600 mt-1">{state.errors.message}</p>
@@ -156,16 +156,16 @@ export function ContactForm() {
             <button
               type="submit"
               disabled={isPending}
-              className="w-full py-4 rounded-xl font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-600/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-4 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-lg shadow-amber-500/25 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isPending ? (
                 <>
-                  <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
                   <span>Transmitting Message...</span>
                 </>
               ) : (
                 <>
-                  <MailIcon className="w-5 h-5" />
+                  <MailIcon className="w-5 h-5 text-slate-950" />
                   <span>Send Message to Customer Care</span>
                 </>
               )}

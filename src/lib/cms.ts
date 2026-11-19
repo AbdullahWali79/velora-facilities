@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { getPayload, type Payload } from 'payload'
 import configPromise from '@payload-config'
 import type { ServiceItem } from '@/components/ServiceCard'
@@ -21,29 +22,30 @@ export async function getPayloadClient(): Promise<Payload> {
 }
 
 // -----------------------------------------------------------------------------
-// Fallback Defaults (ensures website always displays premium content even
-// before CMS admin has entered records)
+// Fallback Defaults (Ensures website is resilient without presenting unverified
+// statistics, fabricated testimonials, or unapproved trade claims)
 // -----------------------------------------------------------------------------
 
 export const DEFAULT_SITE_SETTINGS = {
-  companyName: 'Velora Facilities',
-  tagline: 'Premium UAE Cleaning & Facility Management',
-  tradeLicense: 'CN-4892104-DXB',
+  companyName: 'Velora Elite',
+  legalName: 'Velora Elite Technical Services L.L.C.',
+  tagline: 'A Higher Standard of Clean',
+  tradeLicense: '', // Client-configured via CMS Site Settings
   contactInfo: {
-    phonePrimary: '+971 4 399 9090',
-    whatsappNumber: '+971 50 882 1940',
-    email: 'info@velorafacilities.ae',
-    supportEmail: 'support@velorafacilities.ae',
-    address: 'Office 1402, Opal Tower, Business Bay, Dubai, United Arab Emirates',
-    workingHours: 'Monday – Saturday: 8:00 AM – 8:00 PM | Sunday: On-Call Emergency Service',
-    googleMapsEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115563.29292850935!2d55.18567545929237!3d25.183424606132034!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f682829c85c07%3A0xa5eda9fb3c93f69d!2sBusiness%20Bay%2C%20Dubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae',
+    phonePrimary: '04 579 2137',
+    whatsappNumber: '+971 55 675 1854',
+    email: 'info@veloraelite.ae',
+    supportEmail: 'info@veloraelite.ae',
+    address: 'Office 4301F, Aspin Commercial Tower, 106 Sheikh Zayed Rd, Trade Center First, Dubai, UAE',
+    workingHours: 'Monday – Saturday: 8:00 AM – 8:00 PM',
+    googleMapsEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.178652431697!2d55.2741916!3d25.2120021!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f428ce0a9f547%3A0x6b77241be9e5f458!2sAspin%20Commercial%20Tower%2C%20Trade%20Centre%20-%20Trade%20Centre%201%20-%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae',
   },
   socialMedia: {
-    instagram: 'https://instagram.com/velorafacilities',
-    facebook: 'https://facebook.com/velorafacilities',
-    linkedin: 'https://linkedin.com/company/velora-facilities',
-    youtube: 'https://youtube.com/@velorafacilities',
-    tiktok: 'https://tiktok.com/@velorafacilities',
+    instagram: 'https://instagram.com/veloraelite',
+    facebook: 'https://facebook.com/veloraelite',
+    linkedin: 'https://linkedin.com/company/veloraelite',
+    youtube: '',
+    tiktok: 'https://tiktok.com/@veloraelite',
   },
 }
 
@@ -65,24 +67,24 @@ export const DEFAULT_HEADER = {
 
 export const DEFAULT_FOOTER = {
   aboutSummary:
-    'Velora Facilities delivers European-standard residential and commercial cleaning, deep sanitation, and MEP technical maintenance across Dubai, Abu Dhabi, and the UAE. Committed to excellence, vetted professionals, and premium service delivery.',
-  copyright: '© 2026 Velora Facilities LLC. All rights reserved. Registered & Licensed in the United Arab Emirates.',
+    'Velora Elite Technical Services L.L.C. delivers European-standard residential and commercial cleaning, deep sanitization, and technical facility services across Dubai and the UAE. Committed to precision, vetted professionals, and a higher standard of clean.',
+  copyright: '© 2026 Velora Elite Technical Services L.L.C. All rights reserved. Registered & Licensed in Dubai, United Arab Emirates.',
   columns: [
     {
       title: 'Our Services',
       links: [
+        { label: 'Home & Villa Cleaning', url: '/services/home-villa-cleaning' },
         { label: 'Deep Cleaning Services', url: '/services/deep-cleaning' },
-        { label: 'Luxury Villa Maintenance', url: '/services/villa-maintenance' },
-        { label: 'AC Duct Cleaning & MEP', url: '/services/ac-duct-cleaning' },
-        { label: 'Move-In / Move-Out Turnkey', url: '/services/move-in-move-out' },
-        { label: 'Commercial Facility Care', url: '/services/commercial-cleaning' },
-        { label: 'Upholstery & Carpet Care', url: '/services/upholstery-cleaning' },
+        { label: 'Office Cleaning', url: '/services/office-cleaning' },
+        { label: 'Move-In & Move-Out Cleaning', url: '/services/move-in-move-out' },
+        { label: 'Glass & Window Cleaning', url: '/services/glass-window-cleaning' },
+        { label: 'Sofa & Carpet Cleaning', url: '/services/sofa-carpet-cleaning' },
       ],
     },
     {
       title: 'Quick Links',
       links: [
-        { label: 'About Our Company', url: '/about' },
+        { label: 'About Velora Elite', url: '/about' },
         { label: 'Transformation Gallery', url: '/gallery' },
         { label: 'Request a Fast Quote', url: '/quote' },
         { label: 'Book an Appointment', url: '/book' },
@@ -92,11 +94,11 @@ export const DEFAULT_FOOTER = {
     {
       title: 'UAE Service Areas',
       links: [
-        { label: 'Dubai Marina & JBR', url: '/services' },
         { label: 'Downtown & Business Bay', url: '/services' },
+        { label: 'Sheikh Zayed Rd & DIFC', url: '/services' },
         { label: 'Palm Jumeirah & Emirates Hills', url: '/services' },
+        { label: 'Dubai Marina & JBR', url: '/services' },
         { label: 'Dubai Hills & Arabian Ranches', url: '/services' },
-        { label: 'Abu Dhabi City & Saadiyat', url: '/services' },
       ],
     },
   ],
@@ -105,45 +107,41 @@ export const DEFAULT_FOOTER = {
 export const DEFAULT_HOMEPAGE = {
   heroBanners: [
     {
-      badge: 'Premier Cleaning & Facility Management Across UAE',
-      headline: 'Excellence in Every Detail for Luxury UAE Properties',
+      badge: 'Velora Elite — Technical & Cleaning Services L.L.C.',
+      headline: 'A Higher Standard of Clean for Luxury UAE Properties',
       subheadline:
-        'European-standard deep cleaning, MEP technical maintenance, and facility care for luxury villas, penthouses, and commercial spaces across Dubai and Abu Dhabi.',
-      primaryCtaText: 'Book a Service',
+        'European-standard home & villa cleaning, hospital-grade deep sanitization, and technical facility care across Dubai and the UAE. Headquartered at Aspin Commercial Tower, Sheikh Zayed Road.',
+      primaryCtaText: 'Book Your Cleaning Today',
       primaryCtaUrl: '/book',
-      secondaryCtaText: 'Request a Free Quote',
+      secondaryCtaText: 'Request a Custom Quote',
       secondaryCtaUrl: '/quote',
     },
   ],
   trustBadges: [
     {
-      title: 'European Standard Sanitation',
-      subtitle: 'Hospital-grade certified disinfectants & protocols',
+      title: 'European Standard Protocols',
+      subtitle: 'Hospital-grade certified disinfectants & precision cleaning',
     },
     {
-      title: '100% Vetted & Insured Staff',
-      subtitle: 'Background-checked, uniform-compliant technicians',
+      title: '100% Vetted & Uniformed Staff',
+      subtitle: 'Background-checked, trained & certified specialists',
     },
     {
-      title: 'Eco-Friendly & Surface-Safe',
-      subtitle: 'Safe for children, pets, marble, and luxury fabrics',
+      title: 'Luxury Surface-Safe Solutions',
+      subtitle: 'Eco-certified safe for marble, wood, fine fabrics & pets',
     },
     {
-      title: 'Rapid UAE-Wide Dispatch',
-      subtitle: 'Same-day emergency & scheduled maintenance coverage',
+      title: 'Central Dubai Dispatch',
+      subtitle: 'Aspin Commercial Tower, 106 Sheikh Zayed Rd, Dubai',
     },
   ],
-  stats: [
-    { number: '5,000+', label: 'UAE Properties Maintained' },
-    { number: '99.4%', label: 'Customer Satisfaction Score' },
-    { number: '150+', label: 'Trained & Certified Technicians' },
-    { number: '7', label: 'Emirates Seamlessly Covered' },
-  ],
+  // Stats bar: Only client-approved statistics from CMS will appear
+  stats: [],
   ctaBanner: {
     heading: 'Ready for an Uncompromising Standard of Cleanliness?',
     description:
-      'Connect with our UAE scheduling coordinators for an instant quote or confirmed service booking. We guarantee punctual arrival and flawless execution.',
-    buttonText: 'Schedule Your Appointment',
+      'Connect with our Dubai scheduling coordinators for an instant quote or confirmed service booking. We guarantee punctual arrival and flawless execution.',
+    buttonText: 'Book Your Cleaning Today',
     buttonUrl: '/book',
   },
 }
@@ -151,92 +149,88 @@ export const DEFAULT_HOMEPAGE = {
 export const DEFAULT_SERVICES: ServiceItem[] = [
   {
     id: 1,
-    title: 'Deep Cleaning & Sanitization',
-    slug: 'deep-cleaning',
+    title: 'Home & Villa Cleaning',
+    slug: 'home-villa-cleaning',
     category: 'cleaning',
-    tagline: 'Hospital-grade intensive decontamination for luxury villas and apartments',
+    tagline: 'Precision cleaning tailored for luxury UAE villas and residences',
     shortDescription:
-      'Comprehensive top-to-bottom deep cleaning covering kitchen degreasing, bathroom descaling, grout restoration, and HEPA particulate removal.',
+      'Comprehensive regular and intensive cleaning for luxury villas, penthouses, and residences. From floor-to-ceiling sanitization to delicate surface care.',
     features: [
-      { title: 'Kitchen & Appliance Restoration', description: 'Steam degreasing of ovens, hoods, filters, and cabinetry' },
-      { title: 'Sanitary Descaling & Disinfection', description: 'Lime scale removal, high-pressure steam, and sanitary sealing' },
-      { title: 'Air & Surface Purification', description: 'HEPA filtration air scrubbing and antimicrobial treatment' },
-      { title: 'Detailed Window & Balcony Cleaning', description: 'Interior glass, track vacuuming, and terrace pressure washing' },
+      { title: 'Living & Dining Room Detailing', description: 'Dusting, marble floor care, furniture polish, and chandelier cleaning' },
+      { title: 'Kitchen Deep Sanitization', description: 'Countertop degreasing, exterior cabinetry, appliance wipe-down, and sink disinfection' },
+      { title: 'Luxury Bathroom Care', description: 'Tile descaling, chrome fixture polishing, shower glass cleaning, and organic sanitization' },
+      { title: 'Bedroom & Linen Refresh', description: 'Dust mite removal, mattress vacuuming, and bespoke staging' },
     ],
-    pricing: { startingPrice: 499, priceUnit: 'per_session' },
+    pricing: { startingPrice: null, priceUnit: 'custom_quote' },
     faqs: [
       {
-        question: 'What is included in a Velora Deep Cleaning session?',
-        answer: 'Our deep cleaning covers all ceiling corners, light fixtures, switchboards, AC vent exteriors, kitchen cabinetry (inside/out), appliances, bathrooms with steam descaling, and high-pressure floor scrubbing.'
-      },
-      {
-        question: 'Do you provide your own cleaning supplies and equipment?',
-        answer: 'Yes, our team arrives fully equipped with commercial-grade single-disc scrubbers, steam machines, HEPA vacuums, and eco-certified chemicals safe for luxury surfaces.'
+        question: 'What is included in a Home & Villa Cleaning visit?',
+        answer: 'Our trained uniformed team cleans all living spaces, bedrooms, bathrooms, and kitchen areas using surface-safe European standard chemicals.'
       }
     ],
     isFeatured: true,
   },
   {
     id: 2,
-    title: 'Luxury Villa Maintenance & Technical MEP',
-    slug: 'villa-maintenance',
-    category: 'maintenance',
-    tagline: 'End-to-end technical maintenance for high-value residential estates',
+    title: 'Deep Cleaning Services',
+    slug: 'deep-cleaning',
+    category: 'cleaning',
+    tagline: 'Hospital-grade intensive decontamination for luxury properties',
     shortDescription:
-      'Certified electrical, plumbing, HVAC maintenance, and preventive inspections tailored for luxury villas and private estates in Dubai and Abu Dhabi.',
+      'Exhaustive top-to-bottom deep sanitization covering kitchen degreasing, bathroom descaling, grout restoration, and particulate extraction.',
     features: [
-      { title: 'HVAC Air Balancing & Motor Check', description: 'Comprehensive diagnostics, capacitor testing, and thermostat calibration' },
-      { title: 'Electrical Safety Inspection', description: 'DB panel thermal checks, breaker safety, and load distribution analysis' },
-      { title: 'Plumbing & Water Pressure Optimization', description: 'Boiler inspection, pump maintenance, and drainage descaling' },
-      { title: 'Quarterly Preventive Maintenance Plans', description: 'Scheduled routine checkups to prevent costly breakdowns' },
+      { title: 'Kitchen & Appliance Restoration', description: 'High-heat steam degreasing of ovens, range hoods, filters, and interior cabinetry' },
+      { title: 'Sanitary Steam Descaling', description: 'Heavy lime scale removal, high-pressure steam sanitization, and hygienic sealing' },
+      { title: 'Grout & Floor Scrubbing', description: 'Single-disc rotary machine scrubbing restoring tile and marble grout lines' },
+      { title: 'Detailed Track & Balcony Washing', description: 'Window track vacuuming, frame washing, and terrace pressure washing' },
     ],
-    pricing: { startingPrice: 350, priceUnit: 'per_session' },
+    pricing: { startingPrice: null, priceUnit: 'custom_quote' },
     faqs: [
       {
-        question: 'Are your technicians licensed in the UAE?',
-        answer: 'All our MEP specialists are certified technicians with extensive experience in luxury villa communities such as Emirates Hills, Palm Jumeirah, and Saadiyat Island.'
+        question: 'Do you bring your own equipment and materials?',
+        answer: 'Yes, our teams arrive fully equipped with industrial single-disc scrubbers, steam machines, HEPA vacuums, and eco-certified chemicals.'
       }
     ],
     isFeatured: true,
   },
   {
     id: 3,
-    title: 'AC Duct Cleaning & Indoor Air Quality',
-    slug: 'ac-duct-cleaning',
-    category: 'cleaning',
-    tagline: 'Pure, allergen-free air with rotary brush duct decontamination',
+    title: 'Office Cleaning & Commercial Care',
+    slug: 'office-cleaning',
+    category: 'commercial',
+    tagline: 'Discreet, high-standard maintenance for offices, retail & clinics',
     shortDescription:
-      'High-vacuum rotobrush cleaning of supply and return air ducts, coil disinfection, mold remediation, and organic sanitization.',
+      'Flexible after-hours or daytime facility care for corporate offices, executive suites, boutiques, clinics, and commercial premises across Dubai.',
     features: [
-      { title: 'Rotary Brush Robotic Decontamination', description: 'Mechanically dislodges dust, sand, and allergen accumulation' },
-      { title: 'Evaporator Coil Deep Cleaning', description: 'Chemical-safe coil wash restoring cooling efficiency and airflow' },
-      { title: 'Antimicrobial Fogging', description: 'Hospital-grade organic fogging that eliminates mold spores and bacteria' },
-      { title: 'Blower & Drain Line Flushing', description: 'Prevents water leaks and eliminates microbial stagnation' },
+      { title: 'High-Touch Zone Sterilization', description: 'Hourly antimicrobial wipe-downs of biometric scanners, handles, and desks' },
+      { title: 'After-Hours Flexible Scheduling', description: 'Zero disruption to corporate operations and client confidentiality' },
+      { title: 'Floor Buffing & Reception Detailing', description: 'Polished welcome lobbies, marble care, and spotless meeting rooms' },
+      { title: 'B2B SLAs & Monthly Invoicing', description: 'Standardized service level agreements with dedicated account managers' },
     ],
-    pricing: { startingPrice: 650, priceUnit: 'per_session' },
+    pricing: { startingPrice: null, priceUnit: 'custom_quote' },
     faqs: [
       {
-        question: 'How often should AC ducts be cleaned in the UAE?',
-        answer: 'Due to high humidity and fine desert dust, Dubai Municipality recommends professional AC duct cleaning every 12 to 18 months.'
+        question: 'Do you offer regular corporate cleaning contracts?',
+        answer: 'Yes, we provide flexible daily, weekly, or monthly commercial cleaning contracts tailored to your office square footage and schedule.'
       }
     ],
     isFeatured: true,
   },
   {
     id: 4,
-    title: 'Move-In / Move-Out Turnkey Cleaning',
+    title: 'Move-In & Move-Out Cleaning',
     slug: 'move-in-move-out',
     category: 'cleaning',
     tagline: 'Guaranteed inspection-ready handover cleaning for tenants & landlords',
     shortDescription:
-      'Exhaustive cleaning designed to secure full security deposit returns and prepare properties for immediate, pristine occupancy.',
+      'Turnkey handover cleaning designed to secure full security deposit returns and prepare properties for immediate, pristine occupancy.',
     features: [
-      { title: 'Interior Wardrobe & Cabinet Sanitization', description: 'Thorough vacuuming and wipe down of all storage units' },
-      { title: 'Paint & Silicon Stain Removal', description: 'Safe removal of light contractor residues, tape marks, and scuffs' },
-      { title: 'Floor Buffing & Polishing', description: 'Rotary machine polishing for marble, tile, and parquet surfaces' },
+      { title: 'Interior Wardrobe & Cabinet Sanitization', description: 'Thorough vacuuming and wipe down of all storage units inside and out' },
+      { title: 'Residue & Stain Removal', description: 'Safe removal of light contractor residues, tape marks, and scuffs' },
+      { title: 'Floor Rotary Machine Polishing', description: 'Machine scrub and buff for marble, tile, and parquet surfaces' },
       { title: 'Handover Certification Checklist', description: 'Structured audit aligned with major UAE real estate agency standards' },
     ],
-    pricing: { startingPrice: 550, priceUnit: 'per_session' },
+    pricing: { startingPrice: null, priceUnit: 'custom_quote' },
     faqs: [
       {
         question: 'Does this service satisfy landlord move-out criteria?',
@@ -247,129 +241,61 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
   },
   {
     id: 5,
-    title: 'Commercial Facility & Corporate Cleaning',
-    slug: 'commercial-cleaning',
-    category: 'commercial',
-    tagline: 'Discreet, high-standard maintenance for offices, retail & clinics',
+    title: 'Glass & Window Cleaning',
+    slug: 'glass-window-cleaning',
+    category: 'maintenance',
+    tagline: 'Crystal-clear architectural glass and facade wash',
     shortDescription:
-      'Scheduled after-hours or dedicated daytime facility care for corporate headquarters, luxury boutiques, clinics, and commercial premises.',
+      'Professional streak-free window cleaning, frame restoration, glass balcony washing, and facade care for residential villas and commercial buildings.',
     features: [
-      { title: 'High-Touch Zone Sterilization', description: 'Hourly antimicrobial wipe-downs of biometric scanners, handles, and desks' },
-      { title: 'After-Hours Flexible Scheduling', description: 'Zero disruption to corporate operations and client confidentiality' },
-      { title: 'Dedicated Uniformed Facility Teams', description: 'Managed teams equipped with industrial floor polishers and scrubbers' },
-      { title: 'B2B SLAs & Monthly Invoicing', description: 'Standardized service level agreements with dedicated account managers' },
+      { title: 'Interior & Exterior Window Washing', description: 'Streak-free pure water cleaning for floor-to-ceiling glass panels' },
+      { title: 'Frame & Track Detailing', description: 'Deep vacuuming and scrubbing of sliding tracks, rubber gaskets, and sills' },
+      { title: 'Balcony Glass Balustrade Cleaning', description: 'Removal of sand, dust buildup, and water spots' },
+      { title: 'Hard Water Spot Removal', description: 'Specialized mineral stain lifting safe for tinted and double-glazed glass' },
     ],
-    pricing: { startingPrice: 0, priceUnit: 'custom_quote' },
+    pricing: { startingPrice: null, priceUnit: 'custom_quote' },
     faqs: [
       {
-        question: 'Do you offer annual maintenance contracts (AMC)?',
-        answer: 'Yes, we provide flexible monthly and annual commercial maintenance contracts tailored to your facility square footage and operating hours.'
+        question: 'Can you clean high-reach villa exterior glass?',
+        answer: 'Yes, our technicians use specialized water-fed telescopic poles and safety gear to clean exterior villa glass safely and efficiently.'
       }
     ],
     isFeatured: true,
   },
   {
     id: 6,
-    title: 'Upholstery & Luxury Carpet Steam Cleaning',
-    slug: 'upholstery-cleaning',
+    title: 'Sofa & Carpet Cleaning',
+    slug: 'sofa-carpet-cleaning',
     category: 'cleaning',
     tagline: 'Revitalize fine Italian fabrics, silk rugs, and leather suites',
     shortDescription:
-      'Deep hot-water extraction, fabric-safe stain lifting, and fiber conditioning for luxury sofas, mattresses, and delicate carpets.',
+      'Deep hot-water steam extraction, fabric-safe stain lifting, and fiber conditioning for luxury sofas, armchairs, mattresses, and delicate carpets.',
     features: [
-      { title: 'pH-Balanced Extraction', description: 'Safe for wool, silk, velvet, linen, and delicate organic weaves' },
+      { title: 'pH-Balanced Deep Extraction', description: 'Safe for wool, silk, velvet, linen, and delicate organic weaves' },
       { title: 'Dust Mite & Allergen Eradication', description: 'Thermodynamic steam killing 99.9% of microscopic allergens' },
-      { title: 'Stain & Odor Neutralization', description: 'Enzyme-based solutions targeting pet stains, coffee, and moisture marks' },
+      { title: 'Stain & Odor Neutralization', description: 'Enzyme-based solutions targeting food stains, coffee, and moisture marks' },
       { title: 'Rapid Moisture Extraction', description: 'Specialized high-vacuum blowers ensuring dry times in 2 to 4 hours' },
     ],
-    pricing: { startingPrice: 250, priceUnit: 'per_session' },
+    pricing: { startingPrice: null, priceUnit: 'custom_quote' },
     faqs: [
       {
-        question: 'How long does it take for carpets and sofas to dry?',
-        answer: 'Thanks to our high-powered dual-vacuum extraction machines, drying typically takes only 2 to 3 hours.'
+        question: 'How long does it take for sofas and carpets to dry?',
+        answer: 'Thanks to our high-powered dual-vacuum extraction machines, fabrics typically dry in only 2 to 3 hours.'
       }
     ],
     isFeatured: false,
   },
 ]
 
-export const DEFAULT_GALLERY: GalleryItem[] = [
-  {
-    id: 1,
-    title: 'Luxury Villa Marble Restoration & Deep Clean',
-    location: 'Emirates Hills, Dubai',
-    description: 'Complete high-pressure steam cleaning, grout revitalization, and diamond polishing for a 6-bedroom signature villa.',
-    beforeImage: '/images/gallery-marble-before.jpg',
-    afterImage: '/images/gallery-marble-after.jpg',
-    serviceTitle: 'Deep Cleaning & Sanitization',
-    isFeatured: true,
-  },
-  {
-    id: 2,
-    title: 'Penthouse AC Duct Mold Remediation & Sanitization',
-    location: 'Palm Jumeirah, Dubai',
-    description: 'Full rotary brush decontamination and antimicrobial fogging of 14 ceiling duct branches with air quality certification.',
-    beforeImage: '/images/gallery-ac-before.jpg',
-    afterImage: '/images/gallery-ac-after.jpg',
-    serviceTitle: 'AC Duct Cleaning & Indoor Air Quality',
-    isFeatured: true,
-  },
-  {
-    id: 3,
-    title: 'Commercial Office Handover Deep Sanitization',
-    location: 'Business Bay, Dubai',
-    description: 'Turnkey handover cleaning for a 12,000 sq ft corporate office including carpet steam cleaning and architectural glass washing.',
-    beforeImage: '/images/gallery-office-before.jpg',
-    afterImage: '/images/gallery-office-after.jpg',
-    serviceTitle: 'Commercial Facility & Corporate Cleaning',
-    isFeatured: true,
-  },
-]
-
-export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
-  {
-    id: 1,
-    clientName: 'Tariq Al-Mansoor',
-    clientRole: 'Villa Owner',
-    company: 'Private Residence',
-    location: 'Palm Jumeirah, Dubai',
-    rating: 5,
-    content:
-      'Velora Facilities exceeded all our expectations. Their deep cleaning team handled our Italian marble and bespoke woodwork with extraordinary care. Punctual, meticulous, and impeccably polite.',
-    isVerified: true,
-    isFeatured: true,
-  },
-  {
-    id: 2,
-    clientName: 'Sarah Jenkins',
-    clientRole: 'Operations Director',
-    company: 'Apex Media FZ-LLC',
-    location: 'Dubai Media City',
-    rating: 5,
-    content:
-      'We engaged Velora for our annual commercial facility maintenance. The improvement in indoor air quality after their AC duct service was noticeable within 24 hours. A top-tier team.',
-    isVerified: true,
-    isFeatured: true,
-  },
-  {
-    id: 3,
-    clientName: 'Hamad Al-Suwaidi',
-    clientRole: 'Property Investor',
-    company: 'Suwaidi Estates',
-    location: 'Saadiyat Island, Abu Dhabi',
-    rating: 5,
-    content:
-      'The move-in cleaning for our 5-bedroom villa was flawless. Every bathroom was steam-sanitized, windows were crystal clear, and the scheduling team communicated every detail via WhatsApp.',
-    isVerified: true,
-    isFeatured: true,
-  },
-]
+// Zero fabricated items: Only client-uploaded images and reviews from CMS appear publicly
+export const DEFAULT_GALLERY: GalleryItem[] = []
+export const DEFAULT_TESTIMONIALS: TestimonialItem[] = []
 
 // -----------------------------------------------------------------------------
 // CMS Fetch Helpers (Queries DB first, gracefully falls back to defaults)
 // -----------------------------------------------------------------------------
 
-export async function getSiteSettings() {
+export const getSiteSettings = cache(async () => {
   try {
     const payload = await getPayloadClient()
     const data = await payload.findGlobal({ slug: 'site-settings' })
@@ -377,32 +303,32 @@ export async function getSiteSettings() {
       return {
         companyName: data.companyName || DEFAULT_SITE_SETTINGS.companyName,
         tagline: data.tagline || DEFAULT_SITE_SETTINGS.tagline,
-        tradeLicense: data.tradeLicense || DEFAULT_SITE_SETTINGS.tradeLicense,
+        tradeLicense: data.tradeLicense || '',
         contactInfo: {
-          phonePrimary: data.contactInfo?.phonePrimary || DEFAULT_SITE_SETTINGS.contactInfo.phonePrimary,
-          whatsappNumber: data.contactInfo?.whatsappNumber || DEFAULT_SITE_SETTINGS.contactInfo.whatsappNumber,
+          phonePrimary: data.contactInfo?.phonePrimary || '',
+          whatsappNumber: data.contactInfo?.whatsappNumber || '',
           email: data.contactInfo?.email || DEFAULT_SITE_SETTINGS.contactInfo.email,
-          supportEmail: data.contactInfo?.supportEmail || DEFAULT_SITE_SETTINGS.contactInfo.supportEmail,
+          supportEmail: data.contactInfo?.supportEmail || '',
           address: data.contactInfo?.address || DEFAULT_SITE_SETTINGS.contactInfo.address,
           workingHours: data.contactInfo?.workingHours || DEFAULT_SITE_SETTINGS.contactInfo.workingHours,
-          googleMapsEmbedUrl: data.contactInfo?.googleMapsEmbedUrl || DEFAULT_SITE_SETTINGS.contactInfo.googleMapsEmbedUrl,
+          googleMapsEmbedUrl: data.contactInfo?.googleMapsEmbedUrl || '',
         },
         socialMedia: {
-          instagram: data.socialMedia?.instagram || DEFAULT_SITE_SETTINGS.socialMedia.instagram,
-          facebook: data.socialMedia?.facebook || DEFAULT_SITE_SETTINGS.socialMedia.facebook,
-          linkedin: data.socialMedia?.linkedin || DEFAULT_SITE_SETTINGS.socialMedia.linkedin,
-          youtube: data.socialMedia?.youtube || DEFAULT_SITE_SETTINGS.socialMedia.youtube,
-          tiktok: data.socialMedia?.tiktok || DEFAULT_SITE_SETTINGS.socialMedia.tiktok,
+          instagram: data.socialMedia?.instagram || '',
+          facebook: data.socialMedia?.facebook || '',
+          linkedin: data.socialMedia?.linkedin || '',
+          youtube: data.socialMedia?.youtube || '',
+          tiktok: data.socialMedia?.tiktok || '',
         },
       }
     }
   } catch (err) {
-    console.error('Error fetching site-settings global from CMS:', err)
+    console.warn('[CMS Fallback] Notice: Using site-settings defaults. Database query note:', (err as Error)?.message)
   }
   return DEFAULT_SITE_SETTINGS
-}
+})
 
-export async function getHeader() {
+export const getHeader = cache(async () => {
   try {
     const payload = await getPayloadClient()
     const data = await payload.findGlobal({ slug: 'header' })
@@ -414,12 +340,12 @@ export async function getHeader() {
       }
     }
   } catch (err) {
-    console.error('Error fetching header global from CMS:', err)
+    console.warn('[CMS Fallback] Notice: Using header defaults. Database query note:', (err as Error)?.message)
   }
   return DEFAULT_HEADER
-}
+})
 
-export async function getFooter() {
+export const getFooter = cache(async () => {
   try {
     const payload = await getPayloadClient()
     const data = await payload.findGlobal({ slug: 'footer' })
@@ -432,12 +358,12 @@ export async function getFooter() {
       }
     }
   } catch (err) {
-    console.error('Error fetching footer global from CMS:', err)
+    console.warn('[CMS Fallback] Notice: Using footer defaults. Database query note:', (err as Error)?.message)
   }
   return DEFAULT_FOOTER
-}
+})
 
-export async function getHomepageSettings() {
+export const getHomepageSettings = cache(async () => {
   try {
     const payload = await getPayloadClient()
     const data = await payload.findGlobal({ slug: 'homepage' })
@@ -445,17 +371,17 @@ export async function getHomepageSettings() {
       return {
         heroBanners: data.heroBanners,
         trustBadges: (data.trustBadges && data.trustBadges.length > 0) ? data.trustBadges : DEFAULT_HOMEPAGE.trustBadges,
-        stats: (data.stats && data.stats.length > 0) ? data.stats : DEFAULT_HOMEPAGE.stats,
+        stats: (data.stats && data.stats.length > 0) ? data.stats : [],
         ctaBanner: data.ctaBanner?.heading ? data.ctaBanner : DEFAULT_HOMEPAGE.ctaBanner,
       }
     }
   } catch (err) {
-    console.error('Error fetching homepage global from CMS:', err)
+    console.warn('[CMS Fallback] Notice: Using homepage defaults. Database query note:', (err as Error)?.message)
   }
   return DEFAULT_HOMEPAGE
-}
+})
 
-export async function getTrackingSettings() {
+export const getTrackingSettings = cache(async () => {
   try {
     const payload = await getPayloadClient()
     const data = await payload.findGlobal({ slug: 'tracking-settings' })
@@ -472,7 +398,7 @@ export async function getTrackingSettings() {
       }
     }
   } catch (err) {
-    console.error('Error fetching tracking settings:', err)
+    console.warn('[CMS Fallback] Notice: Tracking settings lookup note:', (err as Error)?.message)
   }
   return {
     googleAnalyticsId: process.env.NEXT_PUBLIC_GA_ID,
@@ -484,14 +410,14 @@ export async function getTrackingSettings() {
     metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID,
     enableTracking: false,
   }
-}
+})
 
-export async function getServices(): Promise<ServiceItem[]> {
+export const getServices = cache(async (): Promise<ServiceItem[]> => {
   try {
     const payload = await getPayloadClient()
     const res = await payload.find({
       collection: 'services',
-      sort: 'order',
+      sort: 'sortOrder',
       limit: 50,
     })
     if (res.docs && res.docs.length > 0) {
@@ -510,12 +436,12 @@ export async function getServices(): Promise<ServiceItem[]> {
       }))
     }
   } catch (err) {
-    console.error('Error fetching services from CMS:', err)
+    console.warn('[CMS Fallback] Notice: Using default services portfolio. Database query note:', (err as Error)?.message)
   }
   return DEFAULT_SERVICES
-}
+})
 
-export async function getServiceBySlug(slug: string): Promise<ServiceItem | null> {
+export const getServiceBySlug = cache(async (slug: string): Promise<ServiceItem | null> => {
   try {
     const payload = await getPayloadClient()
     const res = await payload.find({
@@ -544,12 +470,12 @@ export async function getServiceBySlug(slug: string): Promise<ServiceItem | null
       }
     }
   } catch (err) {
-    console.error(`Error fetching service with slug ${slug}:`, err)
+    console.warn(`[CMS Fallback] Notice: Service slug lookup failed for '${slug}'. Note:`, (err as Error)?.message)
   }
   return DEFAULT_SERVICES.find(s => s.slug === slug) || null
-}
+})
 
-export async function getGalleryItems(): Promise<GalleryItem[]> {
+export const getGalleryItems = cache(async (): Promise<GalleryItem[]> => {
   try {
     const payload = await getPayloadClient()
     const res = await payload.find({
@@ -572,16 +498,20 @@ export async function getGalleryItems(): Promise<GalleryItem[]> {
       }))
     }
   } catch (err) {
-    console.error('Error fetching gallery items from CMS:', err)
+    console.warn('[CMS Fallback] Notice: Gallery items lookup error:', (err as Error)?.message)
   }
+  // Safe zero-fabricated fallback: never return unverified project images
   return DEFAULT_GALLERY
-}
+})
 
-export async function getTestimonials(): Promise<TestimonialItem[]> {
+export const getTestimonials = cache(async (): Promise<TestimonialItem[]> => {
   try {
     const payload = await getPayloadClient()
     const res = await payload.find({
       collection: 'testimonials',
+      where: {
+        isFeatured: { equals: true },
+      },
       sort: '-createdAt',
       limit: 20,
     })
@@ -599,12 +529,13 @@ export async function getTestimonials(): Promise<TestimonialItem[]> {
       }))
     }
   } catch (err) {
-    console.error('Error fetching testimonials from CMS:', err)
+    console.warn('[CMS Fallback] Notice: Testimonials lookup error:', (err as Error)?.message)
   }
+  // Safe zero-fabricated fallback: never display unverified reviews
   return DEFAULT_TESTIMONIALS
-}
+})
 
-export async function getPageBySlug(slug: string) {
+export const getPageBySlug = cache(async (slug: string) => {
   try {
     const payload = await getPayloadClient()
     const res = await payload.find({
@@ -620,7 +551,7 @@ export async function getPageBySlug(slug: string) {
       return res.docs[0]
     }
   } catch (err) {
-    console.error(`Error fetching page with slug ${slug}:`, err)
+    console.warn(`[CMS Fallback] Notice: Page slug lookup failed for '${slug}'. Note:`, (err as Error)?.message)
   }
   return null
-}
+})

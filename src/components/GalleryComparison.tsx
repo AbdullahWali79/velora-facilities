@@ -40,7 +40,7 @@ export function GalleryComparison({ items }: { items: GalleryItem[] }) {
         return (
           <div
             key={itemId}
-            className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+            className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl hover:border-amber-400/50 transition-all duration-300 flex flex-col justify-between"
           >
             {/* Visual Box with Mode Switcher */}
             <div className="relative aspect-4/3 bg-slate-900 overflow-hidden group">
@@ -48,16 +48,16 @@ export function GalleryComparison({ items }: { items: GalleryItem[] }) {
               <div
                 className={`absolute inset-0 flex items-center justify-center p-6 text-center transition-all duration-500 ${
                   currentMode === 'before'
-                    ? 'bg-gradient-to-br from-amber-950 via-slate-900 to-slate-950'
-                    : 'bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950'
+                    ? 'bg-gradient-to-br from-zinc-950 via-neutral-900 to-black'
+                    : 'bg-gradient-to-br from-black via-zinc-950 to-amber-950/60'
                 }`}
               >
                 <div className="space-y-3">
                   <div
                     className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest ${
                       currentMode === 'before'
-                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                        : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                        ? 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+                        : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
                     }`}
                   >
                     {currentMode === 'before' ? 'Before Treatment' : 'After Execution'}
@@ -67,20 +67,20 @@ export function GalleryComparison({ items }: { items: GalleryItem[] }) {
                   </h4>
                   <p className="text-xs text-slate-300 max-w-xs mx-auto opacity-80">
                     {currentMode === 'before'
-                      ? 'Heavy particulate accumulation & residue prior to deep restoration'
-                      : 'Hospital-grade sanitized, sealed, and polished to European standard'}
+                      ? 'Accumulated residue and dust prior to intensive deep cleaning'
+                      : 'Hospital-grade sanitized, sealed, and restored to pristine luxury standard'}
                   </p>
                 </div>
               </div>
 
               {/* Toggle Switch Pills */}
-              <div className="absolute top-4 right-4 z-20 flex rounded-lg bg-black/60 backdrop-blur-md p-1 border border-white/10 text-xs font-semibold">
+              <div className="absolute top-4 right-4 z-20 flex rounded-lg bg-black/75 backdrop-blur-md p-1 border border-white/10 text-xs font-semibold">
                 <button
                   onClick={() => toggleMode(itemId, 'before')}
                   className={`px-3 py-1 rounded-md transition-all ${
                     currentMode === 'before'
-                      ? 'bg-amber-500 text-white shadow-sm'
-                      : 'text-slate-300 hover:text-white'
+                      ? 'bg-zinc-700 text-white shadow-sm'
+                      : 'text-slate-400 hover:text-white'
                   }`}
                 >
                   Before
@@ -89,8 +89,8 @@ export function GalleryComparison({ items }: { items: GalleryItem[] }) {
                   onClick={() => toggleMode(itemId, 'after')}
                   className={`px-3 py-1 rounded-md transition-all ${
                     currentMode === 'after'
-                      ? 'bg-emerald-500 text-white shadow-sm'
-                      : 'text-slate-300 hover:text-white'
+                      ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 shadow-sm font-bold'
+                      : 'text-slate-400 hover:text-white'
                   }`}
                 >
                   After
@@ -99,8 +99,8 @@ export function GalleryComparison({ items }: { items: GalleryItem[] }) {
 
               {/* Status Badge Bottom Left */}
               <div className="absolute bottom-3 left-3 z-10">
-                <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-300 bg-black/50 backdrop-blur-sm px-2.5 py-0.5 rounded-full border border-emerald-500/20">
-                  <SparklesIcon className="w-3 h-3 text-emerald-400" />
+                <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-300 bg-black/60 backdrop-blur-sm px-2.5 py-0.5 rounded-full border border-amber-500/30">
+                  <SparklesIcon className="w-3 h-3 text-amber-400" />
                   Verified Transformation
                 </span>
               </div>
@@ -110,7 +110,7 @@ export function GalleryComparison({ items }: { items: GalleryItem[] }) {
             <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
               <div className="space-y-2">
                 {item.location && (
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-700">
                     <MapPinIcon className="w-3.5 h-3.5 flex-shrink-0" />
                     <span>{item.location}</span>
                   </div>

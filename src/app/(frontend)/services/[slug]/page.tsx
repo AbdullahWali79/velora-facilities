@@ -19,11 +19,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const settings = await getSiteSettings()
 
   if (!service) {
-    return { title: 'Service Not Found | Velora Facilities' }
+    return { title: 'Service Not Found | Velora Elite' }
   }
 
   return {
-    title: `${service.title} — Velora Facilities UAE`,
+    title: `${service.title} — Velora Elite Dubai`,
     description: service.shortDescription,
     openGraph: {
       title: `${service.title} | ${settings.companyName}`,
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ServiceDetailPage({ params }: PageProps) {
   const { slug } = await params
-  const service = await getServiceBySlug(slug)
+  const [service, siteSettings] = await Promise.all([getServiceBySlug(slug), getSiteSettings()])
 
   if (!service) {
     notFound()
@@ -45,16 +45,19 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   const features = service.features || []
   const faqs = service.faqs || []
 
+  const phoneDisplay = siteSettings.contactInfo.phonePrimary || '04 579 2137'
+  const phoneHref = `tel:${phoneDisplay.replace(/[^0-9+]/g, '')}`
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Detail Header Hero */}
-      <section className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white py-16 sm:py-24 relative overflow-hidden">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+      <section className="bg-gradient-to-br from-black via-zinc-950 to-slate-950 text-white py-16 sm:py-24 relative overflow-hidden border-b border-amber-500/20">
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10 space-y-6">
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/services"
-              className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
+              className="text-xs font-semibold text-amber-400 hover:text-amber-300 transition-colors"
             >
               ← Services Portfolio
             </Link>
@@ -69,7 +72,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           </h1>
 
           {service.tagline ? (
-            <p className="text-emerald-400 font-medium text-base sm:text-lg max-w-2xl">
+            <p className="text-amber-400 font-medium text-base sm:text-lg max-w-2xl">
               {service.tagline}
             </p>
           ) : null}
@@ -82,13 +85,13 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           <div className="flex flex-wrap items-center gap-4 pt-4">
             <Link
               href={`/book?service=${service.slug}`}
-              className="px-7 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow-lg shadow-emerald-500/25 transition-all hover:scale-[1.02]"
+              className="px-8 py-3.5 rounded-xl font-bold text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-lg shadow-amber-500/20 transition-all hover:scale-[1.02]"
             >
               Book This Service
             </Link>
             <Link
               href="/quote"
-              className="px-7 py-3.5 rounded-xl font-semibold text-sm text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors"
+              className="px-8 py-3.5 rounded-xl font-semibold text-sm text-amber-300 bg-black/60 hover:bg-black/80 border border-amber-500/40 transition-colors"
             >
               Request Custom Estimate
             </Link>
@@ -113,7 +116,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               {features.length > 0 && (
                 <div className="bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-xs space-y-6">
                   <div className="space-y-1">
-                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">
+                    <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
                       Standard Inclusions
                     </span>
                     <h3 className="text-2xl font-bold text-slate-900">
@@ -124,7 +127,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
                     {features.map((feat, idx: number) => (
                       <div key={idx} className="flex items-start gap-3.5">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-8 h-8 rounded-lg bg-amber-100 border border-amber-300 text-amber-800 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <CheckCircleIcon className="w-5 h-5" />
                         </div>
                         <div>
@@ -145,7 +148,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               {faqs.length > 0 && (
                 <div className="bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-xs space-y-6">
                   <div className="space-y-1">
-                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">
+                    <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
                       Clear Guidance
                     </span>
                     <h3 className="text-2xl font-bold text-slate-900">
@@ -186,7 +189,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                         </span>
                       </>
                     ) : (
-                      <span className="text-2xl font-bold text-emerald-700">Custom Proposal</span>
+                      <span className="text-2xl font-bold text-amber-700">Custom Proposal</span>
                     )}
                   </div>
                   <p className="text-xs text-slate-500">
@@ -196,30 +199,30 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
                 <div className="space-y-3 text-xs text-slate-600">
                   <div className="flex items-center gap-2">
-                    <CheckCircleIcon className="w-4 h-4 text-emerald-500" />
+                    <CheckCircleIcon className="w-4 h-4 text-amber-500" />
                     <span>No advance booking payment needed</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircleIcon className="w-4 h-4 text-emerald-500" />
+                    <CheckCircleIcon className="w-4 h-4 text-amber-500" />
                     <span>100% Satisfaction Guarantee</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircleIcon className="w-4 h-4 text-emerald-500" />
-                    <span>Same-day & scheduled UAE dispatch</span>
+                    <CheckCircleIcon className="w-4 h-4 text-amber-500" />
+                    <span>Same-day & scheduled Dubai dispatch</span>
                   </div>
                 </div>
 
                 <div className="pt-2 space-y-3">
                   <Link
                     href={`/book?service=${service.slug}`}
-                    className="w-full py-3.5 rounded-xl font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-700 shadow-md transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-3.5 rounded-xl font-bold text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-md transition-colors flex items-center justify-center gap-2"
                   >
                     <span>Book Online Now</span>
                     <ArrowRightIcon className="w-4 h-4" />
                   </Link>
                   <Link
                     href="/quote"
-                    className="w-full py-3.5 rounded-xl font-semibold text-sm text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors flex items-center justify-center"
+                    className="w-full py-3.5 rounded-xl font-semibold text-sm text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 transition-colors flex items-center justify-center"
                   >
                     Request Custom Quote
                   </Link>
@@ -228,10 +231,10 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                 <div className="pt-4 border-t border-slate-100 text-center">
                   <span className="text-xs text-slate-500">Prefer speaking directly?</span>
                   <a
-                    href="tel:+97143999090"
-                    className="block text-sm font-bold text-slate-900 hover:text-emerald-600 mt-1"
+                    href={phoneHref}
+                    className="block text-sm font-bold text-slate-900 hover:text-amber-700 mt-1"
                   >
-                    +971 4 399 9090
+                    {phoneDisplay}
                   </a>
                 </div>
               </div>

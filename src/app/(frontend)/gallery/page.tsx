@@ -9,9 +9,9 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: 'Transformation Gallery — Before & After Project Showcase UAE',
+  title: 'Transformation Gallery — Before & After Project Showcase Dubai',
   description:
-    'Browse verified before-and-after project transformations by Velora Facilities across luxury villas, penthouses, and commercial facilities in Dubai and Abu Dhabi.',
+    'Browse verified before-and-after project transformations by Velora Elite across luxury villas, penthouses, and commercial facilities in Dubai.',
 }
 
 export default async function GalleryPage() {
@@ -20,11 +20,11 @@ export default async function GalleryPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header Banner */}
-      <section className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white py-20 sm:py-24 relative overflow-hidden">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+      <section className="bg-gradient-to-br from-black via-zinc-950 to-slate-950 text-white py-20 sm:py-24 relative overflow-hidden border-b border-amber-500/20">
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10 space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-            <SparklesIcon className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30">
+            <SparklesIcon className="w-3.5 h-3.5 text-amber-400" />
             <span>Documented Results</span>
           </div>
 
@@ -33,7 +33,7 @@ export default async function GalleryPage() {
           </h1>
 
           <p className="text-lg text-slate-300 max-w-2xl leading-relaxed">
-            Real documented results across Emirates Hills, Palm Jumeirah, Downtown Dubai, and Saadiyat Island. Toggle between &ldquo;Before&rdquo; and &ldquo;After&rdquo; to observe the Velora standard.
+            Real documented results across Palm Jumeirah, Emirates Hills, Downtown Dubai, and Dubai Hills. Toggle between &ldquo;Before&rdquo; and &ldquo;After&rdquo; to observe the Velora Elite standard.
           </p>
         </div>
       </section>
@@ -54,13 +54,13 @@ export default async function GalleryPage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/book"
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-700 shadow-md transition-colors"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-md transition-all hover:scale-[1.02]"
               >
                 Book Your Transformation
               </Link>
               <Link
                 href="/quote"
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl font-semibold text-sm text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors inline-flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-sm text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 transition-colors inline-flex items-center justify-center gap-2"
               >
                 <span>Request a Quote</span>
                 <ArrowRightIcon className="w-4 h-4" />

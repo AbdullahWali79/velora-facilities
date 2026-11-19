@@ -17,7 +17,7 @@ export function TestimonialCard({ testimonial }: { testimonial: TestimonialItem 
   const rating = Math.min(5, Math.max(1, testimonial.rating || 5))
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/90 p-7 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+    <div className="bg-white rounded-2xl border border-slate-200 p-7 shadow-xs hover:shadow-xl hover:border-amber-400/50 transition-all duration-300 flex flex-col justify-between">
       <div className="space-y-4">
         {/* Star Rating & Verified Badge */}
         <div className="flex items-center justify-between">
@@ -31,8 +31,8 @@ export function TestimonialCard({ testimonial }: { testimonial: TestimonialItem 
           </div>
 
           {testimonial.isVerified && (
-            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
-              <ShieldCheckIcon className="w-3.5 h-3.5 text-emerald-600" />
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-800 bg-amber-50 border border-amber-300 px-2 py-0.5 rounded-full">
+              <ShieldCheckIcon className="w-3.5 h-3.5 text-amber-600" />
               Verified Client
             </span>
           )}
@@ -47,7 +47,7 @@ export function TestimonialCard({ testimonial }: { testimonial: TestimonialItem 
       {/* Client Identity Details */}
       <div className="pt-6 mt-6 border-t border-slate-100 flex items-center gap-3">
         {/* Initials Avatar */}
-        <div className="w-10 h-10 rounded-full bg-slate-900 text-emerald-400 font-bold text-sm flex items-center justify-center flex-shrink-0 shadow-xs">
+        <div className="w-10 h-10 rounded-full bg-slate-950 text-amber-400 font-bold text-sm flex items-center justify-center flex-shrink-0 border border-amber-400/30 shadow-xs">
           {testimonial.clientName
             .split(' ')
             .map((n) => n[0])

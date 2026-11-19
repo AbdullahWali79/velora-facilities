@@ -23,41 +23,43 @@ const geistMono = Geist_Mono({
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings()
   const tracking = await getTrackingSettings()
-  const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://velorafacilities.ae'
+  const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://www.veloraelite.ae'
 
   return {
     metadataBase: new URL(baseUrl),
     title: {
-      template: `%s | ${settings.companyName || 'Velora Facilities'}`,
-      default: `${settings.companyName || 'Velora Facilities'} | Premium Cleaning & Maintenance Services UAE`,
+      template: `%s | ${settings.companyName || 'Velora Elite'}`,
+      default: `${settings.companyName || 'Velora Elite'} | Luxury Cleaning & Technical Services Dubai`,
     },
     description:
       settings.tagline ||
-      'Velora Facilities delivers premium residential and commercial cleaning, deep cleaning, and technical maintenance services across Dubai, Abu Dhabi, and the UAE.',
+      'Velora Elite delivers a higher standard of clean — premium residential, villa, deep cleaning, and technical maintenance services across Dubai and the UAE.',
     keywords: [
-      'cleaning services dubai',
-      'facility management uae',
+      'velora elite dubai',
+      'luxury cleaning services dubai',
+      'home and villa cleaning dubai',
       'deep cleaning dubai',
-      'villa maintenance abu dhabi',
-      'commercial cleaning uae',
-      'ac maintenance dubai',
-      'ac duct cleaning uae',
-      'move in cleaning dubai',
+      'office cleaning dubai',
+      'move in move out cleaning dubai',
+      'glass and window cleaning dubai',
+      'sofa and carpet cleaning dubai',
+      'technical services dubai',
+      'aspin commercial tower dubai',
     ],
-    authors: [{ name: settings.companyName || 'Velora Facilities' }],
-    creator: settings.companyName || 'Velora Facilities',
-    publisher: settings.companyName || 'Velora Facilities',
+    authors: [{ name: settings.companyName || 'Velora Elite' }],
+    creator: settings.companyName || 'Velora Elite',
+    publisher: settings.companyName || 'Velora Elite',
     formatDetection: {
       email: false,
       address: false,
       telephone: false,
     },
     openGraph: {
-      title: `${settings.companyName || 'Velora Facilities'} | Premium Cleaning & Maintenance Services UAE`,
+      title: `${settings.companyName || 'Velora Elite'} | Luxury Cleaning & Technical Services Dubai`,
       description:
-        'European-standard cleaning and technical maintenance for luxury villas, residences, and commercial facilities across Dubai and Abu Dhabi.',
+        'A Higher Standard of Clean — luxury villa, residential, commercial office, and deep cleaning services across Dubai.',
       url: baseUrl,
-      siteName: settings.companyName || 'Velora Facilities',
+      siteName: settings.companyName || 'Velora Elite',
       locale: 'en_AE',
       type: 'website',
     },

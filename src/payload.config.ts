@@ -78,8 +78,9 @@ export default buildConfig({
       ssl: isSupabase ? { rejectUnauthorized: false } : false,
       // Stay within Supabase's pooler limits. Payload keeps one client checked
       // out for the life of the process, so this allows four for queries.
-      max: 5,
-      connectionTimeoutMillis: 10_000,
+      max: 6,
+      connectionTimeoutMillis: 30_000,
+      idleTimeoutMillis: 30_000,
     },
     prodMigrations: migrations,
   }),

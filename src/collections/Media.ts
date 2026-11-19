@@ -3,7 +3,10 @@ import type { CollectionConfig } from 'payload'
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
-    read: () => true, // Publicly readable for public website images
+    read: () => true, // Publicly readable for website imagery
+    create: ({ req: { user } }) => Boolean(user), // Restricted to authenticated staff/admins
+    update: ({ req: { user } }) => Boolean(user),
+    delete: ({ req: { user } }) => Boolean(user),
   },
   admin: {
     useAsTitle: 'alt',

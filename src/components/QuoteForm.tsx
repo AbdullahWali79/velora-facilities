@@ -29,7 +29,7 @@ export function QuoteForm({ services }: QuoteFormProps) {
     <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl p-8 sm:p-10">
       {state.success ? (
         <div className="text-center py-12 space-y-5">
-          <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
+          <div className="w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto shadow-inner">
             <CheckCircleIcon className="w-10 h-10" />
           </div>
           <h3 className="text-2xl font-bold text-slate-900">
@@ -39,7 +39,7 @@ export function QuoteForm({ services }: QuoteFormProps) {
             {state.message}
           </p>
           {state.referenceId && (
-            <div className="inline-block px-4 py-2 rounded-lg bg-slate-100 text-slate-800 font-mono text-xs font-semibold">
+            <div className="inline-block px-4 py-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 font-mono text-xs font-semibold">
               Quotation Reference: #{state.referenceId}
             </div>
           )}
@@ -77,7 +77,7 @@ export function QuoteForm({ services }: QuoteFormProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                Full Name <span className="text-emerald-600">*</span>
+                Full Name <span className="text-amber-600">*</span>
               </label>
               <input
                 type="text"
@@ -86,7 +86,7 @@ export function QuoteForm({ services }: QuoteFormProps) {
                 placeholder="e.g. Michael Harrison"
                 className={`w-full px-4 py-3 rounded-xl border ${
                   state.errors?.fullName ? 'border-red-400 bg-red-50/30' : 'border-slate-300'
-                } focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm`}
+                } focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm`}
               />
               {state.errors?.fullName && (
                 <p className="text-xs text-red-600 mt-1">{state.errors.fullName}</p>
@@ -95,7 +95,7 @@ export function QuoteForm({ services }: QuoteFormProps) {
 
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                Email Address <span className="text-emerald-600">*</span>
+                Email Address <span className="text-amber-600">*</span>
               </label>
               <input
                 type="email"
@@ -104,7 +104,7 @@ export function QuoteForm({ services }: QuoteFormProps) {
                 placeholder="e.g. michael@company.com"
                 className={`w-full px-4 py-3 rounded-xl border ${
                   state.errors?.email ? 'border-red-400 bg-red-50/30' : 'border-slate-300'
-                } focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm`}
+                } focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm`}
               />
               {state.errors?.email && (
                 <p className="text-xs text-red-600 mt-1">{state.errors.email}</p>
@@ -116,7 +116,7 @@ export function QuoteForm({ services }: QuoteFormProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                UAE Contact Number <span className="text-emerald-600">*</span>
+                UAE Contact Number <span className="text-amber-600">*</span>
               </label>
               <input
                 type="tel"
@@ -125,7 +125,7 @@ export function QuoteForm({ services }: QuoteFormProps) {
                 placeholder="+971 50 000 0000"
                 className={`w-full px-4 py-3 rounded-xl border ${
                   state.errors?.phone ? 'border-red-400 bg-red-50/30' : 'border-slate-300'
-                } focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm`}
+                } focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm`}
               />
               {state.errors?.phone && (
                 <p className="text-xs text-red-600 mt-1">{state.errors.phone}</p>
@@ -139,7 +139,7 @@ export function QuoteForm({ services }: QuoteFormProps) {
               <select
                 name="service"
                 defaultValue={services[0]?.slug || ''}
-                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm bg-white"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm bg-white"
               >
                 <option value="">Select a Service Category</option>
                 {services.map((s) => (
@@ -155,13 +155,13 @@ export function QuoteForm({ services }: QuoteFormProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                Property Classification <span className="text-emerald-600">*</span>
+                Property Classification <span className="text-amber-600">*</span>
               </label>
               <select
                 name="propertyType"
                 required
                 defaultValue="villa"
-                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm bg-white"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm bg-white"
               >
                 <option value="apartment">Apartment / Penthouse</option>
                 <option value="villa">Villa / Townhouse / Estate</option>
@@ -181,7 +181,7 @@ export function QuoteForm({ services }: QuoteFormProps) {
                 type="number"
                 name="approximateSizeSqFt"
                 placeholder="e.g. 4500"
-                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm"
               />
             </div>
           </div>
@@ -190,13 +190,13 @@ export function QuoteForm({ services }: QuoteFormProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                Emirate <span className="text-emerald-600">*</span>
+                Emirate <span className="text-amber-600">*</span>
               </label>
               <select
                 name="emirate"
                 required
                 defaultValue="dubai"
-                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm bg-white"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm bg-white"
               >
                 <option value="dubai">Dubai</option>
                 <option value="abu_dhabi">Abu Dhabi</option>
@@ -215,8 +215,8 @@ export function QuoteForm({ services }: QuoteFormProps) {
               <input
                 type="text"
                 name="areaOrCommunity"
-                placeholder="e.g. Dubai Hills, Saadiyat, Downtown"
-                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+                placeholder="e.g. Palm Jumeirah, Downtown, Dubai Hills"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm"
               />
             </div>
           </div>
@@ -230,7 +230,7 @@ export function QuoteForm({ services }: QuoteFormProps) {
               type="date"
               name="preferredDate"
               min={new Date().toISOString().split('T')[0]}
-              className="w-full sm:w-1/2 px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+              className="w-full sm:w-1/2 px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm"
             />
           </div>
 
@@ -243,7 +243,7 @@ export function QuoteForm({ services }: QuoteFormProps) {
               name="details"
               rows={4}
               placeholder="Describe your property specifications, special finishes (e.g. travertine, marble, parquet), urgency, or recurring AMC requirements..."
-              className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+              className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm"
             />
           </div>
 
@@ -252,16 +252,16 @@ export function QuoteForm({ services }: QuoteFormProps) {
             <button
               type="submit"
               disabled={isPending}
-              className="w-full py-4 rounded-xl font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-600/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-4 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-lg shadow-amber-500/25 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isPending ? (
                 <>
-                  <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
                   <span>Calculating Proposal...</span>
                 </>
               ) : (
                 <>
-                  <SparklesIcon className="w-5 h-5" />
+                  <SparklesIcon className="w-5 h-5 text-slate-950" />
                   <span>Request Custom Quotation</span>
                 </>
               )}
