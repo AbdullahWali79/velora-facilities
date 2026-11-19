@@ -15,12 +15,12 @@ export const Footer: GlobalConfig = {
     {
       name: 'aboutSummary',
       type: 'textarea',
-      defaultValue: 'Velora Facilities is a premier UAE cleaning and maintenance provider delivering reliable, high-specification residential and commercial solutions.',
+      defaultValue: 'Velora Elite Technical Services L.L.C. delivers European-standard residential and commercial cleaning, deep sanitization, and technical facility services across Dubai and the UAE. Committed to precision, vetted professionals, and a higher standard of clean.',
     },
     {
       name: 'copyright',
       type: 'text',
-      defaultValue: '© 2026 Velora Facilities LLC. All rights reserved. Registered in the United Arab Emirates.',
+      defaultValue: '© 2026 Velora Elite Technical Services L.L.C. All rights reserved. Registered & Licensed in Dubai, United Arab Emirates.',
     },
     {
       name: 'columns',

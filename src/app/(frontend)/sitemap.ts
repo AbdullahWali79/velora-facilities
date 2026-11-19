@@ -2,9 +2,9 @@ import type { MetadataRoute } from 'next'
 import { getServices } from '@/lib/cms'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://velorafacilities.ae'
+  const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://www.veloraelite.ae'
 
-  // Standard public pages for Velora Facilities
+  // Standard public pages for Velora Elite
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,

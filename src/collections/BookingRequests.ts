@@ -111,7 +111,7 @@ export const BookingRequests: CollectionConfig = {
       ],
       admin: {
         position: 'sidebar',
-        description: 'Velora Facilities manually contacts the client to confirm dispatch time & team',
+        description: 'Velora Elite manually contacts the client to confirm dispatch time & team',
       },
     },
     {

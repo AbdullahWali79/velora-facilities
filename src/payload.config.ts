@@ -49,7 +49,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     meta: {
-      titleSuffix: ' — Velora Facilities Admin',
+      titleSuffix: ' — Velora Elite Admin',
     },
   },
   collections: [
@@ -91,14 +91,14 @@ export default buildConfig({
       uploadsCollection: 'media',
       generateTitle: ({ doc }) => {
         const title = (doc as { title?: string })?.title
-        return title ? `${title} | Velora Facilities UAE` : 'Velora Facilities — Premium Cleaning & Maintenance'
+        return title ? `${title} | Velora Elite Dubai` : 'Velora Elite — Luxury Cleaning & Technical Services'
       },
       generateDescription: ({ doc }) => {
         const shortDescription = (doc as { shortDescription?: string; heroSubheading?: string })?.shortDescription
-        return shortDescription || 'Leading professional cleaning, deep cleaning, and technical maintenance services across Dubai, Abu Dhabi, and the UAE.'
+        return shortDescription || 'A Higher Standard of Clean — luxury villa, residential, deep cleaning, and technical services across Dubai.'
       },
       generateURL: ({ doc, collectionSlug }) => {
-        const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://velorafacilities.ae'
+        const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://www.veloraelite.ae'
         const slug = (doc as { slug?: string })?.slug
         if (collectionSlug === 'pages') {
           return slug === 'home' ? baseUrl : `${baseUrl}/${slug}`

@@ -300,25 +300,32 @@ export const getSiteSettings = cache(async () => {
     const payload = await getPayloadClient()
     const data = await payload.findGlobal({ slug: 'site-settings' })
     if (data && data.companyName) {
+      const companyName = data.companyName.includes('Facilities') ? DEFAULT_SITE_SETTINGS.companyName : data.companyName
+      const email = data.contactInfo?.email?.includes('facilities') ? DEFAULT_SITE_SETTINGS.contactInfo.email : (data.contactInfo?.email || DEFAULT_SITE_SETTINGS.contactInfo.email)
+      const phonePrimary = (data.contactInfo?.phonePrimary && !data.contactInfo.phonePrimary.includes('000 0000')) ? data.contactInfo.phonePrimary : DEFAULT_SITE_SETTINGS.contactInfo.phonePrimary
+      const whatsappNumber = (data.contactInfo?.whatsappNumber && !data.contactInfo.whatsappNumber.includes('000 0000')) ? data.contactInfo.whatsappNumber : DEFAULT_SITE_SETTINGS.contactInfo.whatsappNumber
+      const address = (data.contactInfo?.address && !data.contactInfo.address.includes('Business Bay')) ? data.contactInfo.address : DEFAULT_SITE_SETTINGS.contactInfo.address
+
       return {
-        companyName: data.companyName || DEFAULT_SITE_SETTINGS.companyName,
-        tagline: data.tagline || DEFAULT_SITE_SETTINGS.tagline,
+        companyName,
+        legalName: DEFAULT_SITE_SETTINGS.legalName,
+        tagline: data.tagline?.includes('Facilities') ? DEFAULT_SITE_SETTINGS.tagline : (data.tagline || DEFAULT_SITE_SETTINGS.tagline),
         tradeLicense: data.tradeLicense || '',
         contactInfo: {
-          phonePrimary: data.contactInfo?.phonePrimary || '',
-          whatsappNumber: data.contactInfo?.whatsappNumber || '',
-          email: data.contactInfo?.email || DEFAULT_SITE_SETTINGS.contactInfo.email,
-          supportEmail: data.contactInfo?.supportEmail || '',
-          address: data.contactInfo?.address || DEFAULT_SITE_SETTINGS.contactInfo.address,
+          phonePrimary,
+          whatsappNumber,
+          email,
+          supportEmail: email,
+          address,
           workingHours: data.contactInfo?.workingHours || DEFAULT_SITE_SETTINGS.contactInfo.workingHours,
-          googleMapsEmbedUrl: data.contactInfo?.googleMapsEmbedUrl || '',
+          googleMapsEmbedUrl: data.contactInfo?.googleMapsEmbedUrl || DEFAULT_SITE_SETTINGS.contactInfo.googleMapsEmbedUrl,
         },
         socialMedia: {
-          instagram: data.socialMedia?.instagram || '',
-          facebook: data.socialMedia?.facebook || '',
-          linkedin: data.socialMedia?.linkedin || '',
+          instagram: data.socialMedia?.instagram || DEFAULT_SITE_SETTINGS.socialMedia.instagram,
+          facebook: data.socialMedia?.facebook || DEFAULT_SITE_SETTINGS.socialMedia.facebook,
+          linkedin: data.socialMedia?.linkedin || DEFAULT_SITE_SETTINGS.socialMedia.linkedin,
           youtube: data.socialMedia?.youtube || '',
-          tiktok: data.socialMedia?.tiktok || '',
+          tiktok: data.socialMedia?.tiktok || DEFAULT_SITE_SETTINGS.socialMedia.tiktok,
         },
       }
     }
