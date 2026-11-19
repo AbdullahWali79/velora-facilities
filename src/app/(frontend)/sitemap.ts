@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { getServices } from '@/lib/cms'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://velorafacilities.ae'
@@ -49,5 +50,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  return staticRoutes
+  // Dynamically include active services from CMS
+  try {
+    const services = await getServices()
+    const serviceRoutes: MetadataRoute.Sitemap = services.map((s) => ({
+      url: `${baseUrl}/services/${s.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    }))
+    return [...staticRoutes, ...serviceRoutes]
+  } catch {
+    return staticRoutes
+  }
 }
