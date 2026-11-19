@@ -20,7 +20,7 @@ export function FloatingWhatsApp({ whatsappNumber }: FloatingWhatsAppProps) {
   const href = `https://wa.me/${cleanNumber}?text=${prefilledMessage}`
 
   return (
-    <aside aria-label="WhatsApp Support" className="fixed bottom-6 right-6 z-50 flex items-center group">
+    <aside aria-label="WhatsApp Support" className="fixed bottom-20 sm:bottom-24 right-6 z-50 flex items-center group">
       {/* Tooltip on hover */}
       <span className="hidden sm:inline-block mr-3 px-3 py-1.5 text-xs font-semibold text-slate-900 bg-white border border-amber-400/40 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
         Chat with Velora Elite 👋

@@ -211,7 +211,7 @@ export function Footer({ settings, footerData }: FooterProps) {
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>{copyright}</p>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center gap-6 sm:pr-20">
             <Link href="/about" className="hover:text-amber-400 transition-colors">
               About
             </Link>
@@ -227,7 +227,10 @@ export function Footer({ settings, footerData }: FooterProps) {
             <Link href="/contact" className="hover:text-amber-400 transition-colors">
               Contact
             </Link>
-            <Link href="/admin" className="text-amber-500/80 hover:text-amber-400 transition-colors">
+            <Link
+              href="/admin"
+              className="px-2.5 py-1 rounded-md bg-slate-900 border border-amber-500/30 text-amber-400 hover:text-white hover:border-amber-400 transition-all font-semibold"
+            >
               Admin Login
             </Link>
           </div>
