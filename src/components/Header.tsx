@@ -32,6 +32,7 @@ export interface HeaderProps {
 
 export function Header({ settings, headerData }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [logoRotation, setLogoRotation] = useState(0)
   const pathname = usePathname()
 
   const phone = settings.contactInfo.phonePrimary || '04 579 2137'
@@ -78,15 +79,26 @@ export function Header({ settings, headerData }: HeaderProps) {
 
       {/* Main Navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 h-20 flex items-center justify-between">
-        {/* Brand Logo - Official Circular 3D Gold Emblem */}
-        <Link href="/" className="flex items-center gap-3.5 group">
-          <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-amber-500/40 shadow-md group-hover:border-amber-400 transition-all">
+        {/* Brand Logo - Official Circular 3D Gold Emblem (Click to Rotate 360°) */}
+        <Link
+          href="/"
+          onClick={() => setLogoRotation((prev) => prev + 360)}
+          className="flex items-center gap-3.5 group cursor-pointer select-none"
+          title="Click to spin logo"
+        >
+          <div
+            className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-amber-500/40 shadow-md group-hover:border-amber-400 group-hover:shadow-[0_0_20px_rgba(223,183,108,0.55)] transition-all will-change-transform active:scale-95"
+            style={{
+              transform: `rotate(${logoRotation}deg)`,
+              transition: 'transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            }}
+          >
             <Image
               src="/images/logo.jpg"
               alt="Velora Elite Logo"
               width={48}
               height={48}
-              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+              className="object-cover w-full h-full pointer-events-none"
               priority
             />
           </div>

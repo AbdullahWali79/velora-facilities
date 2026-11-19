@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { PhoneIcon, MailIcon, MapPinIcon, ClockIcon, ShieldCheckIcon } from './Icons'
@@ -41,6 +43,7 @@ export interface FooterProps {
 }
 
 export function Footer({ settings, footerData }: FooterProps) {
+  const [logoRotation, setLogoRotation] = useState(0)
   const phone = settings.contactInfo.phonePrimary || '04 579 2137'
   const telHref = `tel:${phone.replace(/[^0-9+]/g, '')}`
   const whatsapp = settings.contactInfo.whatsappNumber || '+971 55 675 1854'
@@ -64,14 +67,25 @@ export function Footer({ settings, footerData }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
           {/* Brand info (spans 2 columns on lg) */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-3.5 group inline-flex">
-              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-amber-500/40 shadow-md">
+            <Link
+              href="/"
+              onClick={() => setLogoRotation((prev) => prev + 360)}
+              className="flex items-center gap-3.5 group inline-flex cursor-pointer select-none"
+              title="Click to spin logo"
+            >
+              <div
+                className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-amber-500/40 shadow-md group-hover:border-amber-400 group-hover:shadow-[0_0_20px_rgba(223,183,108,0.55)] transition-all will-change-transform active:scale-95"
+                style={{
+                  transform: `rotate(${logoRotation}deg)`,
+                  transition: 'transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                }}
+              >
                 <Image
                   src="/images/logo.jpg"
                   alt="Velora Elite Logo"
                   width={48}
                   height={48}
-                  className="object-cover w-full h-full"
+                  className="object-cover w-full h-full pointer-events-none"
                 />
               </div>
               <div className="flex flex-col">
