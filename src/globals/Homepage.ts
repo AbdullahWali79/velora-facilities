@@ -16,25 +16,24 @@ export const Homepage: GlobalConfig = {
         {
           name: 'badge',
           type: 'text',
-          defaultValue: 'Premier Cleaning & Facility Management in the UAE',
+          defaultValue: 'Velora Elite — Technical & Cleaning Services L.L.C.',
         },
         {
           name: 'headline',
           type: 'text',
           required: true,
-          defaultValue: 'Excellence in Every Detail for UAE Homes & Businesses',
+          defaultValue: 'A Higher Standard of Clean for Luxury UAE Properties',
         },
         {
           name: 'subheadline',
           type: 'textarea',
           required: true,
-          defaultValue: 'Delivering European-standard cleaning, disinfection, and MEP technical maintenance for luxury villas, penthouses, and commercial facilities across Dubai and Abu Dhabi.',
+          defaultValue: 'European-standard home & villa cleaning, hospital-grade deep sanitization, and technical facility care across Dubai and the UAE. Headquartered at Aspin Commercial Tower, Sheikh Zayed Road.',
         },
         {
           name: 'backgroundImage',
           type: 'upload',
           relationTo: 'media',
-          required: true,
         },
         {
           name: 'primaryCtaText',

@@ -267,7 +267,7 @@ export interface Service {
    * Brief overview displayed in service cards and search snippets
    */
   shortDescription: string;
-  featuredImage: number | Media;
+  featuredImage?: (number | null) | Media;
   /**
    * Icon or vector graphic representing this service
    */
@@ -454,7 +454,7 @@ export interface BookingRequest {
    */
   specialInstructions?: string | null;
   /**
-   * Velora Facilities manually contacts the client to confirm dispatch time & team
+   * Velora Elite manually contacts the client to confirm dispatch time & team
    */
   bookingStatus: 'pending_confirmation' | 'confirmed' | 'completed' | 'cancelled';
   /**
@@ -930,7 +930,7 @@ export interface Homepage {
         badge?: string | null;
         headline: string;
         subheadline: string;
-        backgroundImage: number | Media;
+        backgroundImage?: (number | null) | Media;
         primaryCtaText?: string | null;
         primaryCtaUrl?: string | null;
         secondaryCtaText?: string | null;
@@ -979,7 +979,7 @@ export interface SiteSetting {
      */
     phonePrimary: string;
     /**
-     * Direct WhatsApp click-to-chat number (e.g. 971500000000)
+     * Direct WhatsApp click-to-chat number (e.g. +971 55 675 1854)
      */
     whatsappNumber: string;
     email: string;

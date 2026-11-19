@@ -5,7 +5,6 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import sharp from 'sharp'
-import { migrations } from './migrations'
 
 // Collections
 import { Users } from './collections/Users'
@@ -82,7 +81,7 @@ export default buildConfig({
       connectionTimeoutMillis: 30_000,
       idleTimeoutMillis: 30_000,
     },
-    prodMigrations: migrations,
+    push: false,
   }),
   sharp,
   plugins: [
