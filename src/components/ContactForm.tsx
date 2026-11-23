@@ -30,6 +30,11 @@ export function ContactForm() {
           <p className="text-slate-600 max-w-md mx-auto leading-relaxed text-sm">
             {state.message}
           </p>
+          {state.referenceId && (
+            <div className="inline-block px-4 py-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 font-mono text-xs font-semibold">
+              Inquiry Reference: #{state.referenceId}
+            </div>
+          )}
           <div className="pt-4">
             <button
               onClick={() => window.location.reload()}

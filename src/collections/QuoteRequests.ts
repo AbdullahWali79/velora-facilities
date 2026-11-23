@@ -2,28 +2,42 @@ import type { CollectionConfig } from 'payload'
 
 export const QuoteRequests: CollectionConfig = {
   slug: 'quote-requests',
+  labels: {
+    singular: 'Quotation Request',
+    plural: 'Quotation Requests',
+  },
   admin: {
     useAsTitle: 'fullName',
-    defaultColumns: ['fullName', 'email', 'phone', 'propertyType', 'emirate', 'status', 'createdAt'],
+    defaultColumns: ['fullName', 'email', 'phone', 'service', 'propertyType', 'emirate', 'status', 'createdAt'],
+    group: 'Leads & Inquiries',
+    description: 'Residential & commercial quotation inquiries requiring estimating review.',
   },
   access: {
-    // Only authenticated admin/staff can read submitted quotes
+    // Authenticated admin & editor staff can view quotes
     read: ({ req: { user } }) => Boolean(user),
-    // Public can create/submit a quote request
+    // Public can create quote inquiries
     create: () => true,
+    // Staff can update status and pricing notes
     update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => Boolean(user),
+    // Only Admin role can delete quote records
+    delete: ({ req: { user } }) => user?.role === 'admin',
   },
   fields: [
     {
       name: 'fullName',
       type: 'text',
       required: true,
+      admin: {
+        description: 'Customer or corporate representative full name',
+      },
     },
     {
       name: 'email',
       type: 'email',
       required: true,
+      admin: {
+        description: 'Contact email for proposal delivery',
+      },
     },
     {
       name: 'phone',
@@ -38,7 +52,7 @@ export const QuoteRequests: CollectionConfig = {
       type: 'relationship',
       relationTo: 'services',
       admin: {
-        description: 'Selected primary service',
+        description: 'Selected primary service for quote estimation',
       },
     },
     {
@@ -75,25 +89,28 @@ export const QuoteRequests: CollectionConfig = {
       name: 'areaOrCommunity',
       type: 'text',
       admin: {
-        description: 'e.g. Dubai Hills, Downtown, Al Maryah Island',
+        description: 'e.g. Dubai Hills Estate, Downtown Dubai, Palm Jumeirah, DIFC',
       },
     },
     {
       name: 'approximateSizeSqFt',
       type: 'number',
       admin: {
-        description: 'Approximate area in square feet (optional)',
+        description: 'Approximate property area in square feet',
       },
     },
     {
       name: 'preferredDate',
       type: 'date',
+      admin: {
+        description: 'Target service execution or inspection date',
+      },
     },
     {
       name: 'details',
       type: 'textarea',
       admin: {
-        description: 'Specific client requirements or scope notes',
+        description: 'Specific client requirements, scope notes, or surface care needs',
       },
     },
     {
@@ -102,14 +119,15 @@ export const QuoteRequests: CollectionConfig = {
       required: true,
       defaultValue: 'new',
       options: [
-        { label: 'New Lead', value: 'new' },
-        { label: 'Contacted', value: 'contacted' },
-        { label: 'Quoted', value: 'quoted' },
-        { label: 'Accepted / Converted', value: 'accepted' },
-        { label: 'Closed / Lost', value: 'closed' },
+        { label: 'New', value: 'new' },
+        { label: 'Reviewing (In Contact)', value: 'contacted' },
+        { label: 'Quoted (Estimate Sent)', value: 'quoted' },
+        { label: 'Accepted (Converted)', value: 'accepted' },
+        { label: 'Rejected (Closed)', value: 'closed' },
       ],
       admin: {
         position: 'sidebar',
+        description: 'Quotation lifecycle status',
       },
     },
     {
@@ -117,7 +135,7 @@ export const QuoteRequests: CollectionConfig = {
       type: 'textarea',
       admin: {
         position: 'sidebar',
-        description: 'Staff notes on quote calculation or client communication',
+        description: 'Estimator notes on cost calculation, discounts, or scope agreement',
       },
     },
   ],

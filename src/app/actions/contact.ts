@@ -2,6 +2,10 @@
 
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
+import {
+  sendAdminContactNotification,
+  sendCustomerContactAcknowledgement,
+} from '@/lib/email'
 
 export interface ContactFormState {
   success: boolean
@@ -35,11 +39,11 @@ export async function submitContactMessage(
     }
 
     // 3. Extract and sanitize inputs
-    const fullName = formData.get('fullName')?.toString().trim() || ''
+    const fullName = formData.get('fullName')?.toString().trim().replace(/<[^>]*>?/gm, '') || ''
     const email = formData.get('email')?.toString().trim().toLowerCase() || ''
     const phone = formData.get('phone')?.toString().trim() || ''
-    const subject = formData.get('subject')?.toString().trim() || ''
-    const message = formData.get('message')?.toString().trim() || ''
+    const subject = formData.get('subject')?.toString().trim().replace(/<[^>]*>?/gm, '') || ''
+    const message = formData.get('message')?.toString().trim().replace(/<[^>]*>?/gm, '') || ''
 
     // 4. Validate fields
     const errors: Record<string, string> = {}
@@ -54,7 +58,7 @@ export async function submitContactMessage(
     }
 
     if (!subject || subject.length < 3) {
-      errors.subject = 'Please enter a message subject.'
+      errors.subject = 'Please enter a message subject (minimum 3 characters).'
     }
 
     if (!message || message.length < 10) {
@@ -69,16 +73,41 @@ export async function submitContactMessage(
       }
     }
 
+    const cleanPhone = phone ? phone.replace(/[^0-9+]/g, '') : undefined
+
     // 5. Connect to Payload CMS Local API
     const payload = await getPayload({ config: configPromise })
 
-    // 6. Save message to database
+    // 6. Duplicate Submission Protection (check identical message/email in last 5 minutes)
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString()
+    const recentDuplicate = await payload.find({
+      collection: 'contact-messages',
+      where: {
+        and: [
+          { email: { equals: email } },
+          { subject: { equals: subject } },
+          { createdAt: { greater_than_equal: fiveMinutesAgo } },
+        ],
+      },
+      limit: 1,
+    })
+
+    if (recentDuplicate.docs.length > 0) {
+      const existing = recentDuplicate.docs[0]
+      return {
+        success: true,
+        message: 'We have already received your message! Our client care desk is reviewing it and will respond promptly.',
+        referenceId: existing.id,
+      }
+    }
+
+    // 7. Save message into Supabase PostgreSQL via Payload CMS
     const created = await payload.create({
       collection: 'contact-messages',
       data: {
         fullName,
         email,
-        phone,
+        phone: cleanPhone,
         subject,
         message,
         status: 'unread',
@@ -86,6 +115,30 @@ export async function submitContactMessage(
     })
 
     console.log(`[VELORA CMS NOTIFICATION] New Contact Message #${created.id} from ${fullName} (${email}): ${subject}`)
+
+    // 8. Dispatch notification emails (Admin alert + Customer acknowledgement)
+    const emailPayload = {
+      id: created.id,
+      fullName,
+      email,
+      phone: cleanPhone,
+      subject,
+      message,
+    }
+
+    Promise.allSettled([
+      sendAdminContactNotification(emailPayload),
+      sendCustomerContactAcknowledgement(emailPayload),
+    ]).then((results) => {
+      results.forEach((res, idx) => {
+        const target = idx === 0 ? 'Admin' : 'Customer'
+        if (res.status === 'fulfilled' && res.value.sent) {
+          console.log(`[EMAIL DISPATCH] ${target} contact notification sent successfully for #${created.id}`)
+        } else {
+          console.log(`[EMAIL DISPATCH] ${target} contact email not sent or simulated. Reason:`, res.status === 'fulfilled' ? res.value.error : res.reason)
+        }
+      })
+    })
 
     return {
       success: true,
@@ -97,7 +150,7 @@ export async function submitContactMessage(
     console.error('submitContactMessage error:', error.message)
     return {
       success: false,
-      message: 'Failed to send message. Please contact us via phone or WhatsApp.',
+      message: 'Failed to send message. Please contact us via phone (04 579 2137) or WhatsApp (+971 55 675 1854).',
     }
   }
 }

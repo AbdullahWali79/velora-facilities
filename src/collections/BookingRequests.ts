@@ -2,17 +2,25 @@ import type { CollectionConfig } from 'payload'
 
 export const BookingRequests: CollectionConfig = {
   slug: 'booking-requests',
+  labels: {
+    singular: 'Booking Request',
+    plural: 'Booking Requests',
+  },
   admin: {
     useAsTitle: 'customerName',
     defaultColumns: ['customerName', 'service', 'preferredDate', 'timeSlot', 'emirate', 'bookingStatus', 'createdAt'],
+    group: 'Leads & Inquiries',
+    description: 'Customer appointment booking requests requiring manual staff confirmation.',
   },
   access: {
-    // Only authenticated admin/staff can read booking records
+    // Authenticated admin & editor staff can view records
     read: ({ req: { user } }) => Boolean(user),
-    // Public can submit booking inquiries
+    // Public can create booking inquiries
     create: () => true,
+    // Staff can update statuses and add confirmation notes
     update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => Boolean(user),
+    // Only Admin role can delete booking records
+    delete: ({ req: { user } }) => user?.role === 'admin',
   },
   fields: [
     {
@@ -27,13 +35,16 @@ export const BookingRequests: CollectionConfig = {
       name: 'email',
       type: 'email',
       required: true,
+      admin: {
+        description: 'Customer email for acknowledgement and communication',
+      },
     },
     {
       name: 'phone',
       type: 'text',
       required: true,
       admin: {
-        description: 'UAE contact number for manual booking confirmation via phone or WhatsApp',
+        description: 'UAE contact number for phone/WhatsApp confirmation (+971...)',
       },
     },
     {
@@ -42,7 +53,7 @@ export const BookingRequests: CollectionConfig = {
       relationTo: 'services',
       required: true,
       admin: {
-        description: 'Service selected by the customer',
+        description: 'Selected technical or cleaning service',
       },
     },
     {
@@ -65,7 +76,7 @@ export const BookingRequests: CollectionConfig = {
       ],
       defaultValue: 'morning_08_12',
       admin: {
-        description: 'Customer preferred time window',
+        description: 'Customer preferred dispatch window',
       },
     },
     {
@@ -88,7 +99,7 @@ export const BookingRequests: CollectionConfig = {
       type: 'textarea',
       required: true,
       admin: {
-        description: 'Street address, building/villa number, community, and landmarks',
+        description: 'Street address, villa/apartment number, community, and landmarks',
       },
     },
     {
@@ -104,14 +115,14 @@ export const BookingRequests: CollectionConfig = {
       required: true,
       defaultValue: 'pending_confirmation',
       options: [
-        { label: 'Pending Confirmation (Awaiting Call)', value: 'pending_confirmation' },
+        { label: 'Pending (Awaiting Call)', value: 'pending_confirmation' },
         { label: 'Confirmed (Manual Confirmation Complete)', value: 'confirmed' },
-        { label: 'Service Completed', value: 'completed' },
-        { label: 'Cancelled / Rescheduled', value: 'cancelled' },
+        { label: 'Completed', value: 'completed' },
+        { label: 'Cancelled', value: 'cancelled' },
       ],
       admin: {
         position: 'sidebar',
-        description: 'Velora Elite manually contacts the client to confirm dispatch time & team',
+        description: 'Status of the booking request. Manual confirmation required by Velora team.',
       },
     },
     {
