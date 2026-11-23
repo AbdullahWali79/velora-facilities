@@ -172,11 +172,12 @@ export async function submitQuoteRequest(
       details,
     }
 
-    Promise.allSettled([
-      sendAdminQuoteNotification(emailPayload),
-      sendCustomerQuoteAcknowledgement(emailPayload),
-    ]).then((results) => {
-      results.forEach((res, idx) => {
+    try {
+      const emailResults = await Promise.allSettled([
+        sendAdminQuoteNotification(emailPayload),
+        sendCustomerQuoteAcknowledgement(emailPayload),
+      ])
+      emailResults.forEach((res, idx) => {
         const target = idx === 0 ? 'Admin' : 'Customer'
         if (res.status === 'fulfilled' && res.value.sent) {
           console.log(`[EMAIL DISPATCH] ${target} quote notification sent successfully for #${created.id}`)
@@ -184,7 +185,9 @@ export async function submitQuoteRequest(
           console.log(`[EMAIL DISPATCH] ${target} quote email not sent or simulated. Reason:`, res.status === 'fulfilled' ? res.value.error : res.reason)
         }
       })
-    })
+    } catch (emailErr: unknown) {
+      console.warn('[EMAIL DISPATCH] Error during quotation email dispatch:', (emailErr as Error).message)
+    }
 
     return {
       success: true,

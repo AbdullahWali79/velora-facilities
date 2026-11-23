@@ -212,11 +212,12 @@ export async function submitBookingRequest(
       specialInstructions,
     }
 
-    Promise.allSettled([
-      sendAdminBookingNotification(emailPayload),
-      sendCustomerBookingAcknowledgement(emailPayload),
-    ]).then((results) => {
-      results.forEach((res, idx) => {
+    try {
+      const emailResults = await Promise.allSettled([
+        sendAdminBookingNotification(emailPayload),
+        sendCustomerBookingAcknowledgement(emailPayload),
+      ])
+      emailResults.forEach((res, idx) => {
         const target = idx === 0 ? 'Admin' : 'Customer'
         if (res.status === 'fulfilled' && res.value.sent) {
           console.log(`[EMAIL DISPATCH] ${target} booking notification sent successfully for #${created.id}`)
@@ -224,7 +225,9 @@ export async function submitBookingRequest(
           console.log(`[EMAIL DISPATCH] ${target} booking email not sent or simulated. Reason:`, res.status === 'fulfilled' ? res.value.error : res.reason)
         }
       })
-    })
+    } catch (emailErr: unknown) {
+      console.warn('[EMAIL DISPATCH] Error during booking email dispatch:', (emailErr as Error).message)
+    }
 
     return {
       success: true,

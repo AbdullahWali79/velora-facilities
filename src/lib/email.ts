@@ -43,6 +43,13 @@ export interface ContactEmailData {
 }
 
 /**
+ * Check if outbound SMTP service is fully configured with credentials.
+ */
+export function isSMTPConfigured(): boolean {
+  return Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS)
+}
+
+/**
  * Configure SMTP transporter using environment variables.
  * Falls back safely if not configured.
  */
@@ -65,6 +72,9 @@ function getTransporter() {
       user,
       pass,
     },
+    connectionTimeout: 5000, // 5s connection timeout for serverless resilience
+    greetingTimeout: 5000,
+    socketTimeout: 8000,
   })
 }
 

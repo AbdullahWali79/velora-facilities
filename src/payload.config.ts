@@ -41,6 +41,26 @@ const getConnectionString = () => {
   return url.toString()
 }
 
+const getSslConfig = () => {
+  if (!isSupabase) return false
+
+  // If a custom CA certificate is provided in environment variables
+  if (process.env.DATABASE_SSL_CA) {
+    return {
+      ca: process.env.DATABASE_SSL_CA,
+      rejectUnauthorized: true,
+    }
+  }
+
+  // If strict certificate validation is explicitly demanded
+  if (process.env.DATABASE_SSL_REJECT_UNAUTHORIZED === 'true') {
+    return { rejectUnauthorized: true }
+  }
+
+  // Default Supabase pooled connection setting (accommodates intermediate AWS pooler certificates)
+  return { rejectUnauthorized: false }
+}
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -74,7 +94,7 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: getConnectionString(),
-      ssl: isSupabase ? { rejectUnauthorized: false } : false,
+      ssl: getSslConfig(),
       // Stay within Supabase's pooler limits. Payload keeps one client checked
       // out for the life of the process, so this allows four for queries.
       max: 6,

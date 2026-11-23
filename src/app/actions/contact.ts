@@ -126,11 +126,12 @@ export async function submitContactMessage(
       message,
     }
 
-    Promise.allSettled([
-      sendAdminContactNotification(emailPayload),
-      sendCustomerContactAcknowledgement(emailPayload),
-    ]).then((results) => {
-      results.forEach((res, idx) => {
+    try {
+      const emailResults = await Promise.allSettled([
+        sendAdminContactNotification(emailPayload),
+        sendCustomerContactAcknowledgement(emailPayload),
+      ])
+      emailResults.forEach((res, idx) => {
         const target = idx === 0 ? 'Admin' : 'Customer'
         if (res.status === 'fulfilled' && res.value.sent) {
           console.log(`[EMAIL DISPATCH] ${target} contact notification sent successfully for #${created.id}`)
@@ -138,7 +139,9 @@ export async function submitContactMessage(
           console.log(`[EMAIL DISPATCH] ${target} contact email not sent or simulated. Reason:`, res.status === 'fulfilled' ? res.value.error : res.reason)
         }
       })
-    })
+    } catch (emailErr: unknown) {
+      console.warn('[EMAIL DISPATCH] Error during contact email dispatch:', (emailErr as Error).message)
+    }
 
     return {
       success: true,
