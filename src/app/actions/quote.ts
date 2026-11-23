@@ -191,7 +191,7 @@ export async function submitQuoteRequest(
 
     return {
       success: true,
-      message: 'Thank you! Your quotation request has been received. An estimator from Velora Elite will contact you within 2 business hours with a detailed proposal.',
+      message: 'Thank you! Your quotation request has been received. A technical estimator from Velora Elite will review your specifications and prepare a tailored proposal.',
       referenceId: created.id,
     }
   } catch (err: unknown) {

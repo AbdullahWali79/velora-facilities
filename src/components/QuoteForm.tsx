@@ -267,7 +267,7 @@ export function QuoteForm({ services }: QuoteFormProps) {
               )}
             </button>
             <p className="text-center text-xs text-slate-500 mt-3">
-              ⚡ Guaranteed response within 2 business hours. Transparent pricing with no hidden charges.
+              ⚡ Prompt, specialized scope review. Transparent pricing with no hidden charges.
             </p>
           </div>
         </form>

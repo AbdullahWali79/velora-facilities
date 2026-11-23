@@ -42,25 +42,63 @@ export interface ContactEmailData {
   message: string
 }
 
-/**
- * Check if outbound SMTP service is fully configured with credentials.
- */
-export function isSMTPConfigured(): boolean {
-  return Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS)
+export interface SystemAlertData {
+  alertType: string
+  details: string
+  severity?: 'warning' | 'critical'
+  metadata?: Record<string, unknown>
 }
 
 /**
- * Configure SMTP transporter using environment variables.
- * Falls back safely if not configured.
+ * Sanitize strings used in email headers to prevent Header Injection attacks.
+ */
+export function sanitizeEmailHeader(value: string): string {
+  return value.replace(/[\r\n\t]/g, ' ').trim()
+}
+
+/**
+ * Strict email address validation regex (RFC 5322 standard compliant).
+ */
+export function isValidEmail(email: string): boolean {
+  if (!email || email.length > 254) return false
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/
+  return emailRegex.test(email.trim())
+}
+
+/**
+ * Department-Based Notification Routing
+ * Configurable via environment variables with active Hostinger mailboxes as defaults.
+ */
+export const DEPARTMENT_EMAILS = {
+  bookings: () => process.env.BOOKINGS_NOTIFICATION_EMAIL || 'bookings@veloraelite.ae',
+  sales: () => process.env.SALES_NOTIFICATION_EMAIL || 'sales@veloraelite.ae',
+  contact: () => process.env.CONTACT_NOTIFICATION_EMAIL || 'info@veloraelite.ae',
+  admin: () => process.env.ADMIN_NOTIFICATION_EMAIL || 'admin@veloraelite.ae',
+}
+
+/**
+ * Check if outbound Hostinger SMTP service is fully configured.
+ */
+export function isSMTPConfigured(): boolean {
+  return Boolean(
+    (process.env.SMTP_HOST || 'smtp.hostinger.com') &&
+    (process.env.SMTP_USER || 'info@veloraelite.ae') &&
+    process.env.SMTP_PASS
+  )
+}
+
+/**
+ * Configure Hostinger SMTP transporter using environment variables.
+ * Uses port 465 with SSL/TLS by default.
  */
 function getTransporter() {
-  const host = process.env.SMTP_HOST
-  const user = process.env.SMTP_USER
+  const host = process.env.SMTP_HOST || 'smtp.hostinger.com'
+  const user = process.env.SMTP_USER || 'info@veloraelite.ae'
   const pass = process.env.SMTP_PASS
-  const port = Number(process.env.SMTP_PORT) || 587
-  const secure = process.env.SMTP_SECURE === 'true' || port === 465
+  const port = Number(process.env.SMTP_PORT) || 465
+  const secure = process.env.SMTP_SECURE === 'false' ? false : true
 
-  if (!host || !user || !pass) {
+  if (!pass) {
     return null
   }
 
@@ -75,15 +113,54 @@ function getTransporter() {
     connectionTimeout: 5000, // 5s connection timeout for serverless resilience
     greetingTimeout: 5000,
     socketTimeout: 8000,
+    tls: {
+      minVersion: 'TLSv1.2',
+      rejectUnauthorized: process.env.SMTP_TLS_REJECT_UNAUTHORIZED !== 'false',
+    },
   })
 }
 
+/**
+ * Verify SMTP connection & authentication.
+ * Useful for diagnostics and testing.
+ */
+export async function verifySMTPConnection(): Promise<{ success: boolean; message: string }> {
+  if (!process.env.SMTP_PASS) {
+    return {
+      success: false,
+      message: 'SMTP_PASS environment variable is not set. SMTP delivery is in simulation mode.',
+    }
+  }
+
+  const transporter = getTransporter()
+  if (!transporter) {
+    return {
+      success: false,
+      message: 'Failed to initialize Nodemailer transporter.',
+    }
+  }
+
+  try {
+    await transporter.verify()
+    return {
+      success: true,
+      message: `Successfully authenticated with Hostinger SMTP (${process.env.SMTP_HOST || 'smtp.hostinger.com'}:465) as ${process.env.SMTP_USER || 'info@veloraelite.ae'}.`,
+    }
+  } catch (err: unknown) {
+    const error = err as Error
+    return {
+      success: false,
+      message: `Hostinger SMTP verification failed: ${error.message}`,
+    }
+  }
+}
+
 const BRAND_NAME = 'Velora Elite Technical Services L.L.C.'
-const DEFAULT_FROM = process.env.SMTP_FROM || `"Velora Elite Dubai" <noreply@veloraelite.ae>`
-const ADMIN_EMAIL = process.env.ADMIN_NOTIFICATION_EMAIL || process.env.SMTP_USER || 'info@veloraelite.ae'
+const DEFAULT_SENDER = () =>
+  sanitizeEmailHeader(process.env.SMTP_FROM || 'Velora Elite Concierge <info@veloraelite.ae>')
 
 /**
- * Luxury HTML Email Shell
+ * Luxury Dark-and-Gold Responsive HTML Email Shell
  */
 function renderEmailTemplate({
   previewText,
@@ -121,6 +198,7 @@ function renderEmailTemplate({
     .data-label { display: table-cell; width: 38%; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; }
     .data-value { display: table-cell; width: 62%; font-size: 13px; font-weight: 500; color: #ffffff; }
     .highlight { color: #DFB76C; font-weight: 600; }
+    .notice-box { background: rgba(197, 160, 89, 0.08); border-left: 3px solid #DFB76C; padding: 14px 16px; border-radius: 4px; margin: 20px 0; }
     .footer { padding: 28px 32px; background-color: #0b0f17; border-top: 1px solid rgba(255, 255, 255, 0.06); text-align: center; font-size: 11px; color: #64748b; line-height: 1.6; }
     .footer a { color: #DFB76C; text-decoration: none; }
     .cta-btn { display: inline-block; padding: 12px 28px; background: linear-gradient(135deg, #DFB76C 0%, #C5A059 100%); color: #0b0f17 !important; font-size: 13px; font-weight: 700; text-decoration: none; border-radius: 8px; margin-top: 18px; }
@@ -137,7 +215,7 @@ function renderEmailTemplate({
           <div class="header">
             ${headerBadge ? `<span class="badge">${headerBadge}</span>` : ''}
             <h1 class="title">${headerTitle}</h1>
-            <p class="subtitle">${BRAND_NAME} — Dubai UAE</p>
+            <p class="subtitle">${BRAND_NAME} — Dubai, UAE</p>
           </div>
           <div class="content">
             ${contentHtml}
@@ -158,7 +236,7 @@ function renderEmailTemplate({
 }
 
 /**
- * Generic internal sender with graceful error boundary
+ * Generic internal sender with anti-header-injection sanitization and safe logging.
  */
 async function sendEmail({
   to,
@@ -169,32 +247,44 @@ async function sendEmail({
   subject: string
   html: string
 }): Promise<EmailResult> {
+  const cleanTo = sanitizeEmailHeader(to)
+  const cleanSubject = sanitizeEmailHeader(subject)
+
+  if (!isValidEmail(cleanTo)) {
+    console.warn(`[VELORA EMAIL SERVICE] Blocked dispatch to invalid recipient address: "${cleanTo}"`)
+    return {
+      sent: false,
+      error: 'Invalid recipient email address.',
+    }
+  }
+
   const transporter = getTransporter()
 
   if (!transporter) {
-    console.warn(`[VELORA EMAIL SERVICE] SMTP credentials not configured. Email suppressed for: ${to} (Subject: "${subject}")`)
+    console.warn(`[VELORA EMAIL SERVICE] SMTP password not set in environment variables. Email simulated for: ${cleanTo} (Subject: "${cleanSubject}")`)
     return {
       sent: false,
-      error: 'SMTP credentials not configured in environment variables (SMTP_HOST, SMTP_USER, SMTP_PASS).',
+      error: 'SMTP credentials not configured in environment variables (SMTP_PASS missing).',
     }
   }
 
   try {
     const info = await transporter.sendMail({
-      from: DEFAULT_FROM,
-      to,
-      subject,
+      from: DEFAULT_SENDER(),
+      to: cleanTo,
+      subject: cleanSubject,
       html,
     })
 
-    console.log(`[VELORA EMAIL SERVICE] Successfully sent email to ${to}. MessageId: ${info.messageId}`)
+    console.log(`[VELORA EMAIL SERVICE] Outbound email delivered to ${cleanTo}. MessageId: ${info.messageId}`)
     return {
       sent: true,
       messageId: info.messageId,
     }
   } catch (err: unknown) {
     const error = err as Error
-    console.error(`[VELORA EMAIL SERVICE] Failed to send email to ${to}:`, error.message)
+    // Safely log error message without dumping full stack or environment variables
+    console.error(`[VELORA EMAIL SERVICE] Outbound delivery failed to ${cleanTo}:`, error.message)
     return {
       sent: false,
       error: error.message,
@@ -203,7 +293,7 @@ async function sendEmail({
 }
 
 /**
- * 1. Admin Alert: New Booking Request
+ * 1. Admin Alert: New Booking Request -> bookings@veloraelite.ae
  */
 export async function sendAdminBookingNotification(data: BookingEmailData): Promise<EmailResult> {
   const html = renderEmailTemplate({
@@ -263,15 +353,17 @@ export async function sendAdminBookingNotification(data: BookingEmailData): Prom
     `,
   })
 
+  const recipient = DEPARTMENT_EMAILS.bookings()
   return sendEmail({
-    to: ADMIN_EMAIL,
+    to: recipient,
     subject: `[New Booking #${data.id}] ${data.customerName} — ${data.serviceTitle}`,
     html,
   })
 }
 
 /**
- * 2. Customer Acknowledgement: Booking Received
+ * 2. Customer Automatic Reply: Booking Acknowledgement
+ * Clearly informs client that manual confirmation by phone or WhatsApp is required.
  */
 export async function sendCustomerBookingAcknowledgement(data: BookingEmailData): Promise<EmailResult> {
   const html = renderEmailTemplate({
@@ -283,7 +375,7 @@ export async function sendCustomerBookingAcknowledgement(data: BookingEmailData)
         Dear <strong>${data.customerName}</strong>,
       </p>
       <p style="font-size: 14px; color: #cbd5e1; line-height: 1.6;">
-        Thank you for choosing <strong>Velora Elite Technical Services</strong>. Your booking request has been successfully logged with reference <strong>#${data.id}</strong>.
+        Thank you for choosing <strong>Velora Elite Technical Services</strong>. Your booking request has been successfully registered with reference <strong>#${data.id}</strong>.
       </p>
 
       <div class="data-card">
@@ -309,14 +401,14 @@ export async function sendCustomerBookingAcknowledgement(data: BookingEmailData)
         </div>
       </div>
 
-      <div style="background: rgba(197, 160, 89, 0.08); border-left: 3px solid #DFB76C; padding: 14px 16px; border-radius: 4px; margin: 20px 0;">
-        <p style="margin: 0; font-size: 12px; color: #f8fafc; line-height: 1.6;">
-          <strong>Manual Confirmation Protocol:</strong> To maintain our luxury standard of service, our scheduling coordinator will contact you shortly via phone or WhatsApp (+971 55 675 1854) to finalize team dispatch and property specifics.
+      <div class="notice-box">
+        <p style="margin: 0; font-size: 13px; color: #f8fafc; line-height: 1.6;">
+          <strong>Manual Confirmation Protocol:</strong> To uphold our luxury standard of service, bookings are not finalized automatically. Our Velora Elite scheduling coordinator will contact you via telephone (<strong>04 579 2137</strong>) or WhatsApp (<strong>+971 55 675 1854</strong>) to confirm the dispatch time, team allocation, and property access details.
         </p>
       </div>
 
       <p style="font-size: 13px; color: #94a3b8; line-height: 1.6; margin-bottom: 0;">
-        Need urgent assistance? Reach our 24/7 client concierge at <a href="tel:045792137" style="color: #DFB76C;">04 579 2137</a> or reply directly to this email.
+        For urgent scheduling changes, reach our client concierge desk directly at <a href="tel:045792137" style="color: #DFB76C;">04 579 2137</a> or reply to this email.
       </p>
     `,
   })
@@ -329,7 +421,7 @@ export async function sendCustomerBookingAcknowledgement(data: BookingEmailData)
 }
 
 /**
- * 3. Admin Alert: New Quotation Request
+ * 3. Sales Alert: New Quotation Request -> sales@veloraelite.ae
  */
 export async function sendAdminQuoteNotification(data: QuoteEmailData): Promise<EmailResult> {
   const html = renderEmailTemplate({
@@ -392,15 +484,17 @@ export async function sendAdminQuoteNotification(data: QuoteEmailData): Promise<
     `,
   })
 
+  const recipient = DEPARTMENT_EMAILS.sales()
   return sendEmail({
-    to: ADMIN_EMAIL,
+    to: recipient,
     subject: `[New Quote #${data.id}] ${data.fullName} — ${data.propertyType.toUpperCase()} (${data.emirate.toUpperCase()})`,
     html,
   })
 }
 
 /**
- * 4. Customer Acknowledgement: Quote Received
+ * 4. Customer Automatic Reply: Quotation Acknowledgement
+ * Does NOT promise an unverified fixed response time.
  */
 export async function sendCustomerQuoteAcknowledgement(data: QuoteEmailData): Promise<EmailResult> {
   const html = renderEmailTemplate({
@@ -435,8 +529,14 @@ export async function sendCustomerQuoteAcknowledgement(data: QuoteEmailData): Pr
         </div>` : ''}
       </div>
 
-      <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6;">
-        Our commercial & residential estimating team is reviewing your specifications. An official scope proposal and itemized estimate will be delivered to this email within <strong>2 business hours</strong>.
+      <div class="notice-box">
+        <p style="margin: 0; font-size: 13px; color: #f8fafc; line-height: 1.6;">
+          <strong>Next Steps:</strong> Our technical estimating team is evaluating your property specifications and surface requirements. An itemized proposal tailored to your property will be delivered to this email address once our review is complete.
+        </p>
+      </div>
+
+      <p style="font-size: 13px; color: #94a3b8; line-height: 1.6; margin-bottom: 0;">
+        Need to expedite your request or provide architectural drawings? Contact our sales office at <a href="tel:045792137" style="color: #DFB76C;">04 579 2137</a> or WhatsApp <a href="https://wa.me/971556751854" style="color: #DFB76C;">+971 55 675 1854</a>.
       </p>
     `,
   })
@@ -449,7 +549,7 @@ export async function sendCustomerQuoteAcknowledgement(data: QuoteEmailData): Pr
 }
 
 /**
- * 5. Admin Alert: Contact Message
+ * 5. Customer Care Alert: Contact Inquiry -> info@veloraelite.ae
  */
 export async function sendAdminContactNotification(data: ContactEmailData): Promise<EmailResult> {
   const html = renderEmailTemplate({
@@ -493,19 +593,20 @@ export async function sendAdminContactNotification(data: ContactEmailData): Prom
     `,
   })
 
+  const recipient = DEPARTMENT_EMAILS.contact()
   return sendEmail({
-    to: ADMIN_EMAIL,
+    to: recipient,
     subject: `[Inquiry #${data.id}] ${data.subject} — ${data.fullName}`,
     html,
   })
 }
 
 /**
- * 6. Customer Acknowledgement: Contact Message Received
+ * 6. Customer Automatic Reply: Contact Message Acknowledgement
  */
 export async function sendCustomerContactAcknowledgement(data: ContactEmailData): Promise<EmailResult> {
   const html = renderEmailTemplate({
-    previewText: `Thank you for contacting Velora Elite. We have received your inquiry.`,
+    previewText: `Thank you for contacting Velora Elite. We have received your inquiry #${data.id}.`,
     headerBadge: 'Message Received',
     headerTitle: 'Thank You for Contacting Us',
     contentHtml: `
@@ -513,17 +614,59 @@ export async function sendCustomerContactAcknowledgement(data: ContactEmailData)
         Dear <strong>${data.fullName}</strong>,
       </p>
       <p style="font-size: 14px; color: #cbd5e1; line-height: 1.6;">
-        Thank you for contacting <strong>Velora Elite Technical Services</strong>. We have received your inquiry regarding <em>"${data.subject}"</em>.
+        Thank you for contacting <strong>Velora Elite Technical Services</strong>. We have received your inquiry regarding <em>"${data.subject}"</em> (Reference: <strong>#${data.id}</strong>).
       </p>
-      <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6;">
-        Our client support desk has logged your request and a dedicated manager will respond promptly.
+      <div class="notice-box">
+        <p style="margin: 0; font-size: 13px; color: #f8fafc; line-height: 1.6;">
+          Our client support desk has logged your request and a dedicated representative will respond to your inquiry promptly.
+        </p>
+      </div>
+      <p style="font-size: 13px; color: #94a3b8; line-height: 1.6; margin-bottom: 0;">
+        You can also visit our corporate office at Office 4301F, Aspin Commercial Tower, Sheikh Zayed Road, Dubai, or call us at <a href="tel:045792137" style="color: #DFB76C;">04 579 2137</a>.
       </p>
     `,
   })
 
   return sendEmail({
     to: data.email,
-    subject: `Thank you for contacting Velora Elite — We have received your message`,
+    subject: `Thank you for contacting Velora Elite [Ref: #${data.id}]`,
+    html,
+  })
+}
+
+/**
+ * 7. Critical System Alerts -> admin@veloraelite.ae
+ */
+export async function sendSystemAlertNotification(data: SystemAlertData): Promise<EmailResult> {
+  const html = renderEmailTemplate({
+    previewText: `[SYSTEM ALERT] ${data.alertType}`,
+    headerBadge: data.severity === 'critical' ? 'CRITICAL SYSTEM ALERT' : 'SYSTEM NOTIFICATION',
+    headerTitle: data.alertType,
+    contentHtml: `
+      <p style="font-size: 14px; color: #cbd5e1; line-height: 1.6; margin-top: 0;">
+        A system alert has been triggered on <strong>veloraelite.ae</strong>.
+      </p>
+      <div class="data-card">
+        <div class="data-row">
+          <div class="data-label">Alert Type</div>
+          <div class="data-value highlight">${data.alertType}</div>
+        </div>
+        <div class="data-row">
+          <div class="data-label">Timestamp</div>
+          <div class="data-value">${new Date().toISOString()}</div>
+        </div>
+        <div class="data-row" style="border-bottom: none;">
+          <div class="data-label">Details</div>
+          <div class="data-value" style="white-space: pre-wrap;">${data.details}</div>
+        </div>
+      </div>
+    `,
+  })
+
+  const recipient = DEPARTMENT_EMAILS.admin()
+  return sendEmail({
+    to: recipient,
+    subject: `[SYSTEM ALERT] ${data.alertType} — Velora Elite Infrastructure`,
     html,
   })
 }
