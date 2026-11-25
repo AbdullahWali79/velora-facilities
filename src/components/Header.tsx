@@ -4,7 +4,8 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { PhoneIcon, MailIcon, ClockIcon, MenuIcon, CloseIcon } from './Icons'
+import { PhoneIcon, MailIcon, ClockIcon, MenuIcon, CloseIcon, SparklesIcon } from './Icons'
+import { trackPhoneCallClick, trackInspectionClick } from '@/lib/tracking'
 
 export interface HeaderProps {
   settings: {
@@ -40,7 +41,6 @@ export function Header({ settings, headerData }: HeaderProps) {
   const email = settings.contactInfo.email || 'info@veloraelite.ae'
 
   const navItems = headerData.navItems || []
-  const cta = headerData.ctaButton || { text: 'Book Online', url: '/book' }
 
   return (
     <header className="w-full z-40 bg-white/95 backdrop-blur-md border-b border-amber-900/10 sticky top-0 transition-all shadow-xs">
@@ -67,7 +67,7 @@ export function Header({ settings, headerData }: HeaderProps) {
           <div className="flex items-center gap-4 text-slate-400">
             <div className="hidden lg:inline-flex items-center gap-1.5">
               <ClockIcon className="w-3.5 h-3.5 text-amber-400" />
-              <span>{settings.contactInfo.workingHours || 'Mon–Sat: 8:00 AM – 8:00 PM'}</span>
+              <span>{settings.contactInfo.workingHours || 'Mon–Sat: 8:00 AM – 6:00 PM'}</span>
             </div>
             <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-amber-300 bg-amber-950/60 border border-amber-500/30 px-2.5 py-0.5 rounded-full">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
@@ -106,8 +106,8 @@ export function Header({ settings, headerData }: HeaderProps) {
             <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-950 group-hover:text-amber-700 transition-colors">
               VELORA <span className="text-amber-600">ELITE</span>
             </span>
-            <span className="text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold text-slate-500 -mt-1">
-              TECHNICAL SERVICES L.L.C.
+            <span className="text-[9px] sm:text-[10px] tracking-widest uppercase font-bold text-amber-800 -mt-0.5">
+              LUXURY CLEANING &bull; DUBAI
             </span>
           </div>
         </Link>
@@ -134,21 +134,30 @@ export function Header({ settings, headerData }: HeaderProps) {
         </nav>
 
         {/* Right CTA & Call Buttons */}
-        <div className="hidden sm:flex items-center gap-3">
+        <div className="hidden sm:flex items-center gap-2.5">
           <a
             href={telHref}
-            className="hidden xl:inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-800 bg-slate-100 hover:bg-amber-50 hover:text-amber-800 border border-slate-200/80 hover:border-amber-300 rounded-xl transition-all"
+            onClick={() => trackPhoneCallClick('header_navbar')}
+            className="hidden xl:inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-800 bg-slate-100 hover:bg-amber-50 hover:text-amber-800 border border-slate-200/80 hover:border-amber-300 rounded-xl transition-all"
           >
-            <PhoneIcon className="w-4 h-4 text-amber-600" />
+            <PhoneIcon className="w-3.5 h-3.5 text-amber-600" />
             <span>04 579 2137</span>
           </a>
 
           <Link
-            href={cta.url || '/book'}
-            className="relative group overflow-hidden inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-sm font-bold text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:via-yellow-300 hover:to-amber-400 shadow-md shadow-amber-500/25 transition-all hover:scale-[1.03] active:scale-[0.98]"
+            href="/quote"
+            className="hidden md:inline-flex items-center px-4 py-2 text-xs font-bold text-amber-900 bg-amber-100/80 hover:bg-amber-200/80 border border-amber-300/80 rounded-xl transition-all"
           >
-            <span className="absolute inset-0 shimmer-gold opacity-40 pointer-events-none group-hover:opacity-80 transition-opacity" />
-            <span className="relative z-10">{cta.text || 'Book Online'}</span>
+            Get a Quote
+          </Link>
+
+          <Link
+            href="/book?type=inspection"
+            onClick={() => trackInspectionClick('header_cta')}
+            className="relative group overflow-hidden inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:via-yellow-300 hover:to-amber-400 shadow-md shadow-amber-500/25 transition-all hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <SparklesIcon className="w-3.5 h-3.5 text-slate-950" />
+            <span className="relative z-10">Book a Free Inspection</span>
           </Link>
         </div>
 
@@ -188,17 +197,29 @@ export function Header({ settings, headerData }: HeaderProps) {
           <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
             <a
               href={telHref}
+              onClick={() => trackPhoneCallClick('mobile_drawer')}
               className="flex items-center justify-center gap-2 w-full py-3 text-sm font-semibold text-slate-800 bg-slate-100 hover:bg-amber-50 rounded-xl transition-colors"
             >
               <PhoneIcon className="w-4 h-4 text-amber-600" />
               <span>Call Us: {phone}</span>
             </a>
             <Link
-              href={cta.url || '/book'}
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center w-full py-3 text-sm font-bold text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 rounded-xl shadow-md transition-colors"
+              href="/book?type=inspection"
+              onClick={() => {
+                trackInspectionClick('mobile_drawer')
+                setMobileMenuOpen(false)
+              }}
+              className="flex items-center justify-center gap-2 w-full py-3.5 text-sm font-bold text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 rounded-xl shadow-md transition-colors"
             >
-              {cta.text || 'Book Online'}
+              <SparklesIcon className="w-4 h-4 text-slate-950" />
+              <span>Book a Free Inspection</span>
+            </Link>
+            <Link
+              href="/quote"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-center w-full py-3 text-sm font-semibold text-amber-900 bg-amber-50 border border-amber-300 rounded-xl transition-colors"
+            >
+              Request a Free Quote
             </Link>
           </div>
         </div>

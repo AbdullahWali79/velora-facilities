@@ -72,10 +72,9 @@ export async function submitBookingRequest(
     if (!preferredDate) {
       errors.preferredDate = 'Please select your preferred appointment date.'
     } else {
-      const selectedDate = new Date(preferredDate)
-      const today = new Date()
-      today.setHours(0, 0, 0, 0)
-      if (isNaN(selectedDate.getTime()) || selectedDate < today) {
+      // Validate appointment date against current calendar date in Asia/Dubai timezone (UTC+4)
+      const todayDubaiStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Dubai' }).format(new Date())
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(preferredDate) || preferredDate < todayDubaiStr) {
         errors.preferredDate = 'Please choose a current or future appointment date.'
       }
     }

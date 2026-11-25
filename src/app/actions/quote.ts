@@ -58,8 +58,8 @@ export async function submitQuoteRequest(
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!email || !emailRegex.test(email)) {
-      errors.email = 'Please provide a valid email address.'
+    if (email && !emailRegex.test(email)) {
+      errors.email = 'Please provide a valid email address, or leave it blank.'
     }
 
     const cleanPhone = phone.replace(/[^0-9+]/g, '')
@@ -119,7 +119,7 @@ export async function submitQuoteRequest(
       collection: 'quote-requests',
       where: {
         and: [
-          { email: { equals: email } },
+          email ? { email: { equals: email } } : { phone: { equals: cleanPhone } },
           { propertyType: { equals: propertyType } },
           { emirate: { equals: emirate } },
           { createdAt: { greater_than_equal: tenMinutesAgo } },

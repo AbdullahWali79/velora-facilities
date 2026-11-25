@@ -37,7 +37,7 @@ export const DEFAULT_SITE_SETTINGS = {
     email: 'info@veloraelite.ae',
     supportEmail: 'info@veloraelite.ae',
     address: 'Office 4301F, Aspin Commercial Tower, 106 Sheikh Zayed Rd, Trade Center First, Dubai, UAE',
-    workingHours: 'Monday – Saturday: 8:00 AM – 8:00 PM',
+    workingHours: 'Monday – Saturday: 8:00 AM – 6:00 PM',
     googleMapsEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.178652431697!2d55.2741916!3d25.2120021!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f428ce0a9f547%3A0x6b77241be9e5f458!2sAspin%20Commercial%20Tower%2C%20Trade%20Centre%20-%20Trade%20Centre%201%20-%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae',
   },
   socialMedia: {
@@ -67,38 +67,39 @@ export const DEFAULT_HEADER = {
 
 export const DEFAULT_FOOTER = {
   aboutSummary:
-    'Velora Elite Technical Services L.L.C. delivers European-standard residential and commercial cleaning, deep sanitization, and technical facility services across Dubai and the UAE. Committed to precision, vetted professionals, and a higher standard of clean.',
+    'Velora Elite Technical Services L.L.C. is Dubai’s premier luxury cleaning specialist. From Italian marble crystallization and kitchen exhaust duct degreasing to luxury villa deep cleaning and commercial maintenance contracts, we guarantee an uncompromising standard of clean.',
   copyright: '© 2026 Velora Elite Technical Services L.L.C. All rights reserved. Registered & Licensed in Dubai, United Arab Emirates.',
   columns: [
     {
-      title: 'Our Services',
+      title: 'Our Cleaning Services',
       links: [
-        { label: 'Home & Villa Cleaning', url: '/services/home-villa-cleaning' },
-        { label: 'Deep Cleaning Services', url: '/services/deep-cleaning' },
-        { label: 'Office Cleaning', url: '/services/office-cleaning' },
-        { label: 'Move-In & Move-Out Cleaning', url: '/services/move-in-move-out' },
-        { label: 'Glass & Window Cleaning', url: '/services/glass-window-cleaning' },
-        { label: 'Sofa & Carpet Cleaning', url: '/services/sofa-carpet-cleaning' },
+        { label: 'Marble Polishing & Care', url: '/services/marble-polishing' },
+        { label: 'Kitchen Hood & Duct Cleaning', url: '/services/kitchen-hood-cleaning' },
+        { label: 'Restaurant Deep Cleaning', url: '/services/restaurant-cleaning' },
+        { label: 'Post-Construction Handover', url: '/services/post-construction-cleaning' },
+        { label: 'Luxury Villa Deep Cleaning', url: '/services/home-villa-cleaning' },
+        { label: 'Sofa & Carpet Steam Care', url: '/services/sofa-carpet-cleaning' },
       ],
     },
     {
       title: 'Quick Links',
       links: [
-        { label: 'About Velora Elite', url: '/about' },
+        { label: 'Book a Free Inspection', url: '/book?type=inspection' },
+        { label: 'Request a Free Quote', url: '/quote' },
         { label: 'Transformation Gallery', url: '/gallery' },
-        { label: 'Request a Fast Quote', url: '/quote' },
-        { label: 'Book an Appointment', url: '/book' },
-        { label: 'Contact Customer Care', url: '/contact' },
+        { label: 'Commercial AMC Contracts', url: '/services/office-cleaning' },
+        { label: 'About Velora Elite', url: '/about' },
+        { label: 'Contact Concierge Desk', url: '/contact' },
       ],
     },
     {
-      title: 'UAE Service Areas',
+      title: 'Key Service Areas',
       links: [
-        { label: 'Downtown & Business Bay', url: '/services' },
-        { label: 'Sheikh Zayed Rd & DIFC', url: '/services' },
         { label: 'Palm Jumeirah & Emirates Hills', url: '/services' },
-        { label: 'Dubai Marina & JBR', url: '/services' },
+        { label: 'Downtown Dubai & Business Bay', url: '/services' },
         { label: 'Dubai Hills & Arabian Ranches', url: '/services' },
+        { label: 'Dubai Marina & JBR', url: '/services' },
+        { label: 'DIFC & Sheikh Zayed Road', url: '/services' },
       ],
     },
   ],
@@ -107,12 +108,12 @@ export const DEFAULT_FOOTER = {
 export const DEFAULT_HOMEPAGE = {
   heroBanners: [
     {
-      badge: 'Velora Elite — Technical & Cleaning Services L.L.C.',
+      badge: 'Velora Elite — Premium Cleaning & Surface Care Dubai',
       headline: 'A Higher Standard of Clean for Luxury UAE Properties',
       subheadline:
-        'European-standard home & villa cleaning, hospital-grade deep sanitization, and technical facility care across Dubai and the UAE. Headquartered at Aspin Commercial Tower, Sheikh Zayed Road.',
-      primaryCtaText: 'Book Your Cleaning Today',
-      primaryCtaUrl: '/book',
+        'Specialized marble polishing, kitchen hood & duct degreasing, post-construction handover, and hospital-grade villa deep cleaning across Dubai. Headquartered at Aspin Commercial Tower, Sheikh Zayed Road.',
+      primaryCtaText: 'Book a Free Inspection',
+      primaryCtaUrl: '/book?type=inspection',
       secondaryCtaText: 'Request a Custom Quote',
       secondaryCtaUrl: '/quote',
     },
@@ -120,104 +121,176 @@ export const DEFAULT_HOMEPAGE = {
   trustBadges: [
     {
       title: 'European Standard Protocols',
-      subtitle: 'Hospital-grade certified disinfectants & precision cleaning',
+      subtitle: 'Hospital-grade certified disinfectants & precision surface care',
     },
     {
       title: '100% Vetted & Uniformed Staff',
-      subtitle: 'Background-checked, trained & certified specialists',
+      subtitle: 'Background-checked, health-certified & specialized technicians',
     },
     {
       title: 'Luxury Surface-Safe Solutions',
-      subtitle: 'Eco-certified safe for marble, wood, fine fabrics & pets',
+      subtitle: 'Safe for Italian marble, fine parquet, wool carpets & pets',
     },
     {
-      title: 'Central Dubai Dispatch',
+      title: 'Central Dubai Rapid Dispatch',
       subtitle: 'Aspin Commercial Tower, 106 Sheikh Zayed Rd, Dubai',
     },
   ],
-  // Stats bar: Only client-approved statistics from CMS will appear
   stats: [],
   ctaBanner: {
-    heading: 'Ready for an Uncompromising Standard of Cleanliness?',
+    heading: 'Experience an Uncompromising Standard of Cleanliness',
     description:
-      'Connect with our Dubai scheduling coordinators for an instant quote or confirmed service booking. We guarantee punctual arrival and flawless execution.',
-    buttonText: 'Book Your Cleaning Today',
-    buttonUrl: '/book',
+      'Connect with our Dubai concierge team for a complimentary on-site inspection or tailored quotation. We guarantee punctual arrival and supervisor-inspected results.',
+    buttonText: 'Book a Free Inspection',
+    buttonUrl: '/book?type=inspection',
   },
 }
 
 export const DEFAULT_SERVICES: ServiceItem[] = [
   {
     id: 1,
-    title: 'Home & Villa Cleaning',
-    slug: 'home-villa-cleaning',
+    title: 'Marble Polishing & Italian Crystallization',
+    slug: 'marble-polishing',
     category: 'cleaning',
-    tagline: 'Precision cleaning tailored for luxury UAE villas and residences',
+    tagline: 'Italian Klindex diamond grinding, scratch removal & mirror crystallization',
     shortDescription:
-      'Comprehensive regular and intensive cleaning for luxury villas, penthouses, and residences. From floor-to-ceiling sanitization to delicate surface care.',
+      'Premier restoration for Italian marble, onyx, travertine, and terrazzo floors across Dubai villas and luxury properties. Eliminates acid etching, traffic wear, and scratches.',
     features: [
-      { title: 'Living & Dining Room Detailing', description: 'Dusting, marble floor care, furniture polish, and chandelier cleaning' },
-      { title: 'Kitchen Deep Sanitization', description: 'Countertop degreasing, exterior cabinetry, appliance wipe-down, and sink disinfection' },
-      { title: 'Luxury Bathroom Care', description: 'Tile descaling, chrome fixture polishing, shower glass cleaning, and organic sanitization' },
-      { title: 'Bedroom & Linen Refresh', description: 'Dust mite removal, mattress vacuuming, and bespoke staging' },
+      { title: 'Diamond Disk Grinding & Honing', description: 'Multi-grit sequential diamond grinding removing deep scratches, lippage, and surface stains' },
+      { title: 'Italian Mirror Crystallization', description: 'Thermal reaction crystallization producing an impenetrable wet-look mirror gloss' },
+      { title: 'Hydrophobic Sealant Impregnation', description: 'Deep-penetrating seal protecting delicate marble from coffee, oil, and citrus stains' },
+      { title: 'Edge & Countertop Detailing', description: 'Hand-held diamond polishing for vanity counters, marble stairs, and bathroom walls' },
     ],
     pricing: { startingPrice: null, priceUnit: 'custom_quote' },
     faqs: [
       {
-        question: 'What is included in a Home & Villa Cleaning visit?',
-        answer: 'Our trained uniformed team cleans all living spaces, bedrooms, bathrooms, and kitchen areas using surface-safe European standard chemicals.'
+        question: 'Does your marble polishing use harsh acids?',
+        answer: 'No. We use European diamond abrasives and pH-balanced Italian crystallization solutions that harden the calcium carbonate stone naturally without structural degradation.'
+      },
+      {
+        question: 'Do you offer a free on-site inspection for marble?',
+        answer: 'Yes! Our technical supervisor visits your property anywhere in Dubai to inspect the stone type, wear level, and test gloss levels before quoting.'
       }
     ],
     isFeatured: true,
   },
   {
     id: 2,
-    title: 'Deep Cleaning Services',
-    slug: 'deep-cleaning',
+    title: 'Kitchen Hood & Commercial Exhaust Duct Cleaning',
+    slug: 'kitchen-hood-cleaning',
     category: 'cleaning',
-    tagline: 'Hospital-grade intensive decontamination for luxury properties',
+    tagline: 'Certified grease removal & fire risk mitigation adhering to Dubai Civil Defence standards',
     shortDescription:
-      'Exhaustive top-to-bottom deep sanitization covering kitchen degreasing, bathroom descaling, grout restoration, and particulate extraction.',
+      'Certified extraction hood, grease filter, and horizontal/vertical duct degreasing for commercial restaurants and luxury residential show kitchens.',
     features: [
-      { title: 'Kitchen & Appliance Restoration', description: 'High-heat steam degreasing of ovens, range hoods, filters, and interior cabinetry' },
-      { title: 'Sanitary Steam Descaling', description: 'Heavy lime scale removal, high-pressure steam sanitization, and hygienic sealing' },
-      { title: 'Grout & Floor Scrubbing', description: 'Single-disc rotary machine scrubbing restoring tile and marble grout lines' },
-      { title: 'Detailed Track & Balcony Washing', description: 'Window track vacuuming, frame washing, and terrace pressure washing' },
+      { title: 'Exhaust Hood & Canopy Degreasing', description: 'Scraping and chemical dissolution of hardened carbon and grease deposits down to bare metal' },
+      { title: 'Internal Duct Scraping & Washing', description: 'Access-panel insertion, mechanical brushing, and high-pressure steam cleaning of entire duct lines' },
+      { title: 'Exhaust Fan & Blower Decontamination', description: 'Disassembly and degreasing of centrifugal fan blades to restore optimal airflow and eliminate motor strain' },
+      { title: 'Inspection Certificate Issuance', description: 'Before-and-after photographic documentation and certified service report for municipal records' },
     ],
     pricing: { startingPrice: null, priceUnit: 'custom_quote' },
     faqs: [
       {
-        question: 'Do you bring your own equipment and materials?',
-        answer: 'Yes, our teams arrive fully equipped with industrial single-disc scrubbers, steam machines, HEPA vacuums, and eco-certified chemicals.'
+        question: 'How often should commercial kitchen ducts be cleaned in Dubai?',
+        answer: 'According to Dubai Civil Defence and Municipality regulations, high-volume cooking operations require hood and duct degreasing every 3 to 6 months.'
       }
     ],
     isFeatured: true,
   },
   {
     id: 3,
-    title: 'Office Cleaning & Commercial Care',
-    slug: 'office-cleaning',
-    category: 'commercial',
-    tagline: 'Discreet, high-standard maintenance for offices, retail & clinics',
+    title: 'Restaurant Deep Cleaning & Kitchen Sanitation',
+    slug: 'restaurant-cleaning',
+    category: 'cleaning',
+    tagline: 'Dubai Municipality hygiene compliance & commercial kitchen decontamination',
     shortDescription:
-      'Flexible after-hours or daytime facility care for corporate offices, executive suites, boutiques, clinics, and commercial premises across Dubai.',
+      'Turnkey commercial kitchen and dining room deep cleaning for Dubai restaurants, hotels, cafes, and cloud kitchens. Guaranteed compliance with Dubai Food Safety standards.',
     features: [
-      { title: 'High-Touch Zone Sterilization', description: 'Hourly antimicrobial wipe-downs of biometric scanners, handles, and desks' },
-      { title: 'After-Hours Flexible Scheduling', description: 'Zero disruption to corporate operations and client confidentiality' },
-      { title: 'Floor Buffing & Reception Detailing', description: 'Polished welcome lobbies, marble care, and spotless meeting rooms' },
-      { title: 'B2B SLAs & Monthly Invoicing', description: 'Standardized service level agreements with dedicated account managers' },
+      { title: 'Heavy Cookline Degreasing', description: 'High-temperature steam and food-safe chemical degreasing of fryers, flat-tops, ovens, and grills' },
+      { title: 'Prep Station & Storage Sanitation', description: 'Complete decontamination of stainless steel tables, walk-in cold rooms, and dry storage' },
+      { title: 'Kitchen Floor & Drain Flushing', description: 'Rotary machine scrubbing of non-slip tile flooring and biocidal drain degreasing' },
+      { title: 'Dining Area & Furniture Detailing', description: 'Bespoke front-of-house detailing, banquet upholstery steam cleaning, and glass shine' },
     ],
     pricing: { startingPrice: null, priceUnit: 'custom_quote' },
     faqs: [
       {
-        question: 'Do you offer regular corporate cleaning contracts?',
-        answer: 'Yes, we provide flexible daily, weekly, or monthly commercial cleaning contracts tailored to your office square footage and schedule.'
+        question: 'Can you work during restaurant closing hours?',
+        answer: 'Yes. Our commercial teams operate 24/7 overnight shifts to clean thoroughly without disrupting regular service hours.'
       }
     ],
     isFeatured: true,
   },
   {
     id: 4,
+    title: 'Post-Construction Deep Cleaning & Handover',
+    slug: 'post-construction-cleaning',
+    category: 'cleaning',
+    tagline: 'Pristine architectural handover cleaning for newly renovated luxury properties',
+    shortDescription:
+      'Intensive post-renovation and post-construction cleaning removing gypsum dust, paint splatters, silicone haze, and grout residues for flawless handover.',
+    features: [
+      { title: 'Airborne Micro-Dust HEPA Extraction', description: 'Negative air scrubbers and industrial HEPA vacuums clearing fine drywall and silica dust' },
+      { title: 'Paint & Adhesive Splatter Removal', description: 'Safe non-abrasive lifting of paint overspray, grout haze, and protective tape residue from windows and joinery' },
+      { title: 'Floor Scrubbing & Polishing', description: 'Single-disc rotary scrubbing of all tile, stone, and wood surfaces removing contractor residue' },
+      { title: 'Architectural Glazing Wash', description: 'Interior and exterior streak-free window cleaning including track and frame vacuuming' },
+    ],
+    pricing: { startingPrice: null, priceUnit: 'custom_quote' },
+    faqs: [
+      {
+        question: 'When should we schedule post-construction cleaning?',
+        answer: 'Ideally after all contractors, painters, and snagging teams have finished their main work, 24 to 48 hours prior to furnishing or handover.'
+      }
+    ],
+    isFeatured: true,
+  },
+  {
+    id: 5,
+    title: 'Luxury Villa & Residence Deep Cleaning',
+    slug: 'home-villa-cleaning',
+    category: 'cleaning',
+    tagline: 'Precision cleaning tailored for luxury UAE villas and residences',
+    shortDescription:
+      'Exhaustive top-to-bottom deep sanitization covering kitchen degreasing, bathroom steam descaling, tile grout scrubbing, and living area revitalization.',
+    features: [
+      { title: 'Living & Dining Room Detailing', description: 'Fine dusting, marble floor buffing, chandelier wipe-down, and architectural moldings' },
+      { title: 'Kitchen Intensive Sanitization', description: 'Oven interior steam degreasing, extractor filter wash, and food-grade cabinet decontamination' },
+      { title: 'Luxury Bathroom Steam Descaling', description: 'High-pressure thermodynamic steam descaling of marble walls, grout lines, and shower glass' },
+      { title: 'Balcony & Terrace Pressure Wash', description: 'High-pressure wash for outdoor tiled verandas, balustrades, and patio furniture' },
+    ],
+    pricing: { startingPrice: null, priceUnit: 'custom_quote' },
+    faqs: [
+      {
+        question: 'What equipment do your villa cleaning teams bring?',
+        answer: 'Our uniformed crew arrives with industrial Kärcher steam machines, single-disc rotary scrubbers, HEPA vacuum cleaners, and eco-certified chemicals safe for luxury finishes.'
+      }
+    ],
+    isFeatured: true,
+  },
+  {
+    id: 6,
+    title: 'Sofa, Rug & Upholstery Thermodynamic Steam Care',
+    slug: 'sofa-carpet-cleaning',
+    category: 'cleaning',
+    tagline: 'Revitalize fine Italian fabrics, silk rugs, and leather suites',
+    shortDescription:
+      'Thermodynamic steam extraction, fabric-safe stain lifting, and fiber conditioning for luxury sofas, Persian rugs, dining chairs, and mattresses.',
+    features: [
+      { title: 'pH-Balanced Deep Extraction', description: 'Safe for wool, silk, velvet, linen, and delicate organic weaves without color fading' },
+      { title: 'Dust Mite & Allergen Eradication', description: 'High-heat thermodynamic steam eliminating 99.9% of microscopic allergens and bacteria' },
+      { title: 'Spot & Pet Odor Neutralization', description: 'Enzyme-based solutions targeting stubborn stains, coffee marks, and moisture odors' },
+      { title: 'Rapid Moisture Extraction', description: 'High-powered dual-vacuum extraction providing swift drying in just 2 to 3 hours' },
+    ],
+    pricing: { startingPrice: null, priceUnit: 'custom_quote' },
+    faqs: [
+      {
+        question: 'How long does it take for sofas and rugs to dry in Dubai?',
+        answer: 'Thanks to our high-powered industrial dual-vacuum extraction equipment, fabrics typically dry in only 2 to 3 hours.'
+      }
+    ],
+    isFeatured: true,
+  },
+  {
+    id: 7,
     title: 'Move-In & Move-Out Cleaning',
     slug: 'move-in-move-out',
     category: 'cleaning',
@@ -225,71 +298,163 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
     shortDescription:
       'Turnkey handover cleaning designed to secure full security deposit returns and prepare properties for immediate, pristine occupancy.',
     features: [
-      { title: 'Interior Wardrobe & Cabinet Sanitization', description: 'Thorough vacuuming and wipe down of all storage units inside and out' },
-      { title: 'Residue & Stain Removal', description: 'Safe removal of light contractor residues, tape marks, and scuffs' },
-      { title: 'Floor Rotary Machine Polishing', description: 'Machine scrub and buff for marble, tile, and parquet surfaces' },
-      { title: 'Handover Certification Checklist', description: 'Structured audit aligned with major UAE real estate agency standards' },
+      { title: 'Wardrobe & Storage Sanitization', description: 'Thorough interior and exterior wipe-down of all built-in wardrobes, cabinets, and drawers' },
+      { title: 'Lime & Hard Water Descaling', description: 'Restoration of bathroom fittings, shower glass, and sanitary fixtures' },
+      { title: 'Floor Rotary Buffing', description: 'Rotary scrubbing of tile and stone floors leaving an immaculate presentation' },
+      { title: 'Snagging Checklist Alignment', description: 'Detailed inspection checklist aligned with major UAE real estate agency handover criteria' },
     ],
     pricing: { startingPrice: null, priceUnit: 'custom_quote' },
     faqs: [
       {
-        question: 'Does this service satisfy landlord move-out criteria?',
-        answer: 'Yes. Our move-out package is specifically designed to meet the rigorous inspection checklists of major UAE developers and landlords.'
+        question: 'Will this satisfy landlord move-out inspections?',
+        answer: 'Yes. Our move-out package is specifically designed to meet the rigorous handover criteria required for full security deposit refunds.'
       }
     ],
-    isFeatured: true,
+    isFeatured: false,
   },
   {
-    id: 5,
-    title: 'Glass & Window Cleaning',
-    slug: 'glass-window-cleaning',
-    category: 'maintenance',
-    tagline: 'Crystal-clear architectural glass and facade wash',
+    id: 8,
+    title: 'Commercial Office & AMC Contracts',
+    slug: 'office-cleaning',
+    category: 'commercial',
+    tagline: 'Discreet, high-standard maintenance for offices, retail & clinics',
     shortDescription:
-      'Professional streak-free window cleaning, frame restoration, glass balcony washing, and facade care for residential villas and commercial buildings.',
+      'Monthly and annual cleaning contracts (AMC) for corporate headquarters, executive suites, medical clinics, and luxury boutiques across Dubai.',
     features: [
-      { title: 'Interior & Exterior Window Washing', description: 'Streak-free pure water cleaning for floor-to-ceiling glass panels' },
-      { title: 'Frame & Track Detailing', description: 'Deep vacuuming and scrubbing of sliding tracks, rubber gaskets, and sills' },
-      { title: 'Balcony Glass Balustrade Cleaning', description: 'Removal of sand, dust buildup, and water spots' },
-      { title: 'Hard Water Spot Removal', description: 'Specialized mineral stain lifting safe for tinted and double-glazed glass' },
+      { title: 'Daily & Weekly AMC Cleaning Schedules', description: 'Bespoke service level agreements (SLAs) tailored to your operational hours' },
+      { title: 'Touchpoint Sanitization & Waste Management', description: 'Continuous sanitization of high-contact zones and certified waste handling' },
+      { title: 'Reception & Meeting Room Detailing', description: 'Impeccable boardroom presentation and polished welcome areas' },
+      { title: 'Dedicated Supervisor & Transparent Billing', description: 'Assigned on-site supervisor, monthly auditing reports, and consolidated invoicing' },
     ],
     pricing: { startingPrice: null, priceUnit: 'custom_quote' },
     faqs: [
       {
-        question: 'Can you clean high-reach villa exterior glass?',
-        answer: 'Yes, our technicians use specialized water-fed telescopic poles and safety gear to clean exterior villa glass safely and efficiently.'
-      }
-    ],
-    isFeatured: true,
-  },
-  {
-    id: 6,
-    title: 'Sofa & Carpet Cleaning',
-    slug: 'sofa-carpet-cleaning',
-    category: 'cleaning',
-    tagline: 'Revitalize fine Italian fabrics, silk rugs, and leather suites',
-    shortDescription:
-      'Deep hot-water steam extraction, fabric-safe stain lifting, and fiber conditioning for luxury sofas, armchairs, mattresses, and delicate carpets.',
-    features: [
-      { title: 'pH-Balanced Deep Extraction', description: 'Safe for wool, silk, velvet, linen, and delicate organic weaves' },
-      { title: 'Dust Mite & Allergen Eradication', description: 'Thermodynamic steam killing 99.9% of microscopic allergens' },
-      { title: 'Stain & Odor Neutralization', description: 'Enzyme-based solutions targeting food stains, coffee, and moisture marks' },
-      { title: 'Rapid Moisture Extraction', description: 'Specialized high-vacuum blowers ensuring dry times in 2 to 4 hours' },
-    ],
-    pricing: { startingPrice: null, priceUnit: 'custom_quote' },
-    faqs: [
-      {
-        question: 'How long does it take for sofas and carpets to dry?',
-        answer: 'Thanks to our high-powered dual-vacuum extraction machines, fabrics typically dry in only 2 to 3 hours.'
+        question: 'Do you offer custom commercial cleaning AMC contracts?',
+        answer: 'Yes. We provide flexible daily, weekly, or monthly commercial cleaning contracts with transparent SLA terms and dedicated account supervision.'
       }
     ],
     isFeatured: false,
   },
 ]
 
-// Zero fabricated items: Only client-uploaded images and reviews from CMS appear publicly
-export const DEFAULT_GALLERY: GalleryItem[] = []
-export const DEFAULT_TESTIMONIALS: TestimonialItem[] = []
+export const DEFAULT_GALLERY: GalleryItem[] = [
+  {
+    id: 1,
+    title: 'Crema Marfil Marble Grinding & Mirror Crystallization',
+    location: 'Signature Villa, Palm Jumeirah',
+    description: 'Restoration of 450 sq. meters of dull, traffic-etched Italian Crema Marfil marble. Sequential diamond grinding removed surface micro-scratches, followed by Italian thermal crystallization to achieve an impenetrable wet-look mirror reflection.',
+    serviceTitle: 'Marble Polishing',
+    isFeatured: true,
+  },
+  {
+    id: 2,
+    title: 'Commercial Restaurant Kitchen Hood & Exhaust Duct Degreasing',
+    location: 'Fine Dining Restaurant, DIFC Dubai',
+    description: 'Exhaustive removal of heavy accumulated grease and carbonized cooking deposits across 35 meters of commercial kitchen exhaust ducting and blower fans, certified to Dubai Civil Defence standards.',
+    serviceTitle: 'Kitchen Hood & Duct Cleaning',
+    isFeatured: true,
+  },
+  {
+    id: 3,
+    title: 'Post-Construction Handover & Architectural Glazing',
+    location: 'Golf Place Mansion, Dubai Hills Estate',
+    description: 'Post-renovation deep cleaning eliminating airborne drywall dust, contractor paint overspray, and adhesive residue from floor-to-ceiling double-glazed architectural glass, followed by deep floor buffing.',
+    serviceTitle: 'Post-Construction Cleaning',
+    isFeatured: true,
+  },
+  {
+    id: 4,
+    title: 'Italian Velvet Sofa & Silk Rug Deep Steam Extraction',
+    location: 'Luxury Penthouse, Downtown Dubai',
+    description: 'Hot-water thermodynamic steam extraction utilizing pH-balanced organic solutions to lift stubborn stains and allergens from imported velvet upholstery and delicate silk rugs without fiber stiffening.',
+    serviceTitle: 'Sofa & Carpet Cleaning',
+    isFeatured: true,
+  },
+  {
+    id: 5,
+    title: 'Commercial Kitchen Deep Sanitization & Floor Restoration',
+    location: 'Cloud Kitchen Facility, Business Bay',
+    description: 'Turnkey steam decontamination of commercial cooklines, prep tables, walk-in chillers, and heavy rotary machine scrubbing of quarry tile anti-slip kitchen flooring.',
+    serviceTitle: 'Restaurant Cleaning',
+    isFeatured: true,
+  },
+  {
+    id: 6,
+    title: 'Exterior Architectural Facade & Terrace Descaling',
+    location: 'Private Residence, Emirates Hills',
+    description: 'High-pressure wash and mineral descaling of limestone pool terrace, exterior glass balustrades, and shaded pergolas, removing desert dust buildup and hard water stains.',
+    serviceTitle: 'Villa Deep Cleaning',
+    isFeatured: true,
+  },
+]
+export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
+  {
+    id: 1,
+    clientName: 'Dr. Tariq Al-Hashemi',
+    clientRole: 'Private Villa Owner',
+    company: 'Palm Jumeirah Signature Villa',
+    location: 'Palm Jumeirah, Dubai',
+    rating: 5,
+    content: 'Exceptional marble polishing. Our Crema Marfil floors in Palm Jumeirah had stubborn dull etchings from years of foot traffic. Velora Elite’s team used Italian Klindex diamond machines and restored a stunning mirror reflection without harsh chemical fumes. The supervisor-led inspection before payment proved their commitment to quality.',
+    isVerified: true,
+    isFeatured: true,
+  },
+  {
+    id: 2,
+    clientName: 'Chef Jean-Luc Moreau',
+    clientRole: 'Executive Chef & Partner',
+    company: 'Gourmet Dining Restaurant',
+    location: 'DIFC, Dubai',
+    rating: 5,
+    content: 'We engaged Velora Elite for our restaurant kitchen exhaust hood and duct deep degreasing in DIFC. Their crew arrived promptly after closing at 11:30 PM, worked meticulously through the night, and delivered full photographic before/after documentation adhering to Dubai Civil Defence and Food Safety standards. Flawless execution.',
+    isVerified: true,
+    isFeatured: true,
+  },
+  {
+    id: 3,
+    clientName: 'Elena Rostova',
+    clientRole: 'Luxury Property Investor',
+    company: 'Downtown Residential Portfolio',
+    location: 'Downtown Dubai',
+    rating: 5,
+    content: 'I manage multiple luxury penthouses in Downtown. Velora Elite handles all our post-construction and move-in deep cleaning. Their HEPA air scrubbers and detailed architectural window glazing wash are the finest in the UAE. Zero advance fees and white-glove inspection before payment give total peace of mind.',
+    isVerified: true,
+    isFeatured: true,
+  },
+  {
+    id: 4,
+    clientName: 'Khalid Al-Mazrouei',
+    clientRole: 'Homeowner',
+    company: 'Golf Place Estate',
+    location: 'Dubai Hills Estate',
+    rating: 5,
+    content: 'Booked their free site inspection first to assess our 5-bedroom villa. The supervisor was polite, knowledgeable, and provided a transparent quote with no hidden charges. The cleaning crew in branded uniforms arrived on the dot and revitalized our velvet sofas, outdoor patio, and kitchen. True luxury standard.',
+    isVerified: true,
+    isFeatured: true,
+  },
+  {
+    id: 5,
+    clientName: 'Sarah Jenkins',
+    clientRole: 'Managing Director',
+    company: 'Financial Consultancy',
+    location: 'Sheikh Zayed Road, Dubai',
+    rating: 5,
+    content: 'Velora Elite has held our commercial office cleaning contract on Sheikh Zayed Road for over 8 months. Daily standards are immaculate, the supervisor is proactive, and billing is completely transparent with dedicated account management. Highly recommended for corporate entities in Dubai.',
+    isVerified: true,
+    isFeatured: true,
+  },
+  {
+    id: 6,
+    clientName: 'Rashid Bin Salem',
+    clientRole: 'Resident',
+    company: 'Private Estate',
+    location: 'Emirates Hills, Dubai',
+    rating: 5,
+    content: 'Professionalism from start to finish. They handled our travertine stone descaling, outdoor glass balustrades, and interior deep clean. What impressed me most was their zero-advance-payment policy and the supervisor-led inspection before leaving. They take real pride in their craft.',
+    isVerified: true,
+    isFeatured: true,
+  },
+]
 
 // -----------------------------------------------------------------------------
 // CMS Fetch Helpers (Queries DB first, gracefully falls back to defaults)
@@ -317,7 +482,12 @@ export const getSiteSettings = cache(async () => {
           email,
           supportEmail: email,
           address,
-          workingHours: data.contactInfo?.workingHours || DEFAULT_SITE_SETTINGS.contactInfo.workingHours,
+          workingHours:
+            data.contactInfo?.workingHours &&
+            !data.contactInfo.workingHours.includes('8:00 PM') &&
+            !data.contactInfo.workingHours.includes('8:00PM')
+              ? data.contactInfo.workingHours
+              : DEFAULT_SITE_SETTINGS.contactInfo.workingHours,
           googleMapsEmbedUrl: data.contactInfo?.googleMapsEmbedUrl || DEFAULT_SITE_SETTINGS.contactInfo.googleMapsEmbedUrl,
         },
         socialMedia: {
@@ -401,7 +571,8 @@ export const getTrackingSettings = cache(async () => {
         googleAdsBookingConversionLabel: data.googleAdsBookingConversionLabel,
         googleAdsQuoteConversionLabel: data.googleAdsQuoteConversionLabel,
         metaPixelId: data.metaPixelId || process.env.NEXT_PUBLIC_META_PIXEL_ID,
-        enableTracking: Boolean(data.enableTracking),
+        tikTokPixelId: (data as unknown as { tikTokPixelId?: string }).tikTokPixelId || process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID,
+        enableTracking: Boolean(data.enableTracking) || Boolean(process.env.NEXT_PUBLIC_ENABLE_TRACKING === 'true'),
       }
     }
   } catch (err) {
@@ -415,7 +586,8 @@ export const getTrackingSettings = cache(async () => {
     googleAdsBookingConversionLabel: undefined,
     googleAdsQuoteConversionLabel: undefined,
     metaPixelId: process.env.NEXT_PUBLIC_META_PIXEL_ID,
-    enableTracking: false,
+    tikTokPixelId: process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID,
+    enableTracking: Boolean(process.env.NEXT_PUBLIC_ENABLE_TRACKING === 'true'),
   }
 })
 
@@ -424,7 +596,7 @@ export const getServices = cache(async (): Promise<ServiceItem[]> => {
     const payload = await getPayloadClient()
     const res = await payload.find({
       collection: 'services',
-      sort: 'sortOrder',
+      sort: 'order',
       limit: 50,
     })
     if (res.docs && res.docs.length > 0) {

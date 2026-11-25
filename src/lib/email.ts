@@ -22,7 +22,7 @@ export interface BookingEmailData {
 export interface QuoteEmailData {
   id: number | string
   fullName: string
-  email: string
+  email?: string
   phone: string
   serviceTitle?: string
   propertyType: string
@@ -540,6 +540,10 @@ export async function sendCustomerQuoteAcknowledgement(data: QuoteEmailData): Pr
       </p>
     `,
   })
+
+  if (!data.email || !isValidEmail(data.email)) {
+    return { sent: false, error: 'No valid customer email provided (optional field)' }
+  }
 
   return sendEmail({
     to: data.email,

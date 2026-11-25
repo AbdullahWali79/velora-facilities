@@ -114,7 +114,7 @@ export default async function AboutPage() {
               <h3 className="text-xl font-bold">Licensed & Compliant UAE Operations</h3>
             </div>
             <p className="text-sm text-slate-300 leading-relaxed">
-              VELORA ELITE TECHNICAL SERVICES L.L.C. (م.م.ذ فيلورا إيليت للخدمات الفنية ش.ذ.م.م) is an officially licensed Dubai commercial technical entity operating from Office 4301F, Aspin Commercial Tower, Sheikh Zayed Road, Dubai.
+              VELORA ELITE TECHNICAL SERVICES L.L.C. is an officially licensed Dubai commercial technical entity operating from Office 4301F, Aspin Commercial Tower, Sheikh Zayed Road, Dubai.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2 text-center text-xs">
               <div className="p-3 rounded-xl bg-slate-900 border border-amber-500/20 font-semibold text-amber-200">
@@ -139,10 +139,10 @@ export default async function AboutPage() {
             </h3>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href="/book"
+                href="/book?type=inspection"
                 className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-md transition-all hover:scale-[1.02]"
               >
-                Book an Appointment
+                Book a Free Inspection
               </Link>
               <Link
                 href="/services"

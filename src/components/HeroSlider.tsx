@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRightIcon, ShieldCheckIcon, SparklesIcon, CheckCircleIcon } from './Icons'
+import { trackInspectionClick } from '@/lib/tracking'
 
 interface BannerSlide {
   badge?: string | null
@@ -68,11 +69,12 @@ export function HeroSlider({ banners, trustBadges, stats }: HeroSliderProps) {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
               <Link
-                href={slide?.primaryCtaUrl || '/book'}
+                href={slide?.primaryCtaUrl || '/book?type=inspection'}
+                onClick={() => trackInspectionClick('hero_primary')}
                 className="relative group overflow-hidden inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-xl shadow-amber-500/25 transition-all hover:scale-[1.03] active:scale-[0.98]"
               >
                 <span className="absolute inset-0 shimmer-gold opacity-40 pointer-events-none group-hover:opacity-75 transition-opacity" />
-                <span className="relative z-10">{slide?.primaryCtaText || 'Book a Service'}</span>
+                <span className="relative z-10">{slide?.primaryCtaText || 'Book a Free Inspection'}</span>
                 <ArrowRightIcon className="w-4 h-4 relative z-10 transition-transform group-hover:translate-x-1" />
               </Link>
 
@@ -88,15 +90,15 @@ export function HeroSlider({ banners, trustBadges, stats }: HeroSliderProps) {
             <div className="pt-2 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-slate-300">
               <div className="flex items-center gap-1.5">
                 <CheckCircleIcon className="w-4 h-4 text-amber-400" />
-                <span>Licensed Dubai Technical Staff</span>
+                <span>Uniformed & Vetted Cleaning Specialists</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircleIcon className="w-4 h-4 text-amber-400" />
-                <span>Eco-Friendly Luxury Care</span>
+                <span>Hospital-Grade Eco Solutions</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircleIcon className="w-4 h-4 text-amber-400" />
-                <span>Transparent Rates · No Hidden Fees</span>
+                <span>Free On-Site Inspection (0 AED)</span>
               </div>
             </div>
 

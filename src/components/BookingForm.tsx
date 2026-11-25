@@ -2,7 +2,8 @@
 
 import React, { useActionState, useEffect, useState } from 'react'
 import { submitBookingRequest, BookingFormState } from '@/app/actions/booking'
-import { CheckCircleIcon, ShieldCheckIcon, ClockIcon } from './Icons'
+import { CheckCircleIcon, ShieldCheckIcon, ClockIcon, SparklesIcon, WhatsAppIcon } from './Icons'
+import { trackBookingSubmission, trackWhatsAppClick } from '@/lib/tracking'
 
 interface BookingFormProps {
   services: Array<{
@@ -11,6 +12,7 @@ interface BookingFormProps {
     slug: string
   }>
   initialServiceSlug?: string
+  isInspection?: boolean
 }
 
 const initialState: BookingFormState = {
@@ -18,7 +20,7 @@ const initialState: BookingFormState = {
   message: '',
 }
 
-export function BookingForm({ services, initialServiceSlug }: BookingFormProps) {
+export function BookingForm({ services, initialServiceSlug, isInspection }: BookingFormProps) {
   const [state, formAction, isPending] = useActionState(submitBookingRequest, initialState)
   const [renderedAt, setRenderedAt] = useState<number>(0)
 
@@ -26,8 +28,28 @@ export function BookingForm({ services, initialServiceSlug }: BookingFormProps) 
     setRenderedAt(Date.now())
   }, [])
 
+  useEffect(() => {
+    if (state.success) {
+      trackBookingSubmission(state.referenceId, isInspection ? 'Free Site Inspection' : initialServiceSlug)
+    }
+  }, [state.success, state.referenceId, isInspection, initialServiceSlug])
+
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl p-8 sm:p-10">
+    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl p-8 sm:p-10 relative overflow-hidden">
+      {/* Top Gold Border Accent */}
+      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-600" />
+
+      {/* Free Inspection Callout Badge */}
+      {isInspection && (
+        <div className="mb-6 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
+          <SparklesIcon className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div className="text-xs text-amber-950">
+            <span className="font-bold text-sm block mb-0.5 text-amber-900">Complimentary Site Inspection (0 AED)</span>
+            A senior Velora Elite supervisor will visit your villa or commercial property in Dubai to inspect marble condition, duct layouts, or post-construction scope before presenting a firm proposal.
+          </div>
+        </div>
+      )}
+
       {/* Informational Banner on Manual Confirmation */}
       <div className="mb-8 p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 flex items-start gap-3">
         <ClockIcon className="w-5 h-5 text-amber-700 flex-shrink-0 mt-0.5" />
@@ -52,6 +74,23 @@ export function BookingForm({ services, initialServiceSlug }: BookingFormProps) 
               Booking Reference: #{state.referenceId}
             </div>
           )}
+          <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 max-w-md mx-auto space-y-2">
+            <p className="text-xs font-semibold">
+              Want immediate dispatch confirmation?
+            </p>
+            <a
+              href={`https://wa.me/971556751854?text=${encodeURIComponent(
+                `Hello Velora Elite, I just submitted Booking Request #${state.referenceId}. Could you please confirm technician availability?`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackWhatsAppClick('booking_success_banner')}
+              className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl font-bold text-xs text-white bg-emerald-600 hover:bg-emerald-700 transition-colors"
+            >
+              <WhatsAppIcon className="w-4 h-4 fill-current" />
+              <span>Confirm via WhatsApp Now</span>
+            </a>
+          </div>
           <div className="pt-4">
             <button
               onClick={() => window.location.reload()}
@@ -194,8 +233,8 @@ export function BookingForm({ services, initialServiceSlug }: BookingFormProps) 
                 className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm bg-white"
               >
                 <option value="morning_08_12">Morning (08:00 AM – 12:00 PM)</option>
-                <option value="afternoon_12_16">Afternoon (12:00 PM – 04:00 PM)</option>
-                <option value="evening_16_20">Evening (04:00 PM – 08:00 PM)</option>
+                <option value="afternoon_12_16">Afternoon (12:00 PM – 03:00 PM)</option>
+                <option value="evening_16_20">Late Afternoon (03:00 PM – 06:00 PM)</option>
                 <option value="flexible">Flexible / Any Available Time</option>
               </select>
             </div>

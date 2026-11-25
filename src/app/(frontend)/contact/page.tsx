@@ -22,7 +22,7 @@ export default async function ContactPage() {
   const whatsappHref = `https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}`
   const email = settings.contactInfo.email || 'info@veloraelite.ae'
   const address = settings.contactInfo.address || 'Office 4301F, Aspin Commercial Tower, 106 Sheikh Zayed Rd, Trade Center First, Dubai, UAE'
-  const workingHours = settings.contactInfo.workingHours || 'Monday – Saturday: 8:00 AM – 8:00 PM'
+  const workingHours = settings.contactInfo.workingHours || 'Monday – Saturday: 8:00 AM – 6:00 PM'
   const mapUrl =
     settings.contactInfo.googleMapsEmbedUrl ||
     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.1786221193375!2d55.2721867!3d25.2157522!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f428ce0a9f5c1%3A0x6b4cf99863c33dc6!2sAspin%20Commercial%20Tower!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae'

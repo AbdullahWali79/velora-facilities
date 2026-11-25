@@ -8,18 +8,19 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 interface PageProps {
-  searchParams: Promise<{ service?: string }>
+  searchParams: Promise<{ service?: string; type?: string }>
 }
 
 export const metadata: Metadata = {
-  title: 'Book Online — Luxury Cleaning & Technical Services Dubai',
+  title: 'Book a Free Inspection & Service Appointment — Velora Elite Dubai',
   description:
-    'Schedule your elite cleaning, deep cleaning, or villa care appointment online. Manual phone and WhatsApp confirmation by Velora Elite.',
+    'Schedule your elite villa cleaning, marble polishing, or book a complimentary site inspection in Dubai. Zero advance payment with Velora Elite.',
 }
 
 export default async function BookOnlinePage({ searchParams }: PageProps) {
-  const { service: initialServiceSlug } = await searchParams
+  const { service: initialServiceSlug, type } = await searchParams
   const services = await getServices()
+  const isInspection = type === 'inspection'
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -29,15 +30,17 @@ export default async function BookOnlinePage({ searchParams }: PageProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10 space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30">
             <SparklesIcon className="w-3.5 h-3.5 text-amber-400" />
-            <span>Punctual Dubai Scheduling</span>
+            <span>{isInspection ? 'Complimentary On-Site Assessment' : 'Punctual Dubai Scheduling'}</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight max-w-3xl leading-tight">
-            Schedule a Service Appointment
+            {isInspection ? 'Book a Free Site Inspection' : 'Schedule a Service Appointment'}
           </h1>
 
           <p className="text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed">
-            Select your service, preferred appointment date, and time slot. Our Velora Elite scheduling coordinator will manually confirm your technician team.
+            {isInspection
+              ? 'Request a complimentary, zero-obligation site inspection in Dubai. Our technical supervisor will inspect your property, diagnose surfaces or ductwork, and provide an exact quotation.'
+              : 'Select your service, preferred appointment date, and time slot. Our Velora Elite scheduling coordinator will manually confirm your technician team.'}
           </p>
         </div>
       </section>
@@ -118,6 +121,7 @@ export default async function BookOnlinePage({ searchParams }: PageProps) {
               <BookingForm
                 services={services}
                 initialServiceSlug={initialServiceSlug}
+                isInspection={isInspection}
               />
             </div>
           </div>

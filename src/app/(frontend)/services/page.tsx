@@ -9,17 +9,17 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: 'Services Catalog — Luxury Cleaning & Technical Services Dubai',
+  title: 'Services Catalog — Luxury Cleaning & Surface Care Dubai',
   description:
-    'Explore our official service offerings: Home & Villa Cleaning, Deep Cleaning, Office Cleaning, Move-In/Out Cleaning, Glass & Window Cleaning, and Sofa & Carpet Care.',
+    'Explore our specialized cleaning portfolio: Marble Polishing, Kitchen Hood & Duct Cleaning, Restaurant Cleaning, Post-Construction Cleaning, Luxury Villa Deep Cleaning, and Commercial Contracts.',
 }
 
 export default async function ServicesPage() {
   const [services, siteSettings] = await Promise.all([getServices(), getSiteSettings()])
 
   const cleaningServices = services.filter((s) => s.category === 'cleaning')
-  const maintenanceServices = services.filter((s) => s.category === 'maintenance')
   const commercialServices = services.filter((s) => s.category === 'commercial')
+  const maintenanceServices = services.filter((s) => s.category === 'maintenance')
 
   const phoneHref = siteSettings.contactInfo.phonePrimary
     ? `tel:${siteSettings.contactInfo.phonePrimary.replace(/[^0-9+]/g, '')}`
@@ -37,19 +37,19 @@ export default async function ServicesPage() {
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight max-w-3xl leading-tight">
-            Specialized Cleaning & Technical Services
+            Specialized Luxury Cleaning & Surface Care
           </h1>
 
           <p className="text-lg text-slate-300 max-w-2xl leading-relaxed">
-            A Higher Standard of Clean for luxury villas, residential communities, and executive corporate offices across Dubai.
+            A Higher Standard of Clean for luxury villas, penthouses, commercial kitchens, and corporate spaces across Dubai.
           </p>
 
           <div className="flex flex-wrap gap-4 pt-2">
             <Link
-              href="/book"
+              href="/book?type=inspection"
               className="px-7 py-3.5 rounded-xl font-bold text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-md transition-all hover:scale-[1.02]"
             >
-              Book Any Service
+              Book a Free Inspection
             </Link>
             <Link
               href="/quote"
@@ -64,7 +64,7 @@ export default async function ServicesPage() {
       {/* Services List by Categories */}
       <div className="py-20 bg-slate-50 space-y-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-16">
-          {/* Cleaning Category */}
+          {/* Specialized Cleaning Category */}
           {cleaningServices.length > 0 && (
             <div className="space-y-8">
               <div className="border-b border-slate-200 pb-4">
@@ -72,10 +72,10 @@ export default async function ServicesPage() {
                   Category 01
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                  Residential & Villa Deep Cleaning
+                  Specialized Surface & Residential Deep Cleaning
                 </h2>
                 <p className="text-sm text-slate-600 mt-1">
-                  Intensive steam cleaning, deep sanitization, and surface revitalization for villas and luxury apartments.
+                  Diamond marble restoration, post-construction handover, kitchen exhaust hood degreasing, and luxury villa deep cleaning.
                 </p>
               </div>
 
@@ -87,46 +87,46 @@ export default async function ServicesPage() {
             </div>
           )}
 
-          {/* Maintenance Category */}
-          {maintenanceServices.length > 0 && (
+          {/* Commercial & Contract Cleaning Category */}
+          {commercialServices.length > 0 && (
             <div className="space-y-8">
               <div className="border-b border-slate-200 pb-4">
                 <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
                   Category 02
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                  Commercial & Technical MEP Maintenance
+                  Commercial & Contract Facility Care
                 </h2>
                 <p className="text-sm text-slate-600 mt-1">
-                  Comprehensive office sanitization, retail care, and certified building technical maintenance.
+                  Monthly and annual commercial cleaning contracts (AMC) for corporate headquarters, medical clinics, and retail venues.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {maintenanceServices.map((service, idx) => (
+                {commercialServices.map((service, idx) => (
                   <ServiceCard key={service.id || idx} service={service as unknown as ServiceItem} />
                 ))}
               </div>
             </div>
           )}
 
-          {/* Commercial / Specialized Category */}
-          {commercialServices.length > 0 && (
+          {/* Maintenance & Care Category */}
+          {maintenanceServices.length > 0 && (
             <div className="space-y-8">
               <div className="border-b border-slate-200 pb-4">
                 <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
                   Category 03
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                  Specialized Surface & Move-In Solutions
+                  Specialized Architectural Care
                 </h2>
                 <p className="text-sm text-slate-600 mt-1">
-                  End of tenancy turnkey sanitization, crystal-clear facade glazing, and bespoke upholstery care.
+                  Streak-free pure water window washing, glass balustrades, and architectural facade maintenance.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {commercialServices.map((service, idx) => (
+                {maintenanceServices.map((service, idx) => (
                   <ServiceCard key={service.id || idx} service={service as unknown as ServiceItem} />
                 ))}
               </div>

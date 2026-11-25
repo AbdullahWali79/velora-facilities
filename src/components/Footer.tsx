@@ -49,7 +49,7 @@ export function Footer({ settings, footerData }: FooterProps) {
   const whatsapp = settings.contactInfo.whatsappNumber || '+971 55 675 1854'
   const email = settings.contactInfo.email || 'info@veloraelite.ae'
   const address = settings.contactInfo.address || 'Office 4301F, Aspin Commercial Tower, 106 Sheikh Zayed Rd, Trade Center First, Dubai, UAE'
-  const workingHours = settings.contactInfo.workingHours || 'Monday – Saturday: 8:00 AM – 8:00 PM'
+  const workingHours = settings.contactInfo.workingHours || 'Monday – Saturday: 8:00 AM – 6:00 PM'
   const license = settings.tradeLicense
 
   const columns = footerData.columns || []
@@ -211,7 +211,16 @@ export function Footer({ settings, footerData }: FooterProps) {
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>{copyright}</p>
-          <div className="flex flex-wrap items-center gap-6 sm:pr-20">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+            <Link href="/privacy-policy" className="hover:text-amber-400 transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms-and-conditions" className="hover:text-amber-400 transition-colors">
+              Booking Terms
+            </Link>
+            <Link href="/cancellation-policy" className="hover:text-amber-400 transition-colors">
+              Cancellation Policy
+            </Link>
             <Link href="/about" className="hover:text-amber-400 transition-colors">
               About
             </Link>
@@ -221,17 +230,14 @@ export function Footer({ settings, footerData }: FooterProps) {
             <Link href="/quote" className="hover:text-amber-400 transition-colors">
               Quote
             </Link>
-            <Link href="/book" className="hover:text-amber-400 transition-colors">
-              Book
-            </Link>
-            <Link href="/contact" className="hover:text-amber-400 transition-colors">
-              Contact
+            <Link href="/book?type=inspection" className="hover:text-amber-400 transition-colors font-semibold text-amber-300">
+              Free Inspection
             </Link>
             <Link
               href="/admin"
               className="px-2.5 py-1 rounded-md bg-slate-900 border border-amber-500/30 text-amber-400 hover:text-white hover:border-amber-400 transition-all font-semibold"
             >
-              Admin Login
+              Admin
             </Link>
           </div>
         </div>

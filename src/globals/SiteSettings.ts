@@ -67,7 +67,7 @@ export const SiteSettings: GlobalConfig = {
         {
           name: 'workingHours',
           type: 'text',
-          defaultValue: 'Monday – Saturday: 8:00 AM – 8:00 PM | Sunday: On-Call Emergency',
+          defaultValue: 'Monday – Saturday: 8:00 AM – 6:00 PM | Sunday: Closed / Commercial Appointments',
         },
         {
           name: 'googleMapsEmbedUrl',

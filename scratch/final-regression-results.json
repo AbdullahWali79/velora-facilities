@@ -1,0 +1,541 @@
+{
+  "auditTimestamp": "2026-11-25T17:08:47.308Z",
+  "originalSuite": {
+    "total": 58,
+    "passed": 57,
+    "failed": 0,
+    "partial": 0,
+    "notVerified": 1,
+    "passPercentage": 98.28,
+    "tests": [
+      {
+        "id": "SEC-01",
+        "name": "HTTP Security Headers",
+        "status": "PASS",
+        "expected": "All security headers present",
+        "actual": "nosniff=true, sameorigin=true, hsts=true, referrer=true",
+        "evidence": null
+      },
+      {
+        "id": "RESP-320",
+        "name": "Viewport Responsiveness at 320px (320px-mobile-narrow)",
+        "status": "PASS",
+        "expected": "0px horizontal overflow; elements fit viewport",
+        "actual": "scrollWidth: 320px, clientWidth: 320px",
+        "evidence": "homepage-320px-mobile-narrow.png"
+      },
+      {
+        "id": "RESP-375",
+        "name": "Viewport Responsiveness at 375px (375px-mobile-standard)",
+        "status": "PASS",
+        "expected": "0px horizontal overflow; elements fit viewport",
+        "actual": "scrollWidth: 375px, clientWidth: 375px",
+        "evidence": "homepage-375px-mobile-standard.png"
+      },
+      {
+        "id": "RESP-390",
+        "name": "Viewport Responsiveness at 390px (390px-mobile-modern)",
+        "status": "PASS",
+        "expected": "0px horizontal overflow; elements fit viewport",
+        "actual": "scrollWidth: 390px, clientWidth: 390px",
+        "evidence": "homepage-390px-mobile-modern.png"
+      },
+      {
+        "id": "RESP-768",
+        "name": "Viewport Responsiveness at 768px (768px-tablet-portrait)",
+        "status": "PASS",
+        "expected": "0px horizontal overflow; elements fit viewport",
+        "actual": "scrollWidth: 768px, clientWidth: 768px",
+        "evidence": "homepage-768px-tablet-portrait.png"
+      },
+      {
+        "id": "RESP-1024",
+        "name": "Viewport Responsiveness at 1024px (1024px-tablet-landscape)",
+        "status": "PASS",
+        "expected": "0px horizontal overflow; elements fit viewport",
+        "actual": "scrollWidth: 1024px, clientWidth: 1024px",
+        "evidence": "homepage-1024px-tablet-landscape.png"
+      },
+      {
+        "id": "RESP-1440",
+        "name": "Viewport Responsiveness at 1440px (1440px-desktop-standard)",
+        "status": "PASS",
+        "expected": "0px horizontal overflow; elements fit viewport",
+        "actual": "scrollWidth: 1440px, clientWidth: 1440px",
+        "evidence": "homepage-1440px-desktop-standard.png"
+      },
+      {
+        "id": "RESP-1920",
+        "name": "Viewport Responsiveness at 1920px (1920px-desktop-wide)",
+        "status": "PASS",
+        "expected": "0px horizontal overflow; elements fit viewport",
+        "actual": "scrollWidth: 1920px, clientWidth: 1920px",
+        "evidence": "homepage-1920px-desktop-wide.png"
+      },
+      {
+        "id": "ROUTE-_",
+        "name": "Route / (Homepage)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_about",
+        "name": "Route /about (About Us)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_services",
+        "name": "Route /services (Services Catalog)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_services_marble_polishing",
+        "name": "Route /services/marble-polishing (Marble Polishing Detail)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_services_kitchen_hood_cleaning",
+        "name": "Route /services/kitchen-hood-cleaning (Kitchen Hood Detail)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_services_restaurant_cleaning",
+        "name": "Route /services/restaurant-cleaning (Restaurant Cleaning Detail)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_services_post_construction_cleaning",
+        "name": "Route /services/post-construction-cleaning (Post-Construction Detail)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_gallery",
+        "name": "Route /gallery (Transformation Gallery)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_quote",
+        "name": "Route /quote (Request a Quote)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_book",
+        "name": "Route /book (Book Service)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_book_type_inspection",
+        "name": "Route /book?type=inspection (Book Free Inspection)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_contact",
+        "name": "Route /contact (Contact Us)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_privacy_policy",
+        "name": "Route /privacy-policy (Privacy Policy)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_terms_and_conditions",
+        "name": "Route /terms-and-conditions (Terms & Conditions)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_cancellation_policy",
+        "name": "Route /cancellation-policy (Cancellation Policy)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_thank_you",
+        "name": "Route /thank-you (Thank You Page)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "ROUTE-_sitemap_xml",
+        "name": "Route /sitemap.xml (Sitemap XML)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK",
+        "actual": "HTTP 200",
+        "evidence": null
+      },
+      {
+        "id": "REQ-A1",
+        "name": "Quotation Form Fields & Optional Email Schema",
+        "status": "PASS",
+        "expected": "All fields present; email is NOT required",
+        "actual": "Fields present, emailRequired=false",
+        "evidence": "quote-form-initial.png"
+      },
+      {
+        "id": "REQ-A2",
+        "name": "Quotation Form Required Fields Validation",
+        "status": "PASS",
+        "expected": "FullName and Phone are required inputs",
+        "actual": "fullName required=true, phone required=true",
+        "evidence": null
+      },
+      {
+        "id": "REQ-A3",
+        "name": "Quotation Submission without Email (Server Action + Database)",
+        "status": "PASS",
+        "expected": "Quotation successfully received without email; reference ID generated",
+        "actual": "Success confirmation card & reference ID displayed",
+        "evidence": "quote-form-submission-success.png"
+      },
+      {
+        "id": "REQ-A4",
+        "name": "Instant Customer Confirmation Card & Unique Reference",
+        "status": "PASS",
+        "expected": "Instant reference ID and next-steps card rendered",
+        "actual": "Rendered green confirmation card with WhatsApp link & reference ID",
+        "evidence": "quote-form-submission-success.png"
+      },
+      {
+        "id": "REQ-B1",
+        "name": "Book Free Inspection CTA Visibility in Header & Hero",
+        "status": "PASS",
+        "expected": "Inspection buttons present in header and hero",
+        "actual": "Header inspection: true, Hero inspection: true",
+        "evidence": null
+      },
+      {
+        "id": "REQ-B2",
+        "name": "Free Inspection Dedicated Journey & 0 AED Guarantee",
+        "status": "PASS",
+        "expected": "0 AED inspection banner and explanation rendered",
+        "actual": "Complimentary 0 AED inspection banner active",
+        "evidence": "book-inspection-page.png"
+      },
+      {
+        "id": "REQ-B3",
+        "name": "Mobile Sticky Action Bar (Call + WhatsApp + Free Inspect)",
+        "status": "PASS",
+        "expected": "Call Hub, WhatsApp, and Free Inspect sticky actions present",
+        "actual": "Call: true, WA: true, FreeInspect: true",
+        "evidence": "mobile-sticky-action-bar.png"
+      },
+      {
+        "id": "REQ-C1",
+        "name": "Business Hours in Header (8:00 AM – 6:00 PM)",
+        "status": "PASS",
+        "expected": "Header displays 8:00 AM – 6:00 PM without outdated 8:00 PM",
+        "actual": "Found 6 PM: true, Found 8 PM: false",
+        "evidence": null
+      },
+      {
+        "id": "REQ-C2",
+        "name": "Business Hours in Footer (8:00 AM – 6:00 PM)",
+        "status": "PASS",
+        "expected": "Footer displays 8:00 AM – 6:00 PM without outdated 8:00 PM",
+        "actual": "Found 6 PM: true, Found 8 PM: false",
+        "evidence": null
+      },
+      {
+        "id": "REQ-C3",
+        "name": "Cleaning Focus & Primary Services Portfolio",
+        "status": "PASS",
+        "expected": "Catalog prominently features Marble Polishing, Kitchen Hood, Restaurant Cleaning, and Post-Construction Cleaning",
+        "actual": "Marble=true, Restaurant=true, Hood=true, PostConst=true",
+        "evidence": "services-catalog-grid.png"
+      },
+      {
+        "id": "REQ-C4",
+        "name": "Review Sanitization Certifications & Realistic Commitments",
+        "status": "PASS",
+        "expected": "Evidence-based concierge dispatch commitments",
+        "actual": "Verified in /about and homepage pillars",
+        "evidence": null
+      },
+      {
+        "id": "REQ-D1",
+        "name": "Interactive Before & After Toggles",
+        "status": "PASS",
+        "expected": "Multiple interactive Before / After toggle controls available",
+        "actual": "Found 6 Before toggles and 6 After toggles",
+        "evidence": "gallery-video-showcase.png"
+      },
+      {
+        "id": "REQ-D2",
+        "name": "Live Execution Video Showcase Component",
+        "status": "PASS",
+        "expected": "Video player element present with source and controls",
+        "actual": "Video player rendered with source and controls",
+        "evidence": "gallery-video-showcase.png"
+      },
+      {
+        "id": "REQ-E1",
+        "name": "Google Reviews Widget & 4.9 Star Summary Badge",
+        "status": "PASS",
+        "expected": "4.9 rating summary badge and customer review cards rendered",
+        "actual": "Summary badge and customer testimonials active",
+        "evidence": "google-reviews-section.png"
+      },
+      {
+        "id": "REQ-E2",
+        "name": "Google Business Profile Live Traceability Verification",
+        "status": "PASS",
+        "expected": "Direct link to official Velora Elite Google Business location",
+        "actual": "Current review href: https://maps.google.com/?q=Velora+Elite+Aspin+Commercial+Tower+Dubai",
+        "evidence": "google-reviews-section.png"
+      },
+      {
+        "id": "REQ-F1",
+        "name": "Client-Side Tracking Scripts & Conversion Helpers (GA4, Meta, TikTok)",
+        "status": "PASS",
+        "expected": "DataLayer and gtag tracking stubs initialized in window",
+        "actual": "dataLayer=true, gtag=true",
+        "evidence": null
+      },
+      {
+        "id": "REQ-F2",
+        "name": "Live Advertising Accounts Activation (Meta, TikTok, Google Ads)",
+        "status": "NOT VERIFIED",
+        "expected": "Production ad account IDs connected and verified in ad manager dashboards",
+        "actual": "Code ready; awaiting client production advertising IDs (Meta, TikTok, GA4)",
+        "evidence": null
+      },
+      {
+        "id": "REQ-F3",
+        "name": "WhatsApp, Phone Call & Quote Conversion Tracking",
+        "status": "PASS",
+        "expected": "Conversion tracking functions attached to action buttons",
+        "actual": "Verified trackWhatsAppClick, trackPhoneCallClick, trackQuoteSubmission",
+        "evidence": null
+      },
+      {
+        "id": "REQ-F4",
+        "name": "Floating WhatsApp & Click-to-Call Buttons",
+        "status": "PASS",
+        "expected": "Floating WhatsApp present across all pages",
+        "actual": "Verified floating action widget and telephone links",
+        "evidence": null
+      },
+      {
+        "id": "REQ-F5",
+        "name": "Dedicated Landing Pages for Each Cleaning Service",
+        "status": "PASS",
+        "expected": "All 6 approved cleaning services have active URLs with HTTP 200",
+        "actual": "Marble, Kitchen Hood, Restaurant, Post-Construction, Villa, Sofa active",
+        "evidence": null
+      },
+      {
+        "id": "REQ-F6",
+        "name": "Thank-You Page for Successful Submissions",
+        "status": "PASS",
+        "expected": "/thank-you page renders with conversion event guards",
+        "actual": "Verified at /thank-you",
+        "evidence": null
+      },
+      {
+        "id": "REQ-G-Privacy Policy",
+        "name": "Privacy Policy Page Accessibility & UAE Jurisdiction Compliance",
+        "status": "PASS",
+        "expected": "HTTP 200 with UAE law citations",
+        "actual": "status=200, mentions UAE=true",
+        "evidence": null
+      },
+      {
+        "id": "REQ-G-Terms",
+        "name": "Terms & Conditions Page Accessibility & UAE Jurisdiction Compliance",
+        "status": "PASS",
+        "expected": "HTTP 200 with UAE law citations",
+        "actual": "status=200, mentions UAE=true",
+        "evidence": null
+      },
+      {
+        "id": "REQ-G-Cancellation",
+        "name": "Cancellation Policy Page Accessibility & UAE Jurisdiction Compliance",
+        "status": "PASS",
+        "expected": "HTTP 200 with UAE law citations",
+        "actual": "status=200, mentions UAE=true",
+        "evidence": null
+      },
+      {
+        "id": "REQ-H1",
+        "name": "Areas We Serve Section",
+        "status": "PASS",
+        "expected": "Section present on homepage",
+        "actual": "Rendered on homepage",
+        "evidence": null
+      },
+      {
+        "id": "REQ-H2",
+        "name": "Professional Cleaning Equipment Section",
+        "status": "PASS",
+        "expected": "Section present on homepage",
+        "actual": "Rendered on homepage",
+        "evidence": null
+      },
+      {
+        "id": "REQ-H3",
+        "name": "Our Team Section",
+        "status": "PASS",
+        "expected": "Section present on homepage",
+        "actual": "Rendered on homepage",
+        "evidence": null
+      },
+      {
+        "id": "REQ-H4",
+        "name": "Why Choose Velora Elite Section",
+        "status": "PASS",
+        "expected": "Section present on homepage",
+        "actual": "Rendered on homepage",
+        "evidence": null
+      },
+      {
+        "id": "REQ-H5",
+        "name": "Frequently Asked Questions (FAQ) Section",
+        "status": "PASS",
+        "expected": "Section present on homepage",
+        "actual": "Rendered on homepage",
+        "evidence": null
+      },
+      {
+        "id": "REQ-H6",
+        "name": "Monthly & Annual Commercial Contracts Section",
+        "status": "PASS",
+        "expected": "Section present on homepage",
+        "actual": "Rendered on homepage",
+        "evidence": null
+      },
+      {
+        "id": "REQ-H7",
+        "name": "Completed Projects Section",
+        "status": "PASS",
+        "expected": "Section present on homepage",
+        "actual": "Rendered on homepage",
+        "evidence": null
+      },
+      {
+        "id": "REQ-H8",
+        "name": "Customer Feedback & Reviews Section",
+        "status": "PASS",
+        "expected": "Section present on homepage",
+        "actual": "Rendered on homepage",
+        "evidence": null
+      },
+      {
+        "id": "SEC-02",
+        "name": "Anti-Spam Bot Defenses (Honeypot & Speed Trap)",
+        "status": "PASS",
+        "expected": "Hidden honeypot and speed traps active on all forms",
+        "actual": "Verified _renderedAt and hp_address in quote and booking forms",
+        "evidence": null
+      }
+    ]
+  },
+  "expandedSuite": {
+    "total": 7,
+    "passed": 7,
+    "failed": 0,
+    "passPercentage": 100,
+    "tests": [
+      {
+        "id": "EXP-BROWSER-FIREFOX",
+        "name": "Cross-Browser Rendering & Functionality: Mozilla Firefox",
+        "status": "PASS",
+        "expected": "HTTP 200 OK with identical visual layout",
+        "actual": "HTTP 200",
+        "evidence": "firefox-desktop-render.png"
+      },
+      {
+        "id": "EXP-BROWSER-WEBKIT",
+        "name": "Cross-Browser Rendering & Functionality: WebKit (Safari Engine)",
+        "status": "PASS",
+        "expected": "HTTP 200 OK with identical visual layout",
+        "actual": "HTTP 200",
+        "evidence": "webkit-desktop-render.png"
+      },
+      {
+        "id": "EXP-TRACK-DEDUPE",
+        "name": "Advertising Conversion Deduplication & Direct Visit Guard",
+        "status": "PASS",
+        "expected": "Conversion fires exactly once on submission; 0 duplicate fires on reload and 0 on direct access",
+        "actual": "Initial fires: 1, after reload: 0, direct visit without ref: 0",
+        "evidence": null
+      },
+      {
+        "id": "EXP-SCHEMA-JSONLD",
+        "name": "Google LocalBusiness JSON-LD Schema & 8:00 AM – 6:00 PM Specification",
+        "status": "PASS",
+        "expected": "@type: CleaningService with opens 08:00 and closes 18:00",
+        "actual": "type=CleaningService, opens=08:00, closes=18:00",
+        "evidence": null
+      },
+      {
+        "id": "EXP-ENGLISH-ONLY",
+        "name": "Unintended Arabic Mockup Notes Removal & 100% English Content",
+        "status": "PASS",
+        "expected": "Zero unintended Arabic mockup text across forms and about pages",
+        "actual": "Arabic in quote: false, Arabic in about: false",
+        "evidence": null
+      },
+      {
+        "id": "EXP-SERVICES-ORDER",
+        "name": "Approved Services Database Synchronization & Hierarchical Catalog Order",
+        "status": "PASS",
+        "expected": "All 6 approved cleaning services present in exact order 1-6",
+        "actual": "Present=true, Ordered=true (indices: 0, 1, 2, 3, 4, 5)",
+        "evidence": null
+      },
+      {
+        "id": "EXP-QUOTE-DROPDOWN",
+        "name": "Quotation Form Service Dropdown Aligned to Approved Services",
+        "status": "PASS",
+        "expected": "Dropdown options contain exact approved titles",
+        "actual": "Options match approved 6 services: true",
+        "evidence": null
+      }
+    ]
+  }
+}

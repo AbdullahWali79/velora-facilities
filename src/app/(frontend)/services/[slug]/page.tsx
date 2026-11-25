@@ -84,10 +84,10 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           {/* Quick CTA row */}
           <div className="flex flex-wrap items-center gap-4 pt-4">
             <Link
-              href={`/book?service=${service.slug}`}
+              href={`/book?service=${service.slug}&type=inspection`}
               className="px-8 py-3.5 rounded-xl font-bold text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-lg shadow-amber-500/20 transition-all hover:scale-[1.02]"
             >
-              Book This Service
+              Book a Free Inspection
             </Link>
             <Link
               href="/quote"
@@ -95,6 +95,16 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             >
               Request Custom Estimate
             </Link>
+            <a
+              href={`https://wa.me/971556751854?text=${encodeURIComponent(
+                `Hello Velora Elite, I would like to inquire about ${service.title} for my property in Dubai.`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3.5 rounded-xl font-semibold text-sm text-emerald-400 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/40 transition-colors inline-flex items-center gap-2"
+            >
+              <span>💬 WhatsApp Inquiries</span>
+            </a>
           </div>
         </div>
       </section>

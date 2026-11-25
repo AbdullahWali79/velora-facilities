@@ -55,7 +55,14 @@ export const TrackingSettings: GlobalConfig = {
       name: 'metaPixelId',
       type: 'text',
       admin: {
-        description: 'Meta (Facebook) Pixel ID (e.g. 1234567890123456).',
+        description: 'Meta (Facebook) Pixel ID (e.g. 1234567890123456). Can also be configured via NEXT_PUBLIC_META_PIXEL_ID.',
+      },
+    },
+    {
+      name: 'tikTokPixelId',
+      type: 'text',
+      admin: {
+        description: 'TikTok Pixel ID (e.g. CXXXXXXXXXXXXXXX). Can also be configured via NEXT_PUBLIC_TIKTOK_PIXEL_ID.',
       },
     },
     {

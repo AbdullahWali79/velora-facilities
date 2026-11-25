@@ -34,9 +34,9 @@ export const QuoteRequests: CollectionConfig = {
     {
       name: 'email',
       type: 'email',
-      required: true,
+      required: false,
       admin: {
-        description: 'Contact email for proposal delivery',
+        description: 'Contact email for proposal delivery (optional)',
       },
     },
     {
