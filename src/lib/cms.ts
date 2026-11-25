@@ -52,16 +52,14 @@ export const DEFAULT_SITE_SETTINGS = {
 export const DEFAULT_HEADER = {
   navItems: [
     { label: 'Home', url: '/' },
-    { label: 'About Us', url: '/about' },
     { label: 'Services', url: '/services' },
+    { label: 'About Us', url: '/about' },
     { label: 'Gallery', url: '/gallery' },
-    { label: 'Request a Quote', url: '/quote' },
-    { label: 'Book Online', url: '/book' },
     { label: 'Contact', url: '/contact' },
   ],
   ctaButton: {
-    text: 'Book Online',
-    url: '/book',
+    text: 'Book a Free Inspection',
+    url: '/book?type=inspection',
   },
 }
 
