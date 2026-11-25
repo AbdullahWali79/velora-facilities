@@ -15,6 +15,7 @@ import {
   ArrowRightIcon,
   ShieldCheckIcon,
 } from './Icons'
+import { ThemeToggle } from './ThemeToggle'
 import { trackPhoneCallClick, trackInspectionClick } from '@/lib/tracking'
 
 export interface HeaderProps {
@@ -419,8 +420,8 @@ export function Header({ settings }: HeaderProps) {
             </Link>
           </nav>
 
-          {/* Right Action: Call Us + Book a Free Inspection Button */}
-          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+          {/* Right Action: Call Us + Theme Switcher + Book a Free Inspection Button */}
+          <div className="hidden lg:flex items-center gap-2.5 xl:gap-3 flex-shrink-0">
             <a
               href={telHref}
               onClick={() => trackPhoneCallClick('header_nav')}
@@ -429,6 +430,9 @@ export function Header({ settings }: HeaderProps) {
               <PhoneIcon className="w-3.5 h-3.5 text-amber-600" />
               <span>{phone}</span>
             </a>
+
+            {/* Light / Dark Mode Toggle */}
+            <ThemeToggle />
 
             <Link
               href="/book?type=inspection"
@@ -440,14 +444,17 @@ export function Header({ settings }: HeaderProps) {
             </Link>
           </div>
 
-          {/* Mobile Hamburger Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2.5 rounded-xl text-slate-700 hover:text-slate-950 hover:bg-slate-100 border border-slate-200 transition-colors"
-            aria-label="Toggle navigation menu"
-          >
-            {mobileMenuOpen ? <CloseIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
-          </button>
+          {/* Mobile Right Controls: Theme Toggle & Hamburger Button */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <ThemeToggle />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2.5 rounded-xl text-slate-700 hover:text-slate-950 hover:bg-slate-100 border border-slate-200 transition-colors"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <CloseIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
