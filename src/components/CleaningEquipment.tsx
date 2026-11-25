@@ -51,19 +51,19 @@ export function CleaningEquipment() {
   ]
 
   return (
-    <section className="py-20 sm:py-24 bg-white border-t border-slate-200">
+    <section className="py-20 sm:py-24 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 pb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 dark:border-slate-800 pb-8">
           <div className="max-w-2xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300">
-              <SparklesIcon className="w-3.5 h-3.5 text-amber-600" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-950/70 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30">
+              <SparklesIcon className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
               <span>European & Industrial Machinery</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               Our Professional Cleaning Equipment
             </h2>
-            <p className="text-base text-slate-600 leading-relaxed">
+            <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed">
               True luxury cleaning is impossible with household tools. We invest in top-tier European machinery and certified technology to guarantee flawless surface restoration.
             </p>
           </div>
@@ -83,34 +83,34 @@ export function CleaningEquipment() {
           {machinery.map((item, idx) => (
             <div
               key={idx}
-              className="p-8 rounded-3xl bg-slate-50/70 border border-slate-200 hover:border-amber-400 hover:bg-white transition-all duration-300 space-y-4 shadow-xs hover:shadow-xl group"
+              className="p-8 rounded-3xl bg-slate-50/80 dark:bg-slate-900 border border-slate-200/90 dark:border-amber-500/25 hover:border-amber-400 dark:hover:border-amber-400 hover:bg-white dark:hover:bg-slate-850 transition-all duration-300 space-y-4 shadow-xs hover:shadow-xl group"
             >
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold text-amber-800 bg-amber-100/70 border border-amber-300 px-3 py-0.5 rounded-full">
+                <span className="text-[11px] font-bold text-amber-800 dark:text-amber-300 bg-amber-100/70 dark:bg-amber-950/70 border border-amber-300 dark:border-amber-500/40 px-3 py-0.5 rounded-full">
                   {item.origin}
                 </span>
-                <span className="text-xs font-semibold text-slate-400">
+                <span className="text-xs font-semibold text-slate-400 dark:text-slate-400">
                   Tool 0{idx + 1}
                 </span>
               </div>
 
               <div>
-                <h4 className="text-lg font-bold text-slate-900 group-hover:text-amber-800 transition-colors">
+                <h4 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-amber-800 dark:group-hover:text-amber-300 transition-colors">
                   {item.title}
                 </h4>
-                <p className="text-xs font-semibold text-amber-700 mt-0.5">
+                <p className="text-xs font-semibold text-amber-700 dark:text-amber-400 mt-1">
                   Target: {item.application}
                 </p>
               </div>
 
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-200 leading-relaxed font-normal">
                 {item.description}
               </p>
 
-              <div className="pt-3 border-t border-slate-200/60 space-y-1.5">
+              <div className="pt-3 border-t border-slate-200/60 dark:border-slate-800 space-y-2">
                 {item.highlights.map((h, hIdx) => (
-                  <div key={hIdx} className="flex items-center gap-2 text-xs text-slate-700 font-medium">
-                    <CheckCircleIcon className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
+                  <div key={hIdx} className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-100 font-medium">
+                    <CheckCircleIcon className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 flex-shrink-0" />
                     <span>{h}</span>
                   </div>
                 ))}

@@ -48,8 +48,8 @@ export function GoogleReviewsSection({ testimonials }: GoogleReviewsSectionProps
           </div>
 
           {/* Google Summary Badge */}
-          <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-5 flex items-center gap-5 shadow-xs flex-shrink-0">
-            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-white border border-slate-200 shadow-xs">
+          <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200/90 dark:border-amber-500/25 rounded-2xl p-5 flex items-center gap-5 shadow-xs flex-shrink-0">
+            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs">
               <svg className="w-6 h-6" viewBox="0 0 24 24">
                 <path
                   fill="#4285F4"
@@ -71,14 +71,14 @@ export function GoogleReviewsSection({ testimonials }: GoogleReviewsSectionProps
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-2xl font-black text-slate-900">4.9</span>
+                <span className="text-2xl font-black text-slate-900 dark:text-white">4.9</span>
                 <div className="flex text-amber-400">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <StarIcon key={i} className="w-4 h-4 fill-current text-amber-400" />
                   ))}
                 </div>
               </div>
-              <div className="text-xs text-slate-600 mt-0.5">
+              <div className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
                 Average client satisfaction rating across Dubai projects
               </div>
             </div>
@@ -90,7 +90,7 @@ export function GoogleReviewsSection({ testimonials }: GoogleReviewsSectionProps
           {displayItems.map((item, idx) => (
             <div
               key={item.id || idx}
-              className="bg-slate-50/70 hover:bg-white rounded-3xl border border-slate-200/90 p-7 shadow-xs hover:shadow-xl hover:border-amber-400/50 transition-all duration-300 flex flex-col justify-between"
+              className="bg-slate-50/80 dark:bg-slate-900 hover:bg-white dark:hover:bg-slate-850 rounded-3xl border border-slate-200/90 dark:border-amber-500/25 p-7 shadow-xs hover:shadow-xl hover:border-amber-400/50 dark:hover:border-amber-400/50 transition-all duration-300 flex flex-col justify-between"
             >
               <div className="space-y-4">
                 {/* Header: Stars + Google Badge */}
@@ -99,12 +99,12 @@ export function GoogleReviewsSection({ testimonials }: GoogleReviewsSectionProps
                     {Array.from({ length: 5 }).map((_, i) => (
                       <StarIcon
                         key={i}
-                        className={`w-4 h-4 ${i < item.rating ? 'text-amber-400' : 'text-slate-300'}`}
+                        className={`w-4 h-4 ${i < item.rating ? 'text-amber-400' : 'text-slate-300 dark:text-slate-600'}`}
                       />
                     ))}
                   </div>
 
-                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-800 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-full">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-800 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-500/30 px-2.5 py-0.5 rounded-full">
                     <svg className="w-3 h-3" viewBox="0 0 24 24">
                       <path
                         fill="#4285F4"
@@ -116,13 +116,13 @@ export function GoogleReviewsSection({ testimonials }: GoogleReviewsSectionProps
                 </div>
 
                 {/* Review Text */}
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-100 leading-relaxed italic font-normal">
                   &ldquo;{item.content}&rdquo;
                 </p>
               </div>
 
               {/* Reviewer Details */}
-              <div className="pt-6 mt-6 border-t border-slate-200/60 flex items-center justify-between">
+              <div className="pt-6 mt-6 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-slate-900 text-amber-400 font-bold text-xs flex items-center justify-center flex-shrink-0 shadow-xs border border-amber-500/20">
                     {item.clientName
@@ -134,11 +134,11 @@ export function GoogleReviewsSection({ testimonials }: GoogleReviewsSectionProps
                   </div>
 
                   <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 flex items-center gap-1">
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1">
                       <span>{item.clientName}</span>
                       <CheckCircleIcon className="w-3.5 h-3.5 text-blue-500 inline" />
                     </h4>
-                    <p className="text-[11px] text-slate-500">
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
                       {[item.clientRole, item.location].filter(Boolean).join(' • ')}
                     </p>
                   </div>

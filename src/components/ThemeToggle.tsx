@@ -8,24 +8,17 @@ export function ThemeToggle({ className = '' }: { className?: string }) {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    // Check saved theme or system preference
+    // DEFAULT IS ALWAYS LIGHT
+    // Only switch to dark if the user explicitly clicked and saved 'dark' in localStorage
     const saved = localStorage.getItem('velora_theme') as 'light' | 'dark' | null
-    if (saved === 'dark' || saved === 'light') {
-      setTheme(saved)
-      if (saved === 'dark') {
-        document.documentElement.classList.add('dark')
-      } else {
-        document.documentElement.classList.remove('dark')
-      }
+    if (saved === 'dark') {
+      setTheme('dark')
+      document.documentElement.classList.add('dark')
     } else {
-      // Default system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      if (prefersDark) {
-        setTheme('dark')
-        document.documentElement.classList.add('dark')
-      } else {
-        setTheme('light')
-        document.documentElement.classList.remove('dark')
+      setTheme('light')
+      document.documentElement.classList.remove('dark')
+      if (!saved) {
+        localStorage.setItem('velora_theme', 'light')
       }
     }
     setMounted(true)
@@ -45,7 +38,7 @@ export function ThemeToggle({ className = '' }: { className?: string }) {
   // Prevent hydration mismatch
   if (!mounted) {
     return (
-      <div className={`w-8 h-8 rounded-lg bg-slate-800/20 animate-pulse ${className}`} />
+      <div className={`w-8 h-8 rounded-lg bg-slate-800/10 animate-pulse ${className}`} />
     )
   }
 

@@ -56,7 +56,7 @@ export function FAQSection() {
   }
 
   return (
-    <section className="py-20 sm:py-24 bg-slate-50 border-t border-slate-200">
+    <section className="py-20 sm:py-24 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 transition-colors">
       {/* FAQ Schema */}
       <script
         type="application/ld+json"
@@ -66,16 +66,16 @@ export function FAQSection() {
       <div className="max-w-4xl mx-auto px-4 sm:px-8 space-y-12">
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300">
-            <SparklesIcon className="w-3.5 h-3.5 text-amber-600" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 dark:bg-amber-950/70 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30">
+            <SparklesIcon className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
             <span>Got Questions? We Have Answers</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Frequently Asked Questions (FAQ)
           </h2>
 
-          <p className="text-base text-slate-600 leading-relaxed max-w-xl mx-auto">
+          <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl mx-auto">
             Everything you need to know about our luxury cleaning standards, free site inspections, and Dubai operations.
           </p>
         </div>
@@ -87,18 +87,18 @@ export function FAQSection() {
             return (
               <div
                 key={idx}
-                className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs transition-colors"
+                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs transition-colors"
               >
                 <button
                   type="button"
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
-                  className="w-full py-5 px-6 text-left flex items-center justify-between gap-4 font-bold text-slate-900 text-sm sm:text-base hover:text-amber-800 transition-colors cursor-pointer"
+                  className="w-full py-5 px-6 text-left flex items-center justify-between gap-4 font-bold text-slate-900 dark:text-white text-sm sm:text-base hover:text-amber-800 dark:hover:text-amber-300 transition-colors cursor-pointer"
                   aria-expanded={isOpen}
                 >
                   <span>{faq.q}</span>
                   <span
-                    className={`w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center flex-shrink-0 transition-transform ${
-                      isOpen ? 'rotate-180 bg-amber-100 text-amber-900' : ''
+                    className={`w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center flex-shrink-0 transition-transform ${
+                      isOpen ? 'rotate-180 bg-amber-100 dark:bg-amber-950/70 text-amber-900 dark:text-amber-300' : ''
                     }`}
                   >
                     ↓
@@ -106,7 +106,7 @@ export function FAQSection() {
                 </button>
 
                 {isOpen && (
-                  <div className="px-6 pb-6 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
+                  <div className="px-6 pb-6 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-200 leading-relaxed border-t border-slate-100 dark:border-slate-800">
                     <p>{faq.a}</p>
                   </div>
                 )}
@@ -116,18 +116,18 @@ export function FAQSection() {
         </div>
 
         {/* Still have questions */}
-        <div className="text-center bg-white p-6 rounded-2xl border border-slate-200 space-y-3 shadow-xs">
-          <p className="text-xs text-slate-600">
+        <div className="text-center bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3 shadow-xs">
+          <p className="text-xs text-slate-600 dark:text-slate-300">
             Have a custom property requirement or unique architectural surfaces?
           </p>
           <div className="flex items-center justify-center gap-4">
             <Link
               href="/book?type=inspection"
-              className="text-xs font-bold text-amber-900 hover:text-amber-700 underline"
+              className="text-xs font-bold text-amber-900 dark:text-amber-400 hover:text-amber-700 underline"
             >
               Book a Free On-Site Inspection
             </Link>
-            <span className="text-slate-300">&bull;</span>
+            <span className="text-slate-300 dark:text-slate-600">&bull;</span>
             <a
               href="https://wa.me/971556751854"
               target="_blank"
