@@ -1,4 +1,121 @@
-/* Velora Elite Admin Custom Styling */
+/* =============================================================================
+   VELORA ELITE — PREMIUM LUXURY ADMIN THEME (NAVY, GOLD & CLEAN CANVAS)
+   Developed by We Connect Innovative Solutions Pvt. Ltd.
+   ============================================================================= */
+
 :root {
-  --theme-font: var(--font-geist-sans), sans-serif;
+  --theme-font: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --velora-navy: #0B1B2B;
+  --velora-navy-light: #162A45;
+  --velora-gold: #D4AF37;
+  --velora-gold-light: #FBF8EF;
+  --velora-gold-hover: #AA8010;
+  --velora-canvas: #F8FAFC;
+}
+
+/* 1. Global Admin Body & Typography */
+body {
+  background-color: var(--velora-canvas) !important;
+  font-family: var(--theme-font);
+  color: #1E293B;
+}
+
+/* 2. Left Sidebar (Premium Deep Navy) */
+aside.nav,
+.nav,
+.nav__scroll {
+  background-color: var(--velora-navy) !important;
+  color: #F8FAFC !important;
+  border-right: 1px solid rgba(212, 175, 55, 0.15) !important;
+}
+
+/* Sidebar Brand Header Area */
+.nav__header {
+  padding: 16px 20px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Nav Group Headings (Velora Luxury Gold) */
+.nav-group__toggle,
+.nav-group__label {
+  color: var(--velora-gold) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  padding-top: 14px !important;
+  padding-bottom: 6px !important;
+}
+
+.nav-group__indicator svg {
+  stroke: var(--velora-gold) !important;
+}
+
+/* Nav Links */
+.nav__link,
+.nav-group a {
+  color: #CBD5E1 !important;
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  padding: 8px 14px !important;
+  margin: 2px 10px !important;
+  border-radius: 8px !important;
+  transition: all 0.15s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+}
+
+.nav__link:hover,
+.nav-group a:hover {
+  background-color: rgba(212, 175, 55, 0.12) !important;
+  color: #FFFFFF !important;
+  transform: translateX(2px);
+}
+
+/* Active Nav Item (Gold Badge Pill matching wireframe) */
+.nav__link.active,
+.nav__link--active,
+.nav-group a[aria-current="page"],
+.nav-group a.active {
+  background: linear-gradient(135deg, #D4AF37 0%, #C59B27 100%) !important;
+  color: #0B1B2B !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 6px rgba(212, 175, 55, 0.25) !important;
+}
+
+/* 3. Main Dashboard & View Canvas */
+.template-default {
+  background-color: var(--velora-canvas) !important;
+}
+
+/* 4. Top App Header Bar */
+.app-header {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+}
+
+.app-header a,
+.step-nav a {
+  color: #475569 !important;
+  font-size: 13px !important;
+}
+
+.step-nav a:last-child {
+  color: var(--velora-navy) !important;
+  font-weight: 600 !important;
+}
+
+/* 5. Buttons Styling */
+.btn--style-primary {
+  background: linear-gradient(135deg, #D4AF37 0%, #B88E1E 100%) !important;
+  color: #0B1B2B !important;
+  font-weight: 700 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 6px rgba(212, 175, 55, 0.2) !important;
+}
+
+.btn--style-primary:hover {
+  background: linear-gradient(135deg, #E2C04D 0%, #C59B27 100%) !important;
 }

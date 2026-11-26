@@ -5,6 +5,7 @@ export const Services: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'category', 'isFeatured', 'order'],
+    group: 'Website CMS',
   },
   access: {
     read: () => true, // Publicly readable for service pages

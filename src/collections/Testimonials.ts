@@ -5,6 +5,7 @@ export const Testimonials: CollectionConfig = {
   admin: {
     useAsTitle: 'clientName',
     defaultColumns: ['clientName', 'rating', 'location', 'isFeatured', 'createdAt'],
+    group: 'Website CMS',
   },
   access: {
     read: () => true, // Publicly readable for reviews section

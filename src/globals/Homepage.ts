@@ -2,7 +2,10 @@ import type { GlobalConfig } from 'payload'
 
 export const Homepage: GlobalConfig = {
   slug: 'homepage',
-  label: 'Homepage & Banners',
+  label: 'Homepage Content',
+  admin: {
+    group: 'Website CMS',
+  },
   access: {
     read: () => true, // Publicly readable for homepage rendering
   },

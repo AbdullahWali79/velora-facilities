@@ -11,6 +11,7 @@ export const Media: CollectionConfig = {
   admin: {
     useAsTitle: 'alt',
     defaultColumns: ['filename', 'alt', 'mimeType', 'filesize', 'updatedAt'],
+    group: 'Website CMS',
   },
   upload: {
     staticDir: 'public/media',

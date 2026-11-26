@@ -70,6 +70,17 @@ export default buildConfig({
     meta: {
       titleSuffix: ' — Velora Elite Admin',
     },
+    components: {
+      views: {
+        dashboard: {
+          Component: './components/admin/DashboardView#DashboardView',
+        },
+      },
+      graphics: {
+        Logo: './components/admin/AdminLogo#AdminLogo',
+        Icon: './components/admin/AdminIcon#AdminIcon',
+      },
+    },
   },
   collections: [
     Pages,

@@ -5,6 +5,7 @@ export const Gallery: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'service', 'location', 'isFeatured', 'createdAt'],
+    group: 'Website CMS',
   },
   access: {
     read: () => true, // Publicly readable for gallery page

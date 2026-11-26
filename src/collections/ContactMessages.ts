@@ -9,7 +9,7 @@ export const ContactMessages: CollectionConfig = {
   admin: {
     useAsTitle: 'fullName',
     defaultColumns: ['fullName', 'email', 'phone', 'subject', 'status', 'createdAt'],
-    group: 'Leads & Inquiries',
+    group: 'Lead Management',
     description: 'General customer inquiries and corporate messages from the Contact Us form.',
   },
   access: {

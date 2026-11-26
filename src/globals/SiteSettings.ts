@@ -2,7 +2,10 @@ import type { GlobalConfig } from 'payload'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
-  label: 'Company & Contact Info',
+  label: 'Settings & Contact Info',
+  admin: {
+    group: 'Configuration',
+  },
   access: {
     read: () => true, // Publicly readable for contact cards and footer
   },

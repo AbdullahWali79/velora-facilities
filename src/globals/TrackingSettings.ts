@@ -2,7 +2,10 @@ import type { GlobalConfig } from 'payload'
 
 export const TrackingSettings: GlobalConfig = {
   slug: 'tracking-settings',
-  label: 'SEO, Tracking & Analytics',
+  label: 'SEO & Analytics',
+  admin: {
+    group: 'Configuration',
+  },
   access: {
     // Only authenticated admins can manage tracking tags
     read: () => true,

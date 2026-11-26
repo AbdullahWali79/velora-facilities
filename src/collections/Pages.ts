@@ -5,6 +5,7 @@ export const Pages: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    group: 'Website CMS',
   },
   access: {
     read: () => true, // Publicly readable for dynamic pages

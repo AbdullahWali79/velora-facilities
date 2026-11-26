@@ -9,7 +9,7 @@ export const QuoteRequests: CollectionConfig = {
   admin: {
     useAsTitle: 'fullName',
     defaultColumns: ['fullName', 'email', 'phone', 'service', 'propertyType', 'emirate', 'status', 'createdAt'],
-    group: 'Leads & Inquiries',
+    group: 'Lead Management',
     description: 'Residential & commercial quotation inquiries requiring estimating review.',
   },
   access: {
