@@ -57,32 +57,32 @@ export function HeroSlider({ banners, trustBadges, stats }: HeroSliderProps) {
             )}
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] text-white">
-              {slide?.headline}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] text-white font-heading">
+              Exceptional Cleaning. Elevated Living.
             </h1>
 
             {/* Subheadline */}
-            <p className="text-lg sm:text-xl text-slate-300 font-normal leading-relaxed max-w-2xl">
-              {slide?.subheadline}
+            <p className="text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-2xl">
+              {slide?.subheadline || 'Dubai’s premier luxury cleaning specialists delivering hospital-grade sanitization, Italian marble crystallization, and white-glove estate care with uncompromising precision.'}
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
               <Link
-                href={slide?.primaryCtaUrl || '/book?type=inspection'}
+                href="/book?type=inspection"
                 onClick={() => trackInspectionClick('hero_primary')}
                 className="relative group overflow-hidden inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-sm text-slate-950 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-xl shadow-amber-500/25 transition-all hover:scale-[1.03] active:scale-[0.98]"
               >
                 <span className="absolute inset-0 shimmer-gold opacity-40 pointer-events-none group-hover:opacity-75 transition-opacity" />
-                <span className="relative z-10">{slide?.primaryCtaText || 'Book a Free Inspection'}</span>
+                <span className="relative z-10">Book a Free Inspection</span>
                 <ArrowRightIcon className="w-4 h-4 relative z-10 transition-transform group-hover:translate-x-1" />
               </Link>
 
               <Link
-                href={slide?.secondaryCtaUrl || '/quote'}
+                href="/quote"
                 className="relative group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-sm text-amber-300 bg-black/60 hover:bg-black/90 border border-amber-500/40 hover:border-amber-400 transition-all hover:text-white hover:scale-[1.02] shadow-sm hover:shadow-amber-500/10"
               >
-                <span>{slide?.secondaryCtaText || 'Request a Free Quote'}</span>
+                <span>Get a Quote</span>
               </Link>
             </div>
 

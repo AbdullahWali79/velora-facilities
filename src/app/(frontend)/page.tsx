@@ -3,7 +3,6 @@ import Link from 'next/link'
 import {
   getHomepageSettings,
   getServices,
-  getGalleryItems,
   getTestimonials,
   getSiteSettings,
 } from '@/lib/cms'
@@ -11,7 +10,6 @@ import { HeroSlider } from '@/components/HeroSlider'
 import { ServiceCard } from '@/components/ServiceCard'
 import { CleaningEquipment } from '@/components/CleaningEquipment'
 import { VideoShowcase } from '@/components/VideoShowcase'
-import { GalleryComparison } from '@/components/GalleryComparison'
 import { TeamSection } from '@/components/TeamSection'
 import { CommercialContracts } from '@/components/CommercialContracts'
 import { AreasWeServe } from '@/components/AreasWeServe'
@@ -28,19 +26,15 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default async function HomePage() {
-  const [homepage, services, gallery, testimonials, siteSettings] = await Promise.all([
+  const [homepage, services, testimonials, siteSettings] = await Promise.all([
     getHomepageSettings(),
     getServices(),
-    getGalleryItems(),
     getTestimonials(),
     getSiteSettings(),
   ])
 
   const featuredServices = services.filter((s) => s.isFeatured).slice(0, 6)
   const displayServices = featuredServices.length > 0 ? featuredServices : services.slice(0, 6)
-
-  const featuredGallery = gallery.filter((g) => g.isFeatured).slice(0, 6)
-  const displayGallery = featuredGallery.length > 0 ? featuredGallery : gallery.slice(0, 6)
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -245,39 +239,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 6. Before & After Completed Projects Showcase */}
-      {displayGallery && displayGallery.length > 0 ? (
-        <section className="py-20 sm:py-24 bg-slate-50 border-t border-slate-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div className="max-w-2xl space-y-3">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300">
-                  <SparklesIcon className="w-3.5 h-3.5 text-amber-600" />
-                  <span>Verified Transformations</span>
-                </div>
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                  Our Completed Projects & Transformations
-                </h2>
-                <p className="text-base text-slate-600 leading-relaxed">
-                  Witness the transformative impact of our specialized deep cleaning, marble restoration, and commercial kitchen degreasing across premier UAE properties.
-                </p>
-              </div>
-
-              <Link
-                href="/gallery"
-                className="inline-flex items-center gap-2 text-sm font-bold text-amber-800 hover:text-amber-900 group"
-              >
-                <span>View Complete Gallery</span>
-                <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-
-            <GalleryComparison items={displayGallery} />
-          </div>
-        </section>
-      ) : null}
-
-      {/* 7. Our Team in Branded Uniforms */}
+      {/* 6. Our Team in Branded Uniforms */}
       <TeamSection />
 
       {/* 8. Monthly & Annual Commercial Cleaning Contracts (AMC) */}

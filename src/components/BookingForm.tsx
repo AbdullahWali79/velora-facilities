@@ -184,14 +184,14 @@ export function BookingForm({ services, initialServiceSlug, isInspection }: Book
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                Selected Service <span className="text-amber-600">*</span>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200 mb-2">
+                Choose Your Service <span className="text-amber-600">*</span>
               </label>
               <select
                 name="service"
                 required
                 defaultValue={initialServiceSlug || (services[0]?.slug || '1')}
-                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm bg-white"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm bg-white dark:bg-slate-900"
               >
                 {services.map((s) => (
                   <option key={s.id || s.slug} value={s.id || s.slug}>

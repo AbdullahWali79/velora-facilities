@@ -89,14 +89,17 @@ export function isSMTPConfigured(): boolean {
 
 /**
  * Configure Hostinger SMTP transporter using environment variables.
- * Uses port 465 with SSL/TLS by default.
+ * Supports port 465 (SSL/TLS direct) and port 587 (STARTTLS).
  */
 function getTransporter() {
   const host = process.env.SMTP_HOST || 'smtp.hostinger.com'
   const user = process.env.SMTP_USER || 'info@veloraelite.ae'
   const pass = process.env.SMTP_PASS
   const port = Number(process.env.SMTP_PORT) || 465
-  const secure = process.env.SMTP_SECURE === 'false' ? false : true
+  const isPort465 = port === 465
+  const secure = process.env.SMTP_SECURE !== undefined 
+    ? process.env.SMTP_SECURE === 'true'
+    : isPort465
 
   if (!pass) {
     return null
@@ -106,13 +109,14 @@ function getTransporter() {
     host,
     port,
     secure,
+    requireTLS: !secure,
     auth: {
       user,
       pass,
     },
-    connectionTimeout: 5000, // 5s connection timeout for serverless resilience
-    greetingTimeout: 5000,
-    socketTimeout: 8000,
+    connectionTimeout: 8000,
+    greetingTimeout: 8000,
+    socketTimeout: 12000,
     tls: {
       minVersion: 'TLSv1.2',
       rejectUnauthorized: process.env.SMTP_TLS_REJECT_UNAUTHORIZED !== 'false',
@@ -236,7 +240,27 @@ function renderEmailTemplate({
 }
 
 /**
- * Generic internal sender with anti-header-injection sanitization and safe logging.
+ * Convert HTML email to clean formatted plain text for anti-spam multipart delivery.
+ */
+function stripHtmlToPlainText(html: string): string {
+  return html
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<div class="data-row">/gi, '\n')
+    .replace(/<div class="data-label">/gi, '• ')
+    .replace(/<div class="data-value[^"]*">/gi, ': ')
+    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&bull;/g, '•')
+    .replace(/&mdash;/g, '—')
+    .replace(/&amp;/g, '&')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
+/**
+ * Generic internal sender with anti-header-injection sanitization, plain-text fallback, and anti-spam protection.
  */
 async function sendEmail({
   to,
@@ -261,29 +285,38 @@ async function sendEmail({
   const transporter = getTransporter()
 
   if (!transporter) {
-    console.warn(`[VELORA EMAIL SERVICE] SMTP password not set in environment variables. Email simulated for: ${cleanTo} (Subject: "${cleanSubject}")`)
+    console.warn(`[VELORA EMAIL SERVICE] SMTP credentials not set (SMTP_PASS missing). Email simulated for: ${cleanTo} (Subject: "${cleanSubject}")`)
     return {
       sent: false,
-      error: 'SMTP credentials not configured in environment variables (SMTP_PASS missing).',
+      error: 'SMTP credentials not configured in environment variables (SMTP_PASS missing). Please set SMTP_PASS on your hosting server.',
     }
   }
 
   try {
+    const plainText = stripHtmlToPlainText(html)
+    const replyTo = process.env.SMTP_REPLY_TO || 'info@veloraelite.ae'
+
     const info = await transporter.sendMail({
       from: DEFAULT_SENDER(),
       to: cleanTo,
+      replyTo: sanitizeEmailHeader(replyTo),
       subject: cleanSubject,
+      text: plainText,
       html,
+      headers: {
+        'X-Mailer': 'Velora Elite Concierge Mail Engine',
+        'X-Priority': '1 (Highest)',
+        'Importance': 'high',
+      },
     })
 
-    console.log(`[VELORA EMAIL SERVICE] Outbound email delivered to ${cleanTo}. MessageId: ${info.messageId}`)
+    console.log(`[VELORA EMAIL SERVICE] Outbound email successfully dispatched to ${cleanTo}. MessageId: ${info.messageId}`)
     return {
       sent: true,
       messageId: info.messageId,
     }
   } catch (err: unknown) {
     const error = err as Error
-    // Safely log error message without dumping full stack or environment variables
     console.error(`[VELORA EMAIL SERVICE] Outbound delivery failed to ${cleanTo}:`, error.message)
     return {
       sent: false,

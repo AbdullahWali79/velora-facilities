@@ -174,17 +174,17 @@ export function QuoteForm({ services }: QuoteFormProps) {
 
           {/* Field 3: Service Required (Dropdown) */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-              Service Required
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200 mb-2">
+              Choose Your Service
             </label>
             <div className="relative">
               <select
                 name="service"
                 value={selectedService}
                 onChange={(e) => setSelectedService(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm bg-white cursor-pointer"
+                className="w-full px-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 focus:outline-hidden focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm bg-white dark:bg-slate-900 cursor-pointer"
               >
-                <option value="">Select cleaning service</option>
+                <option value="">Choose your service</option>
                 <option value="marble-polishing">Marble Polishing & Italian Crystallization</option>
                 <option value="kitchen-hood-cleaning">Kitchen Hood & Commercial Exhaust Duct Cleaning</option>
                 <option value="restaurant-cleaning">Restaurant Deep Cleaning & Kitchen Sanitation</option>

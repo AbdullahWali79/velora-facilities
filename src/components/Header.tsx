@@ -6,7 +6,6 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import {
   PhoneIcon,
-  MailIcon,
   ClockIcon,
   MenuIcon,
   CloseIcon,
@@ -127,7 +126,6 @@ export function Header({ settings }: HeaderProps) {
 
   const phone = settings?.contactInfo?.phonePrimary || '04 579 2137'
   const telHref = `tel:${phone.replace(/[^0-9+]/g, '')}`
-  const email = settings?.contactInfo?.email || 'info@veloraelite.ae'
   const workingHours = settings?.contactInfo?.workingHours || 'Monday – Saturday: 8:00 AM – 6:00 PM'
 
   // Close menus on page navigation
@@ -151,64 +149,18 @@ export function Header({ settings }: HeaderProps) {
 
   return (
     <header className="w-full z-50 sticky top-0 transition-all shadow-md">
-      {/* 1. UPPER UTILITY BAR: Operating Hours, Contact Info & Quick Actions */}
-      <div className="bg-slate-950 text-slate-300 text-xs py-2 px-4 sm:px-8 border-b border-amber-500/20">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
-          {/* Left: Contact Info, Working Hours & Dubai Hub */}
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-6 text-slate-300">
-            <a
-              href={telHref}
-              onClick={() => trackPhoneCallClick('top_bar')}
-              className="inline-flex items-center gap-1.5 text-slate-200 hover:text-amber-400 transition-colors font-medium whitespace-nowrap"
-            >
-              <PhoneIcon className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-              <span>Tel: <strong className="text-white">{phone}</strong></span>
-            </a>
-
-            <a
-              href={`mailto:${email}`}
-              className="hidden sm:inline-flex items-center gap-1.5 text-slate-300 hover:text-amber-400 transition-colors whitespace-nowrap"
-            >
-              <MailIcon className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-              <span>{email}</span>
-            </a>
-
-            <div className="hidden lg:inline-flex items-center gap-1.5 text-slate-400 whitespace-nowrap">
-              <ClockIcon className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-              <span>{workingHours}</span>
-            </div>
-
-            <div className="hidden xl:inline-flex items-center gap-1.5 text-[11px] font-semibold text-amber-300 bg-amber-950/60 border border-amber-500/30 px-2.5 py-0.5 rounded-full whitespace-nowrap">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-              <span>Aspin Commercial Tower, Sheikh Zayed Rd</span>
-            </div>
-          </div>
-
-          {/* Right: Get a Quote link & WhatsApp Callout */}
-          <div className="flex items-center gap-3 flex-shrink-0">
-            <Link
-              href="/quote"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-amber-300 hover:text-slate-950 bg-amber-500/10 hover:bg-amber-400 border border-amber-500/30 hover:border-amber-400 transition-all whitespace-nowrap"
-            >
-              <span>Get a Quote</span>
-              <ArrowRightIcon className="w-3 h-3" />
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. MAIN NAVBAR: Clean Categorized Menu with Professional Sub-Menus */}
-      <div className="bg-white/95 backdrop-blur-md border-b border-amber-900/10">
+      {/* 1. PRIMARY LUXURY BRAND HEADER (Always at the very top) */}
+      <div className="bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-amber-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 h-20 flex items-center justify-between gap-4">
-          {/* Brand Logo - Official Circular 3D Gold Emblem */}
+          {/* Brand Logo & Name - Prominent Luxury Positioning */}
           <Link
             href="/"
             onClick={() => setLogoRotation((prev) => prev + 360)}
-            className="flex items-center gap-3 group cursor-pointer select-none flex-shrink-0"
-            title="Click to spin logo"
+            className="flex items-center gap-3.5 group cursor-pointer select-none flex-shrink-0"
+            title="Velora Elite Luxury Cleaning Dubai"
           >
             <div
-              className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-amber-500/40 shadow-md group-hover:border-amber-400 group-hover:shadow-[0_0_20px_rgba(223,183,108,0.55)] transition-all will-change-transform active:scale-95"
+              className="relative w-13 h-13 rounded-full overflow-hidden border-2 border-amber-500/50 shadow-md group-hover:border-amber-400 group-hover:shadow-[0_0_24px_rgba(223,183,108,0.6)] transition-all will-change-transform active:scale-95"
               style={{
                 transform: `rotate(${logoRotation}deg)`,
                 transition: 'transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1)',
@@ -217,31 +169,31 @@ export function Header({ settings }: HeaderProps) {
               <Image
                 src="/images/logo.jpg"
                 alt="Velora Elite Logo"
-                width={48}
-                height={48}
+                width={52}
+                height={52}
                 className="object-cover w-full h-full pointer-events-none"
                 priority
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-950 group-hover:text-amber-700 transition-colors whitespace-nowrap">
-                VELORA <span className="text-amber-600">ELITE</span>
+              <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-950 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors whitespace-nowrap font-heading">
+                VELORA <span className="text-amber-600 dark:text-amber-400">ELITE</span>
               </span>
-              <span className="text-[9px] sm:text-[10px] tracking-widest uppercase font-bold text-amber-800 -mt-0.5 whitespace-nowrap">
+              <span className="text-[9px] sm:text-[10.5px] tracking-[0.2em] uppercase font-bold text-amber-700 dark:text-amber-400/90 -mt-0.5 whitespace-nowrap">
                 LUXURY CLEANING &bull; DUBAI
               </span>
             </div>
           </Link>
 
-          {/* Categorized Desktop Navigation Menu */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+          {/* Simplified Desktop Navigation Menu */}
+          <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2">
             {/* Home */}
             <Link
               href="/"
               className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
                 pathname === '/'
-                  ? 'text-amber-900 bg-amber-50/80 font-bold border-b-2 border-amber-500 shadow-2xs'
-                  : 'text-slate-700 hover:text-amber-700 hover:bg-amber-50/60'
+                  ? 'text-amber-900 bg-amber-50/80 dark:text-amber-300 dark:bg-amber-950/40 font-bold border-b-2 border-amber-500 shadow-2xs'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-amber-50/60 dark:hover:bg-amber-950/30'
               }`}
             >
               Home
@@ -258,14 +210,14 @@ export function Header({ settings }: HeaderProps) {
                 onClick={() => setActiveDropdown(activeDropdown === 'services' ? null : 'services')}
                 className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
                   pathname.startsWith('/services') || activeDropdown === 'services'
-                    ? 'text-amber-900 bg-amber-50/80 font-bold'
-                    : 'text-slate-700 hover:text-amber-700 hover:bg-amber-50/60'
+                    ? 'text-amber-900 bg-amber-50/80 dark:text-amber-300 dark:bg-amber-950/40 font-bold'
+                    : 'text-slate-700 dark:text-slate-200 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-amber-50/60 dark:hover:bg-amber-950/30'
                 }`}
                 aria-expanded={activeDropdown === 'services'}
               >
                 <span>Services</span>
                 <ChevronDownIcon
-                  className={`w-3.5 h-3.5 text-amber-600 transition-transform duration-200 ${
+                  className={`w-3.5 h-3.5 text-amber-600 dark:text-amber-400 transition-transform duration-200 ${
                     activeDropdown === 'services' ? 'rotate-180' : ''
                   }`}
                 />
@@ -278,17 +230,17 @@ export function Header({ settings }: HeaderProps) {
                   onMouseEnter={() => handleMouseEnter('services')}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <div className="bg-white/98 backdrop-blur-md rounded-2xl shadow-2xl border border-amber-500/25 p-4 overflow-hidden">
+                  <div className="bg-white/98 dark:bg-slate-900/98 backdrop-blur-md rounded-2xl shadow-2xl border border-amber-500/25 p-4 overflow-hidden">
                     <div className="flex items-center justify-between pb-3 mb-2.5 border-b border-amber-500/15">
                       <div className="flex items-center gap-1.5">
-                        <SparklesIcon className="w-4 h-4 text-amber-600" />
-                        <span className="text-xs font-bold uppercase tracking-wider text-amber-900">
+                        <SparklesIcon className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                        <span className="text-xs font-bold uppercase tracking-wider text-amber-900 dark:text-amber-300">
                           Specialized Cleaning Services
                         </span>
                       </div>
                       <Link
                         href="/services"
-                        className="text-xs font-bold text-amber-700 hover:text-amber-900 hover:underline flex items-center gap-1"
+                        className="text-xs font-bold text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-300 hover:underline flex items-center gap-1"
                       >
                         <span>All Services</span>
                         <ArrowRightIcon className="w-3 h-3" />
@@ -300,23 +252,23 @@ export function Header({ settings }: HeaderProps) {
                         <Link
                           key={idx}
                           href={item.url}
-                          className="group p-3 rounded-xl hover:bg-amber-50/80 transition-all border border-slate-100 hover:border-amber-500/25 flex flex-col justify-between"
+                          className="group p-3 rounded-xl hover:bg-amber-50/80 dark:hover:bg-amber-950/30 transition-all border border-slate-100 dark:border-slate-800 hover:border-amber-500/25 flex flex-col justify-between"
                         >
                           <div>
                             <div className="flex items-center justify-between gap-1 mb-0.5">
-                              <span className="text-xs font-bold text-slate-950 group-hover:text-amber-800 transition-colors">
+                              <span className="text-xs font-bold text-slate-950 dark:text-slate-100 group-hover:text-amber-800 dark:group-hover:text-amber-300 transition-colors">
                                 {item.title}
                               </span>
                               {item.badge && (
-                                <span className="text-[10px] font-semibold text-amber-800 bg-amber-100/90 px-1.5 py-0.5 rounded flex-shrink-0">
+                                <span className="text-[10px] font-semibold text-amber-800 dark:text-amber-300 bg-amber-100/90 dark:bg-amber-900/50 px-1.5 py-0.5 rounded flex-shrink-0">
                                   {item.badge}
                                 </span>
                               )}
                             </div>
-                            <span className="text-[11px] font-medium text-amber-700/90 block mb-0.5">
+                            <span className="text-[11px] font-medium text-amber-700/90 dark:text-amber-400/90 block mb-0.5">
                               {item.subtitle}
                             </span>
-                            <span className="text-[11px] text-slate-500 leading-snug block">
+                            <span className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug block">
                               {item.desc}
                             </span>
                           </div>
@@ -325,16 +277,16 @@ export function Header({ settings }: HeaderProps) {
                     </div>
 
                     {/* Commercial AMC Callout */}
-                    <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs bg-slate-50/70 p-2.5 rounded-xl">
+                    <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs bg-slate-50/70 dark:bg-slate-800/50 p-2.5 rounded-xl">
                       <div className="flex items-center gap-2">
-                        <ShieldCheckIcon className="w-4 h-4 text-amber-600 flex-shrink-0" />
-                        <span className="font-semibold text-slate-800">
+                        <ShieldCheckIcon className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+                        <span className="font-semibold text-slate-800 dark:text-slate-200">
                           Commercial AMC & Corporate Contracts
                         </span>
                       </div>
                       <Link
                         href="/#commercial-contracts"
-                        className="font-bold text-amber-700 hover:text-amber-900 hover:underline"
+                        className="font-bold text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-300 hover:underline"
                       >
                         Learn More &rarr;
                       </Link>
@@ -355,14 +307,14 @@ export function Header({ settings }: HeaderProps) {
                 onClick={() => setActiveDropdown(activeDropdown === 'about' ? null : 'about')}
                 className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
                   pathname === '/about' || activeDropdown === 'about'
-                    ? 'text-amber-900 bg-amber-50/80 font-bold'
-                    : 'text-slate-700 hover:text-amber-700 hover:bg-amber-50/60'
+                    ? 'text-amber-900 bg-amber-50/80 dark:text-amber-300 dark:bg-amber-950/40 font-bold'
+                    : 'text-slate-700 dark:text-slate-200 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-amber-50/60 dark:hover:bg-amber-950/30'
                 }`}
                 aria-expanded={activeDropdown === 'about'}
               >
                 <span>About Us</span>
                 <ChevronDownIcon
-                  className={`w-3.5 h-3.5 text-amber-600 transition-transform duration-200 ${
+                  className={`w-3.5 h-3.5 text-amber-600 dark:text-amber-400 transition-transform duration-200 ${
                     activeDropdown === 'about' ? 'rotate-180' : ''
                   }`}
                 />
@@ -375,17 +327,17 @@ export function Header({ settings }: HeaderProps) {
                   onMouseEnter={() => handleMouseEnter('about')}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <div className="bg-white/98 backdrop-blur-md rounded-2xl shadow-2xl border border-amber-500/25 p-3 space-y-1">
+                  <div className="bg-white/98 dark:bg-slate-900/98 backdrop-blur-md rounded-2xl shadow-2xl border border-amber-500/25 p-3 space-y-1">
                     {ABOUT_MENU.map((item, idx) => (
                       <Link
                         key={idx}
                         href={item.url}
-                        className="group flex flex-col p-2.5 rounded-xl hover:bg-amber-50/80 transition-all border border-transparent hover:border-amber-500/20"
+                        className="group flex flex-col p-2.5 rounded-xl hover:bg-amber-50/80 dark:hover:bg-amber-950/30 transition-all border border-transparent hover:border-amber-500/20"
                       >
-                        <span className="text-xs font-bold text-slate-900 group-hover:text-amber-800 transition-colors">
+                        <span className="text-xs font-bold text-slate-900 dark:text-slate-100 group-hover:text-amber-800 dark:group-hover:text-amber-300 transition-colors">
                           {item.title}
                         </span>
-                        <span className="text-[11px] text-slate-500 leading-tight mt-0.5">
+                        <span className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5">
                           {item.desc}
                         </span>
                       </Link>
@@ -395,25 +347,13 @@ export function Header({ settings }: HeaderProps) {
               )}
             </div>
 
-            {/* Gallery */}
-            <Link
-              href="/gallery"
-              className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
-                pathname === '/gallery'
-                  ? 'text-amber-900 bg-amber-50/80 font-bold border-b-2 border-amber-500 shadow-2xs'
-                  : 'text-slate-700 hover:text-amber-700 hover:bg-amber-50/60'
-              }`}
-            >
-              Gallery
-            </Link>
-
             {/* Contact */}
             <Link
               href="/contact"
               className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
                 pathname === '/contact'
-                  ? 'text-amber-900 bg-amber-50/80 font-bold border-b-2 border-amber-500 shadow-2xs'
-                  : 'text-slate-700 hover:text-amber-700 hover:bg-amber-50/60'
+                  ? 'text-amber-900 bg-amber-50/80 dark:text-amber-300 dark:bg-amber-950/40 font-bold border-b-2 border-amber-500 shadow-2xs'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-amber-50/60 dark:hover:bg-amber-950/30'
               }`}
             >
               Contact
@@ -425,9 +365,9 @@ export function Header({ settings }: HeaderProps) {
             <a
               href={telHref}
               onClick={() => trackPhoneCallClick('header_nav')}
-              className="hidden xl:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 hover:text-amber-700 hover:bg-amber-50/60 transition-colors whitespace-nowrap"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-amber-50/60 dark:hover:bg-amber-950/30 transition-colors whitespace-nowrap"
             >
-              <PhoneIcon className="w-3.5 h-3.5 text-amber-600" />
+              <PhoneIcon className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
               <span>{phone}</span>
             </a>
 
@@ -449,11 +389,49 @@ export function Header({ settings }: HeaderProps) {
             <ThemeToggle />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-xl text-slate-700 hover:text-slate-950 hover:bg-slate-100 border border-slate-200 transition-colors"
+              className="p-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-colors"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <CloseIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. CONCIERGE SUB-BAR: Positioned UNDER the Company Name & Logo */}
+      <div className="bg-slate-950 text-slate-300 text-xs py-2 px-4 sm:px-8 border-b border-amber-500/20">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+          {/* Left: Direct Phone Concierge & Working Hours */}
+          <div className="flex items-center gap-3 sm:gap-6 text-slate-300">
+            <a
+              href={telHref}
+              onClick={() => trackPhoneCallClick('top_bar')}
+              className="inline-flex items-center gap-1.5 text-slate-200 hover:text-amber-400 transition-colors font-medium whitespace-nowrap"
+            >
+              <PhoneIcon className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+              <span>Tel: <strong className="text-white">{phone}</strong></span>
+            </a>
+
+            <div className="hidden sm:inline-flex items-center gap-1.5 text-slate-400 whitespace-nowrap">
+              <ClockIcon className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+              <span>{workingHours}</span>
+            </div>
+
+            <div className="hidden xl:inline-flex items-center gap-1.5 text-[11px] font-semibold text-amber-300 bg-amber-950/60 border border-amber-500/30 px-2.5 py-0.5 rounded-full whitespace-nowrap">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
+              <span>Aspin Commercial Tower, Sheikh Zayed Rd</span>
+            </div>
+          </div>
+
+          {/* Right: Quick Action Buttons (Get a Quote & Free Inspection) */}
+          <div className="flex items-center gap-2.5 flex-shrink-0">
+            <Link
+              href="/quote"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-amber-300 hover:text-slate-950 bg-amber-500/10 hover:bg-amber-400 border border-amber-500/30 hover:border-amber-400 transition-all whitespace-nowrap"
+            >
+              <span>Get a Quote</span>
+              <ArrowRightIcon className="w-3 h-3" />
+            </Link>
           </div>
         </div>
       </div>
@@ -559,19 +537,6 @@ export function Header({ settings }: HeaderProps) {
                 </div>
               )}
             </div>
-
-            {/* Gallery */}
-            <Link
-              href="/gallery"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
-                pathname === '/gallery'
-                  ? 'bg-amber-50 text-amber-900 font-bold border-l-4 border-amber-500'
-                  : 'text-slate-700 hover:bg-slate-50'
-              }`}
-            >
-              Gallery (Transformations & Videos)
-            </Link>
 
             {/* Contact */}
             <Link

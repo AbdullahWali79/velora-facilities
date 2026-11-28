@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Playfair_Display, Manrope } from 'next/font/google'
 import './globals.css'
 import { getSiteSettings, getHeader, getFooter, getTrackingSettings } from '@/lib/cms'
 import { Header } from '@/components/Header'
@@ -11,14 +11,16 @@ import { LuxuryEffects } from '@/components/LuxuryEffects'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const playfair = Playfair_Display({
+  variable: '--font-playfair',
   subsets: ['latin'],
+  display: 'swap',
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const manrope = Manrope({
+  variable: '--font-manrope',
   subsets: ['latin'],
+  display: 'swap',
 })
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -129,7 +131,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50 text-slate-900 flex flex-col min-h-screen`}>
+      <body className={`${manrope.variable} ${playfair.variable} font-sans antialiased bg-slate-50 text-slate-900 flex flex-col min-h-screen`}>
         <LuxuryEffects />
         <TrackingScripts settings={trackingSettings} />
         <Header settings={siteSettings} headerData={headerData} />

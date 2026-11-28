@@ -54,7 +54,6 @@ export const DEFAULT_HEADER = {
     { label: 'Home', url: '/' },
     { label: 'Services', url: '/services' },
     { label: 'About Us', url: '/about' },
-    { label: 'Gallery', url: '/gallery' },
     { label: 'Contact', url: '/contact' },
   ],
   ctaButton: {
@@ -106,13 +105,13 @@ export const DEFAULT_FOOTER = {
 export const DEFAULT_HOMEPAGE = {
   heroBanners: [
     {
-      badge: 'Velora Elite — Premium Cleaning & Surface Care Dubai',
-      headline: 'A Higher Standard of Clean for Luxury UAE Properties',
+      badge: 'Velora Elite — Luxury Cleaning Dubai',
+      headline: 'Exceptional Cleaning. Elevated Living.',
       subheadline:
-        'Specialized marble polishing, kitchen hood & duct degreasing, post-construction handover, and hospital-grade villa deep cleaning across Dubai. Headquartered at Aspin Commercial Tower, Sheikh Zayed Road.',
+        'Bespoke surface care, Italian marble crystallization, and hospital-grade deep sanitization for Dubai’s finest residences and executive facilities. Headquartered at Aspin Commercial Tower, Sheikh Zayed Road.',
       primaryCtaText: 'Book a Free Inspection',
       primaryCtaUrl: '/book?type=inspection',
-      secondaryCtaText: 'Request a Custom Quote',
+      secondaryCtaText: 'Get a Quote',
       secondaryCtaUrl: '/quote',
     },
   ],
@@ -335,56 +334,8 @@ export const DEFAULT_SERVICES: ServiceItem[] = [
   },
 ]
 
-export const DEFAULT_GALLERY: GalleryItem[] = [
-  {
-    id: 1,
-    title: 'Crema Marfil Marble Grinding & Mirror Crystallization',
-    location: 'Signature Villa, Palm Jumeirah',
-    description: 'Restoration of 450 sq. meters of dull, traffic-etched Italian Crema Marfil marble. Sequential diamond grinding removed surface micro-scratches, followed by Italian thermal crystallization to achieve an impenetrable wet-look mirror reflection.',
-    serviceTitle: 'Marble Polishing',
-    isFeatured: true,
-  },
-  {
-    id: 2,
-    title: 'Commercial Restaurant Kitchen Hood & Exhaust Duct Degreasing',
-    location: 'Fine Dining Restaurant, DIFC Dubai',
-    description: 'Exhaustive removal of heavy accumulated grease and carbonized cooking deposits across 35 meters of commercial kitchen exhaust ducting and blower fans, certified to Dubai Civil Defence standards.',
-    serviceTitle: 'Kitchen Hood & Duct Cleaning',
-    isFeatured: true,
-  },
-  {
-    id: 3,
-    title: 'Post-Construction Handover & Architectural Glazing',
-    location: 'Golf Place Mansion, Dubai Hills Estate',
-    description: 'Post-renovation deep cleaning eliminating airborne drywall dust, contractor paint overspray, and adhesive residue from floor-to-ceiling double-glazed architectural glass, followed by deep floor buffing.',
-    serviceTitle: 'Post-Construction Cleaning',
-    isFeatured: true,
-  },
-  {
-    id: 4,
-    title: 'Italian Velvet Sofa & Silk Rug Deep Steam Extraction',
-    location: 'Luxury Penthouse, Downtown Dubai',
-    description: 'Hot-water thermodynamic steam extraction utilizing pH-balanced organic solutions to lift stubborn stains and allergens from imported velvet upholstery and delicate silk rugs without fiber stiffening.',
-    serviceTitle: 'Sofa & Carpet Cleaning',
-    isFeatured: true,
-  },
-  {
-    id: 5,
-    title: 'Commercial Kitchen Deep Sanitization & Floor Restoration',
-    location: 'Cloud Kitchen Facility, Business Bay',
-    description: 'Turnkey steam decontamination of commercial cooklines, prep tables, walk-in chillers, and heavy rotary machine scrubbing of quarry tile anti-slip kitchen flooring.',
-    serviceTitle: 'Restaurant Cleaning',
-    isFeatured: true,
-  },
-  {
-    id: 6,
-    title: 'Exterior Architectural Facade & Terrace Descaling',
-    location: 'Private Residence, Emirates Hills',
-    description: 'High-pressure wash and mineral descaling of limestone pool terrace, exterior glass balustrades, and shaded pergolas, removing desert dust buildup and hard water stains.',
-    serviceTitle: 'Villa Deep Cleaning',
-    isFeatured: true,
-  },
-]
+// Authenticity Policy: Zero fabricated projects for newly established company
+export const DEFAULT_GALLERY: GalleryItem[] = []
 export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
   {
     id: 1,
