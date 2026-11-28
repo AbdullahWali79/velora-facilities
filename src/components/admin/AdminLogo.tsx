@@ -10,12 +10,11 @@ export const AdminLogo: React.FC = () => {
         gap: '12px',
         padding: '4px 0',
         textDecoration: 'none',
-        maxHeight: '44px',
-        maxWidth: '100%',
-        overflow: 'visible',
+        lineHeight: 1,
       }}
       title="Velora Elite Enterprise Portal"
     >
+      {/* Luxury Circular Emblem */}
       <div
         style={{
           width: '38px',
@@ -45,40 +44,49 @@ export const AdminLogo: React.FC = () => {
           priority
         />
       </div>
+
+      {/* Brand Identity & Portal Details */}
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          lineHeight: 1.15,
+          gap: '2px',
           whiteSpace: 'nowrap',
         }}
+        className="velora-brand-text-block"
       >
-        <span
+        <div
           style={{
             fontSize: '16px',
             fontWeight: 800,
-            letterSpacing: '0.08em',
-            color: '#FFFFFF',
-            fontFamily: 'Manrope, -apple-system, BlinkMacSystemFont, sans-serif',
+            letterSpacing: '0.07em',
+            color: '#101C29',
+            fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif",
+            display: 'flex',
+            alignItems: 'center',
+            gap: '5px',
+            lineHeight: 1.1,
           }}
           className="admin-brand-title"
         >
-          VELORA <span style={{ color: '#C5A059' }}>ELITE</span>
-        </span>
-        <span
+          <span>VELORA</span>
+          <span style={{ color: '#C5A059' }}>ELITE</span>
+        </div>
+        <div
           style={{
-            fontSize: '9px',
+            fontSize: '9.5px',
             fontWeight: 700,
-            letterSpacing: '0.22em',
-            color: '#94A3B8',
+            letterSpacing: '0.2em',
+            color: '#64748B',
             textTransform: 'uppercase',
-            marginTop: '2px',
+            fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif",
+            lineHeight: 1,
           }}
           className="admin-brand-subtitle"
         >
-          Business Portal
-        </span>
+          Business Management Portal
+        </div>
       </div>
     </div>
   )

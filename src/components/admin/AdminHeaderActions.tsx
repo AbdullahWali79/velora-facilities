@@ -18,6 +18,29 @@ export const AdminHeaderActions: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  // Ensure sidebar in collapsed mode remains interactive without browser inert blocking
+  useEffect(() => {
+    const handleInert = () => {
+      if (typeof window !== 'undefined' && window.innerWidth > 1024) {
+        const aside = document.querySelector('aside.nav')
+        if (aside && aside.hasAttribute('inert')) {
+          aside.removeAttribute('inert')
+        }
+      }
+    }
+    handleInert()
+    const aside = document.querySelector('aside.nav')
+    const observer = new MutationObserver(handleInert)
+    if (aside) {
+      observer.observe(aside, { attributes: true, attributeFilter: ['inert'] })
+    }
+    const interval = setInterval(handleInert, 500)
+    return () => {
+      observer.disconnect()
+      clearInterval(interval)
+    }
+  }, [])
+
   return (
     <div
       style={{

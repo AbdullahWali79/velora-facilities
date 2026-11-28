@@ -7,31 +7,86 @@ export const AdminIcon: React.FC = () => {
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        width: '34px',
-        height: '34px',
-        borderRadius: '50%',
-        overflow: 'hidden',
-        border: '1.5px solid #C5A059',
-        boxShadow: '0 2px 6px rgba(197, 160, 89, 0.35)',
-        backgroundColor: '#101C29',
-        flexShrink: 0,
+        gap: '12px',
+        textDecoration: 'none',
+        lineHeight: 1,
       }}
-      title="Velora Elite Facilities Management"
+      title="Velora Elite Enterprise Portal"
     >
-      <Image
-        src="/images/logo.jpg"
-        alt="Velora Elite Emblem"
-        width={34}
-        height={34}
+      {/* Luxury Circular Emblem */}
+      <div
         style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          display: 'block',
+          width: '36px',
+          height: '36px',
+          borderRadius: '50%',
+          overflow: 'hidden',
+          border: '1.5px solid #C5A059',
+          boxShadow: '0 2px 8px rgba(197, 160, 89, 0.35)',
+          backgroundColor: '#101C29',
+          flexShrink: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
-        priority
-      />
+      >
+        <Image
+          src="/images/logo.jpg"
+          alt="Velora Elite Emblem"
+          width={36}
+          height={36}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+          }}
+          priority
+        />
+      </div>
+
+      {/* Brand Identity & Portal Details */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          gap: '2px',
+          whiteSpace: 'nowrap',
+        }}
+        className="velora-brand-text-block"
+      >
+        <div
+          style={{
+            fontSize: '15.5px',
+            fontWeight: 800,
+            letterSpacing: '0.06em',
+            color: '#101C29',
+            fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif",
+            display: 'flex',
+            alignItems: 'center',
+            gap: '5px',
+            lineHeight: 1.1,
+          }}
+          className="admin-brand-title"
+        >
+          <span>VELORA</span>
+          <span style={{ color: '#C5A059' }}>ELITE</span>
+        </div>
+        <div
+          style={{
+            fontSize: '9.5px',
+            fontWeight: 700,
+            letterSpacing: '0.18em',
+            color: '#64748B',
+            textTransform: 'uppercase',
+            fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif",
+            lineHeight: 1,
+          }}
+          className="admin-brand-subtitle"
+        >
+          Business Management Portal
+        </div>
+      </div>
     </div>
   )
 }
