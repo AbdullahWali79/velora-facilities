@@ -1,23 +1,37 @@
 import React from 'react'
+import Image from 'next/image'
 
 export const AdminIcon: React.FC = () => {
   return (
     <div
       style={{
-        width: '28px',
-        height: '28px',
-        borderRadius: '6px',
-        background: 'linear-gradient(135deg, #D4AF37 0%, #AA8010 100%)',
-        display: 'flex',
+        display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: '#0B1B2B',
-        fontWeight: 800,
-        fontSize: '16px',
-        fontFamily: 'serif',
+        width: '34px',
+        height: '34px',
+        borderRadius: '50%',
+        overflow: 'hidden',
+        border: '1.5px solid #C5A059',
+        boxShadow: '0 2px 6px rgba(197, 160, 89, 0.35)',
+        backgroundColor: '#101C29',
+        flexShrink: 0,
       }}
+      title="Velora Elite Facilities Management"
     >
-      V
+      <Image
+        src="/images/logo.jpg"
+        alt="Velora Elite Emblem"
+        width={34}
+        height={34}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          display: 'block',
+        }}
+        priority
+      />
     </div>
   )
 }

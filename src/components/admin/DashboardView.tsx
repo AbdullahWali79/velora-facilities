@@ -12,108 +12,205 @@ type DashboardViewProps = {
 }
 
 export async function DashboardView({ payload, user }: DashboardViewProps) {
-  // 1. Fetch live database records for KPIs and Recent Enquiries
+  // 1. Fetch live database records for KPIs and Analytics
   let totalBookings = 0
   let totalQuotes = 0
   let totalInspections = 0
   let pendingLeads = 0
+  let confirmedAppointments = 0
+  let completedRequests = 0
+
   let recentEnquiries: Array<{
     id: string | number
     customer: string
+    contactInfo: string
     service: string
-    requestType: 'Quotation' | 'Booking' | 'Inspection' | 'Contact'
+    requestType: 'Quotation' | 'Booking' | 'Inspection' | 'Enquiry'
     date: string
     status: string
+    rawDate: number
     link: string
   }> = []
 
+  // Dynamic Service Distribution Map
+  const serviceDistributionMap: Record<string, number> = {}
+
   try {
-    // Booking requests
+    // 1. Fetch Bookings (limit: 100 for comprehensive calculation)
     const bookingsRes = await payload.find({
       collection: 'booking-requests',
       sort: '-createdAt',
-      limit: 10,
+      limit: 100,
     })
     totalBookings = bookingsRes.totalDocs || 0
 
-    // Inspection requests count (bookings where special_instructions or time slot notes mention inspection)
-    totalInspections = bookingsRes.docs.filter((b) =>
-      b.specialInstructions?.toLowerCase().includes('inspection')
-    ).length
+    // Fetch Services catalog to map IDs to titles if needed
+    const servicesCatalog = await payload.find({
+      collection: 'services',
+      limit: 30,
+    })
+    const serviceTitleById: Record<string | number, string> = {}
+    servicesCatalog.docs.forEach((s) => {
+      serviceTitleById[s.id] = s.title
+    })
 
-    // Pending bookings
-    const pendingBookings = bookingsRes.docs.filter(
-      (b) => b.bookingStatus === 'pending_confirmation'
-    ).length
+    // Process Bookings
+    bookingsRes.docs.forEach((b) => {
+      // Inspection detector
+      const isInsp =
+        b.specialInstructions?.toLowerCase().includes('inspection') ||
+        (typeof b.service === 'object' &&
+          b.service &&
+          (b.service as { title?: string }).title?.toLowerCase().includes('inspection'))
 
-    // Quotation requests
+      if (isInsp) {
+        totalInspections++
+      }
+
+      // Status counters
+      if (b.bookingStatus === 'pending_confirmation') {
+        pendingLeads++
+      } else if (b.bookingStatus === 'confirmed') {
+        confirmedAppointments++
+      } else if (b.bookingStatus === 'completed') {
+        completedRequests++
+      }
+
+      // Service distribution
+      let svcTitle = 'Luxury Cleaning Service'
+      if (typeof b.service === 'object' && b.service && (b.service as { title?: string }).title) {
+        svcTitle = (b.service as { title?: string }).title!
+      } else if (typeof b.service === 'number' || typeof b.service === 'string') {
+        svcTitle = serviceTitleById[b.service] || `Service #${b.service}`
+      }
+      serviceDistributionMap[svcTitle] = (serviceDistributionMap[svcTitle] || 0) + 1
+    })
+
+    // 2. Fetch Quotations (limit: 100)
     const quotesRes = await payload.find({
       collection: 'quote-requests',
       sort: '-createdAt',
-      limit: 10,
+      limit: 100,
     })
     totalQuotes = quotesRes.totalDocs || 0
-    const pendingQuotes = quotesRes.docs.filter((q) => q.status === 'new').length
 
-    // Contact messages
+    quotesRes.docs.forEach((q) => {
+      if (q.status === 'new') {
+        pendingLeads++
+      } else if (q.status === 'accepted') {
+        confirmedAppointments++
+      }
+
+      let svcTitle = 'Custom Quotation Scope'
+      if (typeof q.service === 'object' && q.service && (q.service as { title?: string }).title) {
+        svcTitle = (q.service as { title?: string }).title!
+      } else if (typeof q.service === 'number' || typeof q.service === 'string') {
+        svcTitle = serviceTitleById[q.service] || `Service #${q.service}`
+      } else if (q.propertyType) {
+        svcTitle = `${q.propertyType.toUpperCase()} Technical Quote`
+      }
+      serviceDistributionMap[svcTitle] = (serviceDistributionMap[svcTitle] || 0) + 1
+    })
+
+    // 3. Fetch Contact Messages (limit: 50)
     const contactsRes = await payload.find({
       collection: 'contact-messages',
       sort: '-createdAt',
-      limit: 10,
+      limit: 50,
     })
-    const unreadContacts = contactsRes.docs.filter((c) => c.status === 'unread').length
+    contactsRes.docs.forEach((c) => {
+      if (c.status === 'unread') {
+        pendingLeads++
+      } else if (c.status === 'resolved') {
+        completedRequests++
+      }
+    })
 
-    pendingLeads = pendingBookings + pendingQuotes + unreadContacts
-
-    // Combine recent enquiries
-    const quoteRows = quotesRes.docs.map((doc) => ({
+    // 4. Transform Recent Enquiries Table
+    const quoteRows = quotesRes.docs.slice(0, 5).map((doc) => ({
       id: doc.id,
       customer: doc.fullName || 'Anonymous Customer',
-      service: typeof doc.service === 'object' && doc.service ? (doc.service as { title?: string }).title || 'Service Request' : 'Custom Quotation',
+      contactInfo: doc.phone || doc.email || '—',
+      service:
+        typeof doc.service === 'object' && doc.service
+          ? (doc.service as { title?: string }).title || 'Quotation Request'
+          : doc.propertyType ? `${doc.propertyType.toUpperCase()} Scope` : 'Tailored Estimate',
       requestType: 'Quotation' as const,
-      date: new Date(doc.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+      date: new Date(doc.createdAt).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      }),
       status: doc.status || 'new',
       rawDate: new Date(doc.createdAt).getTime(),
       link: `/admin/collections/quote-requests/${doc.id}`,
     }))
 
-    const bookingRows = bookingsRes.docs.map((doc) => {
+    const bookingRows = bookingsRes.docs.slice(0, 5).map((doc) => {
       const isInsp = doc.specialInstructions?.toLowerCase().includes('inspection')
       return {
         id: doc.id,
         customer: doc.customerName || 'Anonymous Customer',
-        service: typeof doc.service === 'object' && doc.service ? (doc.service as { title?: string }).title || 'Booked Service' : 'Standard Service',
+        contactInfo: doc.phone || doc.email || '—',
+        service:
+          typeof doc.service === 'object' && doc.service
+            ? (doc.service as { title?: string }).title || 'Specialized Service'
+            : typeof doc.service === 'number'
+            ? serviceTitleById[doc.service] || `Service #${doc.service}`
+            : 'Specialized Service',
         requestType: (isInsp ? 'Inspection' : 'Booking') as 'Booking' | 'Inspection',
-        date: new Date(doc.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+        date: new Date(doc.createdAt).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        }),
         status: doc.bookingStatus || 'pending_confirmation',
         rawDate: new Date(doc.createdAt).getTime(),
         link: `/admin/collections/booking-requests/${doc.id}`,
       }
     })
 
-    const contactRows = contactsRes.docs.map((doc) => ({
+    const contactRows = contactsRes.docs.slice(0, 5).map((doc) => ({
       id: doc.id,
       customer: doc.fullName || 'Anonymous Customer',
-      service: doc.subject || 'General Inquiry',
-      requestType: 'Contact' as const,
-      date: new Date(doc.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+      contactInfo: doc.email || doc.phone || '—',
+      service: doc.subject || 'Customer Enquiry',
+      requestType: 'Enquiry' as const,
+      date: new Date(doc.createdAt).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      }),
       status: doc.status || 'unread',
       rawDate: new Date(doc.createdAt).getTime(),
       link: `/admin/collections/contact-messages/${doc.id}`,
     }))
 
-    recentEnquiries = [...quoteRows, ...bookingRows, ...contactRows]
+    recentEnquiries = [...bookingRows, ...quoteRows, ...contactRows]
       .sort((a, b) => b.rawDate - a.rawDate)
-      .slice(0, 7)
+      .slice(0, 6)
   } catch (err) {
     console.warn('[Dashboard] Error querying live database:', (err as Error)?.message)
   }
 
+  // Calculate live database service percentages
+  const totalInquiries = totalBookings + totalQuotes
+  const serviceDistribution = Object.entries(serviceDistributionMap)
+    .map(([title, count]) => ({
+      title,
+      count,
+      percentage: totalInquiries > 0 ? Math.round((count / totalInquiries) * 100) : 0,
+    }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 4)
+
+  // Status badge styling helper
   const getStatusBadgeStyle = (status: string) => {
     switch (status.toLowerCase()) {
       case 'new':
       case 'unread':
       case 'pending':
+      case 'pending_confirmation':
         return {
           backgroundColor: '#FEF3C7',
           color: '#92400E',
@@ -121,6 +218,7 @@ export async function DashboardView({ payload, user }: DashboardViewProps) {
         }
       case 'confirmed':
       case 'approved':
+      case 'won':
       case 'resolved':
         return {
           backgroundColor: '#DEF7EC',
@@ -131,97 +229,158 @@ export async function DashboardView({ payload, user }: DashboardViewProps) {
       case 'quoted':
       case 'followed_up':
         return {
-          backgroundColor: '#E1EFFE',
-          color: '#1E429F',
-          border: '1px solid #B4C6FC',
+          backgroundColor: '#E0E7FF',
+          color: '#3730A3',
+          border: '1px solid #C7D2FE',
+        }
+      case 'completed':
+        return {
+          backgroundColor: '#ECFDF5',
+          color: '#065F46',
+          border: '1px solid #A7F3D0',
         }
       default:
         return {
-          backgroundColor: '#F3F4F6',
-          color: '#374151',
-          border: '1px solid #E5E7EB',
+          backgroundColor: '#F1F5F9',
+          color: '#475569',
+          border: '1px solid #E2E8F0',
         }
     }
   }
 
+  // Request Type styling helper
   const getTypeBadgeStyle = (type: string) => {
     switch (type) {
-      case 'Quotation':
-        return { backgroundColor: '#F0FDF4', color: '#166534', border: '1px solid #BBF7D0' }
-      case 'Inspection':
-        return { backgroundColor: '#FFFBEB', color: '#B45309', border: '1px solid #FDE68A' }
       case 'Booking':
         return { backgroundColor: '#EFF6FF', color: '#1E40AF', border: '1px solid #BFDBFE' }
+      case 'Inspection':
+        return { backgroundColor: '#FFFBEB', color: '#B45309', border: '1px solid #FDE68A' }
+      case 'Quotation':
+        return { backgroundColor: '#F0FDF4', color: '#166534', border: '1px solid #BBF7D0' }
       default:
-        return { backgroundColor: '#F5F3FF', color: '#5B21B6', border: '1px solid #DDD6FE' }
+        return { backgroundColor: '#F8FAFC', color: '#475569', border: '1px solid #E2E8F0' }
     }
   }
 
-  return (
-    <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '24px 32px 48px' }}>
-      {/* Top Header Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#64748B', marginBottom: '6px' }}>
-            <span>Overview</span>
-            <span>/</span>
-            <span style={{ color: '#0B1B2B', fontWeight: 600 }}>Dashboard</span>
-          </div>
-          <h1 style={{ fontSize: '28px', fontWeight: 800, color: '#0B1B2B', margin: 0, fontFamily: 'serif' }}>
-            Business Overview
-          </h1>
-          <p style={{ margin: '4px 0 0', fontSize: '14px', color: '#64748B' }}>
-            Manage your website, bookings and customer enquiries.
-          </p>
-        </div>
+  // Format today's date in Dubai
+  const todayDubai = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Dubai',
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date())
 
-        {/* User Pill */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+  return (
+    <div
+      style={{
+        maxWidth: '1440px',
+        margin: '0 auto',
+        padding: '24px 32px 64px',
+        fontFamily: "'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      }}
+    >
+      {/* 1. EXECUTIVE DASHBOARD HEADER */}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '16px',
+          paddingBottom: '20px',
+          marginBottom: '24px',
+          borderBottom: '1px solid #E2E8F0',
+        }}
+      >
+        <div>
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '10px',
-              backgroundColor: '#FFFFFF',
-              padding: '6px 14px',
-              borderRadius: '9999px',
-              border: '1px solid #E2E8F0',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+              gap: '8px',
+              fontSize: '12.5px',
+              color: '#64748B',
+              marginBottom: '4px',
             }}
           >
-            <div
-              style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '50%',
-                backgroundColor: '#D4AF37',
-                color: '#0B1B2B',
-                fontWeight: 700,
-                fontSize: '14px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              {user?.name ? user.name[0].toUpperCase() : 'A'}
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontSize: '13px', fontWeight: 600, color: '#0B1B2B' }}>
-                {user?.name || user?.email || 'Administrator'}
-              </span>
-              <span style={{ fontSize: '10px', color: '#D4AF37', fontWeight: 700, textTransform: 'uppercase' }}>
-                {user?.role || 'Admin'}
-              </span>
-            </div>
+            <span>Workspace</span>
+            <span style={{ color: '#CBD5E1' }}>/</span>
+            <span style={{ color: '#101C29', fontWeight: 600 }}>Business Overview</span>
           </div>
+          <h1
+            style={{
+              fontSize: '26px',
+              fontWeight: 800,
+              color: '#101C29',
+              margin: '0 0 4px 0',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Business Operations Overview
+          </h1>
+          <p style={{ margin: 0, fontSize: '13.5px', color: '#64748B' }}>
+            {user?.name ? `${user.name} | ` : ''}Real-time operations management for bookings, quotations, and inspections across Dubai.
+          </p>
+        </div>
+
+        {/* Header Right Actions & Timestamp */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #E2E8F0',
+              borderRadius: '10px',
+              padding: '8px 14px',
+              fontSize: '12.5px',
+              color: '#475569',
+              boxShadow: '0 1px 2px rgba(16, 28, 41, 0.04)',
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C5A059" strokeWidth="2.5">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+            <span style={{ fontWeight: 600, color: '#101C29' }}>{todayDubai}</span>
+            <span style={{ color: '#94A3B8', fontSize: '11px' }}>(Dubai, UTC+4)</span>
+          </div>
+
+          <Link
+            href="/admin/collections/booking-requests/create"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '9px 16px',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #C5A059 0%, #AA8010 100%)',
+              color: '#101C29',
+              fontWeight: 700,
+              fontSize: '13px',
+              textDecoration: 'none',
+              boxShadow: '0 2px 6px rgba(197, 160, 89, 0.3)',
+              transition: 'all 0.15s ease',
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            <span>New Booking</span>
+          </Link>
         </div>
       </div>
 
-      {/* KPI Cards Row (4 Columns matching wireframe) */}
+      {/* 2. KPI METRIC CARDS GRID (4 Specialized Business Cards) */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
           gap: '20px',
           marginBottom: '28px',
         }}
@@ -233,77 +392,115 @@ export async function DashboardView({ payload, user }: DashboardViewProps) {
             borderRadius: '16px',
             padding: '24px',
             border: '1px solid #E2E8F0',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
+            boxShadow: '0 2px 4px rgba(16, 28, 41, 0.03)',
             display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'space-between',
-            alignItems: 'flex-start',
+            position: 'relative',
+            overflow: 'hidden',
           }}
         >
-          <div>
-            <span style={{ fontSize: '14px', fontWeight: 600, color: '#64748B' }}>Total Bookings</span>
-            <div style={{ fontSize: '36px', fontWeight: 800, color: '#0B1B2B', marginTop: '12px' }}>
-              {totalBookings}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <span style={{ fontSize: '13px', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Total Bookings
+              </span>
+              <div style={{ fontSize: '36px', fontWeight: 800, color: '#101C29', marginTop: '10px', lineHeight: 1 }}>
+                {totalBookings}
+              </div>
+            </div>
+            {/* Business Icon: Calendar Schedule */}
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '10px',
+                backgroundColor: '#EFF6FF',
+                border: '1px solid #BFDBFE',
+                color: '#1D4ED8',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+                <polyline points="9 14 11 16 15 12" />
+              </svg>
             </div>
           </div>
-          <Link
-            href="/admin/collections/booking-requests/create"
-            title="Create Booking"
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
-              backgroundColor: '#FEF3C7',
-              color: '#B45309',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textDecoration: 'none',
-              fontWeight: 700,
-              fontSize: '18px',
-            }}
-          >
-            +
-          </Link>
+
+          <div style={{ marginTop: '20px', paddingTop: '14px', borderTop: '1px solid #F1F5F9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '12px', color: '#64748B' }}>
+              {confirmedAppointments} confirmed &middot; {completedRequests} completed
+            </span>
+            <Link
+              href="/admin/collections/booking-requests"
+              style={{ fontSize: '12px', fontWeight: 700, color: '#C5A059', textDecoration: 'none' }}
+            >
+              View Bookings &rarr;
+            </Link>
+          </div>
         </div>
 
-        {/* Card 2: Quotations */}
+        {/* Card 2: Total Quotations */}
         <div
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '16px',
             padding: '24px',
             border: '1px solid #E2E8F0',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
+            boxShadow: '0 2px 4px rgba(16, 28, 41, 0.03)',
             display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'space-between',
-            alignItems: 'flex-start',
           }}
         >
-          <div>
-            <span style={{ fontSize: '14px', fontWeight: 600, color: '#64748B' }}>Quotations</span>
-            <div style={{ fontSize: '36px', fontWeight: 800, color: '#0B1B2B', marginTop: '12px' }}>
-              {totalQuotes}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <span style={{ fontSize: '13px', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Quotations
+              </span>
+              <div style={{ fontSize: '36px', fontWeight: 800, color: '#101C29', marginTop: '10px', lineHeight: 1 }}>
+                {totalQuotes}
+              </div>
+            </div>
+            {/* Business Icon: Document Estimate */}
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '10px',
+                backgroundColor: '#F0FDF4',
+                border: '1px solid #BBF7D0',
+                color: '#15803D',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+              </svg>
             </div>
           </div>
-          <Link
-            href="/admin/collections/quote-requests"
-            title="View Quotations"
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
-              backgroundColor: '#FEF3C7',
-              color: '#B45309',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textDecoration: 'none',
-              fontWeight: 700,
-              fontSize: '18px',
-            }}
-          >
-            +
-          </Link>
+
+          <div style={{ marginTop: '20px', paddingTop: '14px', borderTop: '1px solid #F1F5F9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '12px', color: '#64748B' }}>Commercial & Residential scope</span>
+            <Link
+              href="/admin/collections/quote-requests"
+              style={{ fontSize: '12px', fontWeight: 700, color: '#C5A059', textDecoration: 'none' }}
+            >
+              View Quotes &rarr;
+            </Link>
+          </div>
         </div>
 
         {/* Card 3: Free Inspections */}
@@ -313,37 +510,52 @@ export async function DashboardView({ payload, user }: DashboardViewProps) {
             borderRadius: '16px',
             padding: '24px',
             border: '1px solid #E2E8F0',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
+            boxShadow: '0 2px 4px rgba(16, 28, 41, 0.03)',
             display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'space-between',
-            alignItems: 'flex-start',
           }}
         >
-          <div>
-            <span style={{ fontSize: '14px', fontWeight: 600, color: '#64748B' }}>Free Inspections</span>
-            <div style={{ fontSize: '36px', fontWeight: 800, color: '#0B1B2B', marginTop: '12px' }}>
-              {totalInspections}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <span style={{ fontSize: '13px', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Free Inspections
+              </span>
+              <div style={{ fontSize: '36px', fontWeight: 800, color: '#101C29', marginTop: '10px', lineHeight: 1 }}>
+                {totalInspections}
+              </div>
+            </div>
+            {/* Business Icon: Inspection Magnifier / Shield */}
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '10px',
+                backgroundColor: '#FEF3C7',
+                border: '1px solid #FDE68A',
+                color: '#B45309',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                <path d="m11 8 1 2 2 1-2 1-1 2-1-2-2-1 2-1z" />
+              </svg>
             </div>
           </div>
-          <Link
-            href="/admin/collections/booking-requests"
-            title="View Inspections"
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
-              backgroundColor: '#FEF3C7',
-              color: '#B45309',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textDecoration: 'none',
-              fontWeight: 700,
-              fontSize: '18px',
-            }}
-          >
-            +
-          </Link>
+
+          <div style={{ marginTop: '20px', paddingTop: '14px', borderTop: '1px solid #F1F5F9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '12px', color: '#64748B' }}>0 AED on-site assessment</span>
+            <Link
+              href="/admin/collections/booking-requests"
+              style={{ fontSize: '12px', fontWeight: 700, color: '#C5A059', textDecoration: 'none' }}
+            >
+              Filter Leads &rarr;
+            </Link>
+          </div>
         </div>
 
         {/* Card 4: Pending Leads */}
@@ -353,126 +565,161 @@ export async function DashboardView({ payload, user }: DashboardViewProps) {
             borderRadius: '16px',
             padding: '24px',
             border: '1px solid #E2E8F0',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
+            boxShadow: '0 2px 4px rgba(16, 28, 41, 0.03)',
             display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'space-between',
-            alignItems: 'flex-start',
           }}
         >
-          <div>
-            <span style={{ fontSize: '14px', fontWeight: 600, color: '#64748B' }}>Pending Leads</span>
-            <div style={{ fontSize: '36px', fontWeight: 800, color: '#B45309', marginTop: '12px' }}>
-              {pendingLeads}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <span style={{ fontSize: '13px', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Pending Leads
+              </span>
+              <div
+                style={{
+                  fontSize: '36px',
+                  fontWeight: 800,
+                  color: pendingLeads > 0 ? '#B45309' : '#101C29',
+                  marginTop: '10px',
+                  lineHeight: 1,
+                }}
+              >
+                {pendingLeads}
+              </div>
+            </div>
+            {/* Business Icon: Alert Bell */}
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '10px',
+                backgroundColor: pendingLeads > 0 ? '#FFFBEB' : '#F1F5F9',
+                border: pendingLeads > 0 ? '1px solid #FCD34D' : '1px solid #E2E8F0',
+                color: pendingLeads > 0 ? '#D97706' : '#64748B',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
             </div>
           </div>
-          <Link
-            href="/admin/collections/quote-requests"
-            title="Manage Leads"
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
-              backgroundColor: '#FEF3C7',
-              color: '#B45309',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textDecoration: 'none',
-              fontWeight: 700,
-              fontSize: '18px',
-            }}
-          >
-            +
-          </Link>
+
+          <div style={{ marginTop: '20px', paddingTop: '14px', borderTop: '1px solid #F1F5F9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '12px', color: pendingLeads > 0 ? '#B45309' : '#64748B', fontWeight: pendingLeads > 0 ? 600 : 400 }}>
+              {pendingLeads > 0 ? 'Action required by coordinator' : 'All leads reviewed'}
+            </span>
+            <Link
+              href="/admin/collections/quote-requests"
+              style={{ fontSize: '12px', fontWeight: 700, color: '#C5A059', textDecoration: 'none' }}
+            >
+              Take Action &rarr;
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* Middle Section: Lead Analytics (Left) & Quick Actions (Right) */}
+      {/* 3. MIDDLE SECTION: Real Database Analytics & Quick Operations */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: '2fr 1fr',
+          gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)',
           gap: '24px',
           marginBottom: '28px',
         }}
       >
-        {/* Left: Lead Analytics Card */}
+        {/* Left Column: Live Service Demand Analytics */}
         <div
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '16px',
-            padding: '24px',
+            padding: '24px 28px',
             border: '1px solid #E2E8F0',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
+            boxShadow: '0 2px 4px rgba(16, 28, 41, 0.03)',
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
-            <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#0B1B2B', margin: 0 }}>
-              Lead Analytics
-            </h2>
-            <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 500 }}>
-              Live Database Distribution
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <div>
+              <h2 style={{ fontSize: '17px', fontWeight: 700, color: '#101C29', margin: 0 }}>
+                Service Demand Distribution
+              </h2>
+              <p style={{ margin: '3px 0 0', fontSize: '12px', color: '#64748B' }}>
+                Calculated directly from customer booking & quotation records
+              </p>
+            </div>
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: 600,
+                color: '#166534',
+                backgroundColor: '#F0FDF4',
+                border: '1px solid #BBF7D0',
+                padding: '3px 10px',
+                borderRadius: '9999px',
+              }}
+            >
+              Live Database
             </span>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
-                <span style={{ color: '#334155', fontWeight: 500 }}>Italian Marble Polishing & Crystallization</span>
-                <span style={{ color: '#0B1B2B', fontWeight: 700 }}>45%</span>
-              </div>
-              <div style={{ height: '8px', backgroundColor: '#F1F5F9', borderRadius: '4px', overflow: 'hidden' }}>
-                <div style={{ width: '45%', height: '100%', backgroundColor: '#D4AF37' }} />
-              </div>
+          {serviceDistribution.length === 0 ? (
+            <div style={{ padding: '32px 0', textAlign: 'center', color: '#94A3B8', fontSize: '13px' }}>
+              No service inquiry data available yet. Submissions from the website forms will populate distribution bars in real time.
             </div>
-
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
-                <span style={{ color: '#334155', fontWeight: 500 }}>Luxury Villa & Residential Deep Cleaning</span>
-                <span style={{ color: '#0B1B2B', fontWeight: 700 }}>30%</span>
-              </div>
-              <div style={{ height: '8px', backgroundColor: '#F1F5F9', borderRadius: '4px', overflow: 'hidden' }}>
-                <div style={{ width: '30%', height: '100%', backgroundColor: '#0B1B2B' }} />
-              </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+              {serviceDistribution.map((item, idx) => {
+                const barColors = ['#C5A059', '#101C29', '#3B82F6', '#10B981']
+                const color = barColors[idx % barColors.length]
+                return (
+                  <div key={item.title}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px', marginBottom: '6px' }}>
+                      <span style={{ color: '#334155', fontWeight: 600 }}>{item.title}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ color: '#64748B', fontSize: '12px' }}>{item.count} {item.count === 1 ? 'request' : 'requests'}</span>
+                        <span style={{ color: '#101C29', fontWeight: 700 }}>{item.percentage}%</span>
+                      </div>
+                    </div>
+                    <div style={{ height: '8px', backgroundColor: '#F1F5F9', borderRadius: '4px', overflow: 'hidden' }}>
+                      <div
+                        style={{
+                          width: `${Math.max(item.percentage, 4)}%`,
+                          height: '100%',
+                          backgroundColor: color,
+                          borderRadius: '4px',
+                          transition: 'width 0.5s ease',
+                        }}
+                      />
+                    </div>
+                  </div>
+                )
+              })}
             </div>
-
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
-                <span style={{ color: '#334155', fontWeight: 500 }}>Kitchen Exhaust Duct Degreasing & Sanitation</span>
-                <span style={{ color: '#0B1B2B', fontWeight: 700 }}>15%</span>
-              </div>
-              <div style={{ height: '8px', backgroundColor: '#F1F5F9', borderRadius: '4px', overflow: 'hidden' }}>
-                <div style={{ width: '15%', height: '100%', backgroundColor: '#475569' }} />
-              </div>
-            </div>
-
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
-                <span style={{ color: '#334155', fontWeight: 500 }}>Commercial Facility AMC Contracts</span>
-                <span style={{ color: '#0B1B2B', fontWeight: 700 }}>10%</span>
-              </div>
-              <div style={{ height: '8px', backgroundColor: '#F1F5F9', borderRadius: '4px', overflow: 'hidden' }}>
-                <div style={{ width: '10%', height: '100%', backgroundColor: '#94A3B8' }} />
-              </div>
-            </div>
-          </div>
+          )}
         </div>
 
-        {/* Right: Quick Actions Card */}
+        {/* Right Column: Quick Operations Desk */}
         <div
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '16px',
-            padding: '24px',
+            padding: '24px 28px',
             border: '1px solid #E2E8F0',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
+            boxShadow: '0 2px 4px rgba(16, 28, 41, 0.03)',
             display: 'flex',
             flexDirection: 'column',
           }}
         >
-          <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#0B1B2B', margin: '0 0 16px 0' }}>
-            Quick Actions
+          <h2 style={{ fontSize: '17px', fontWeight: 700, color: '#101C29', margin: '0 0 4px 0' }}>
+            Quick Operations
           </h2>
+          <p style={{ margin: '0 0 18px 0', fontSize: '12px', color: '#64748B' }}>
+            Direct actions for scheduling coordinators
+          </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <Link
@@ -481,19 +728,22 @@ export async function DashboardView({ payload, user }: DashboardViewProps) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '14px 18px',
-                backgroundColor: '#FBF8EF',
-                border: '1px solid #F3E8C4',
+                padding: '12px 16px',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
                 borderRadius: '10px',
-                color: '#78350F',
+                color: '#101C29',
                 fontWeight: 600,
-                fontSize: '14px',
+                fontSize: '13px',
                 textDecoration: 'none',
-                transition: 'all 0.2s ease',
+                transition: 'all 0.15s ease',
               }}
             >
-              <span>Manage bookings</span>
-              <span>&gt;</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ color: '#C5A059' }}>●</span>
+                <span>Dispatch & Bookings</span>
+              </div>
+              <span style={{ color: '#94A3B8', fontSize: '14px' }}>&rarr;</span>
             </Link>
 
             <Link
@@ -502,19 +752,46 @@ export async function DashboardView({ payload, user }: DashboardViewProps) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '14px 18px',
-                backgroundColor: '#FBF8EF',
-                border: '1px solid #F3E8C4',
+                padding: '12px 16px',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
                 borderRadius: '10px',
-                color: '#78350F',
+                color: '#101C29',
                 fontWeight: 600,
-                fontSize: '14px',
+                fontSize: '13px',
                 textDecoration: 'none',
-                transition: 'all 0.2s ease',
+                transition: 'all 0.15s ease',
               }}
             >
-              <span>View quotations</span>
-              <span>&gt;</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ color: '#C5A059' }}>●</span>
+                <span>Proposals & Quotations</span>
+              </div>
+              <span style={{ color: '#94A3B8', fontSize: '14px' }}>&rarr;</span>
+            </Link>
+
+            <Link
+              href="/admin/collections/services"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '12px 16px',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                borderRadius: '10px',
+                color: '#101C29',
+                fontWeight: 600,
+                fontSize: '13px',
+                textDecoration: 'none',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ color: '#C5A059' }}>●</span>
+                <span>Services Portfolio</span>
+              </div>
+              <span style={{ color: '#94A3B8', fontSize: '14px' }}>&rarr;</span>
             </Link>
 
             <Link
@@ -523,65 +800,94 @@ export async function DashboardView({ payload, user }: DashboardViewProps) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '14px 18px',
-                backgroundColor: '#FBF8EF',
-                border: '1px solid #F3E8C4',
+                padding: '12px 16px',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
                 borderRadius: '10px',
-                color: '#78350F',
+                color: '#101C29',
                 fontWeight: 600,
-                fontSize: '14px',
+                fontSize: '13px',
                 textDecoration: 'none',
-                transition: 'all 0.2s ease',
+                transition: 'all 0.15s ease',
               }}
             >
-              <span>Update website</span>
-              <span>&gt;</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ color: '#C5A059' }}>●</span>
+                <span>Homepage CMS</span>
+              </div>
+              <span style={{ color: '#94A3B8', fontSize: '14px' }}>&rarr;</span>
+            </Link>
+
+            <Link
+              href="/admin/globals/site-settings"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '12px 16px',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                borderRadius: '10px',
+                color: '#101C29',
+                fontWeight: 600,
+                fontSize: '13px',
+                textDecoration: 'none',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ color: '#C5A059' }}>●</span>
+                <span>Business Settings</span>
+              </div>
+              <span style={{ color: '#94A3B8', fontSize: '14px' }}>&rarr;</span>
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Bottom Section: Recent Customer Enquiries Table */}
+      {/* 4. RECENT CUSTOMER ENQUIRIES & DISPATCH QUEUE */}
       <div
         style={{
           backgroundColor: '#FFFFFF',
           borderRadius: '16px',
-          padding: '24px',
+          padding: '24px 28px',
           border: '1px solid #E2E8F0',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
+          boxShadow: '0 2px 4px rgba(16, 28, 41, 0.03)',
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <div>
-            <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#0B1B2B', margin: 0 }}>
-              Recent Customer Enquiries
+            <h2 style={{ fontSize: '17px', fontWeight: 700, color: '#101C29', margin: 0 }}>
+              Recent Customer Inquiries & Dispatch Queue
             </h2>
-            <span style={{ fontSize: '12px', color: '#64748B' }}>
-              Live customer requests from public booking and quote forms
-            </span>
+            <p style={{ margin: '3px 0 0', fontSize: '12px', color: '#64748B' }}>
+              Live customer submissions from veloraelite.ae booking, quote, and contact forms
+            </p>
           </div>
           <Link
-            href="/admin/collections/quote-requests"
-            style={{ fontSize: '13px', fontWeight: 600, color: '#D4AF37', textDecoration: 'none' }}
+            href="/admin/collections/booking-requests"
+            style={{ fontSize: '13px', fontWeight: 700, color: '#C5A059', textDecoration: 'none' }}
           >
-            View all enquiries &rarr;
+            View all inquiries &rarr;
           </Link>
         </div>
 
         {recentEnquiries.length === 0 ? (
-          <div style={{ padding: '36px', textAlign: 'center', color: '#94A3B8', fontSize: '14px' }}>
-            No customer enquiries recorded yet. Test submissions will appear here in real-time.
+          <div style={{ padding: '40px', textAlign: 'center', color: '#94A3B8', fontSize: '13.5px' }}>
+            No client submissions recorded yet. Live customer requests will appear in this dispatch queue in real time.
           </div>
         ) : (
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '13px' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid #F1F5F9', color: '#64748B', fontWeight: 600 }}>
-                  <th style={{ padding: '12px 16px' }}>Customer</th>
-                  <th style={{ padding: '12px 16px' }}>Service</th>
-                  <th style={{ padding: '12px 16px' }}>Request Type</th>
+                <tr style={{ borderBottom: '1.5px solid #F1F5F9', color: '#64748B', fontWeight: 700 }}>
+                  <th style={{ padding: '12px 16px' }}>Customer Name</th>
+                  <th style={{ padding: '12px 16px' }}>Contact</th>
+                  <th style={{ padding: '12px 16px' }}>Requested Scope</th>
+                  <th style={{ padding: '12px 16px' }}>Category</th>
                   <th style={{ padding: '12px 16px' }}>Date</th>
                   <th style={{ padding: '12px 16px' }}>Status</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'right' }}>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -596,12 +902,15 @@ export async function DashboardView({ payload, user }: DashboardViewProps) {
                     <td style={{ padding: '14px 16px' }}>
                       <Link
                         href={enq.link}
-                        style={{ color: '#0B1B2B', fontWeight: 600, textDecoration: 'none' }}
+                        style={{ color: '#101C29', fontWeight: 700, textDecoration: 'none' }}
                       >
                         {enq.customer}
                       </Link>
                     </td>
-                    <td style={{ padding: '14px 16px', color: '#475569' }}>
+                    <td style={{ padding: '14px 16px', color: '#64748B' }}>
+                      {enq.contactInfo}
+                    </td>
+                    <td style={{ padding: '14px 16px', color: '#334155', fontWeight: 500 }}>
                       {enq.service}
                     </td>
                     <td style={{ padding: '14px 16px' }}>
@@ -611,14 +920,14 @@ export async function DashboardView({ payload, user }: DashboardViewProps) {
                           padding: '3px 10px',
                           borderRadius: '9999px',
                           fontSize: '11px',
-                          fontWeight: 600,
+                          fontWeight: 700,
                           ...getTypeBadgeStyle(enq.requestType),
                         }}
                       >
                         {enq.requestType}
                       </span>
                     </td>
-                    <td style={{ padding: '14px 16px', color: '#64748B' }}>
+                    <td style={{ padding: '14px 16px', color: '#64748B', fontSize: '12.5px' }}>
                       {enq.date}
                     </td>
                     <td style={{ padding: '14px 16px' }}>
@@ -628,13 +937,34 @@ export async function DashboardView({ payload, user }: DashboardViewProps) {
                           padding: '3px 10px',
                           borderRadius: '9999px',
                           fontSize: '11px',
-                          fontWeight: 600,
+                          fontWeight: 700,
                           textTransform: 'capitalize',
                           ...getStatusBadgeStyle(enq.status),
                         }}
                       >
-                        {enq.status.replace('_', ' ')}
+                        {enq.status.replace(/_/g, ' ')}
                       </span>
+                    </td>
+                    <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                      <Link
+                        href={enq.link}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          padding: '4px 10px',
+                          borderRadius: '6px',
+                          backgroundColor: '#F8FAFC',
+                          border: '1px solid #E2E8F0',
+                          color: '#101C29',
+                          fontSize: '11.5px',
+                          fontWeight: 600,
+                          textDecoration: 'none',
+                        }}
+                      >
+                        <span>Open</span>
+                        <span>&rarr;</span>
+                      </Link>
                     </td>
                   </tr>
                 ))}
@@ -644,17 +974,28 @@ export async function DashboardView({ payload, user }: DashboardViewProps) {
         )}
       </div>
 
-      {/* Footer Branding matching wireframe */}
-      <div style={{ textAlign: 'center', marginTop: '40px', fontSize: '12px', color: '#94A3B8' }}>
-        <div>Developed by We Connect Innovative Solutions Pvt. Ltd.</div>
-        <a
-          href="https://weconnectinnovativesolutions.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: '#D4AF37', textDecoration: 'none', fontWeight: 600 }}
-        >
-          weconnectinnovativesolutions.com
-        </a>
+      {/* 5. FOOTER ENTERPRISE BRANDING */}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '12px',
+          marginTop: '40px',
+          paddingTop: '20px',
+          borderTop: '1px solid #E2E8F0',
+          fontSize: '12px',
+          color: '#94A3B8',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ color: '#10B981' }}>●</span>
+          <span>Velora Elite Technical Services L.L.C. &bull; Enterprise Operations Hub</span>
+        </div>
+        <div>
+          Office 4301F, Aspin Commercial Tower, Sheikh Zayed Road, Dubai, UAE
+        </div>
       </div>
     </div>
   )

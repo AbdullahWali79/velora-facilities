@@ -9,7 +9,7 @@ export const BookingRequests: CollectionConfig = {
   admin: {
     useAsTitle: 'customerName',
     defaultColumns: ['customerName', 'service', 'preferredDate', 'timeSlot', 'emirate', 'bookingStatus', 'createdAt'],
-    group: 'Lead Management',
+    group: 'Workspace',
     description: 'Customer appointment booking requests requiring manual staff confirmation.',
   },
   access: {

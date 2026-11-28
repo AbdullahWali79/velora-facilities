@@ -1,41 +1,122 @@
 /* =============================================================================
-   VELORA ELITE — PREMIUM LUXURY ADMIN THEME (NAVY, GOLD & CLEAN CANVAS)
-   Developed by We Connect Innovative Solutions Pvt. Ltd.
+   VELORA ELITE — ENTERPRISE SAAS ADMIN DESIGN SYSTEM
+   Theme: Midnight Navy (#101C29), Champagne Gold (#C5A059), Canvas (#F4F6F9)
    ============================================================================= */
 
 :root {
-  --theme-font: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
-  --velora-navy: #0B1B2B;
-  --velora-navy-light: #162A45;
-  --velora-gold: #D4AF37;
+  --velora-navy: #101C29;
+  --velora-navy-hover: #1A2E42;
+  --velora-gold: #C5A059;
   --velora-gold-light: #FBF8EF;
   --velora-gold-hover: #AA8010;
-  --velora-canvas: #F8FAFC;
+  --velora-canvas: #F4F6F9;
+  --velora-surface: #FFFFFF;
+  --velora-border: #E2E8F0;
+  --velora-text-main: #101C29;
+  --velora-text-muted: #64748B;
+  --theme-font: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* 1. Global Admin Body & Typography */
-body {
+/* 1. Global Admin Body, Canvas & Typography */
+html,
+body,
+.template-default,
+[class*="template-default"] {
   background-color: var(--velora-canvas) !important;
-  font-family: var(--theme-font);
-  color: #1E293B;
+  color: var(--velora-text-main) !important;
+  font-family: var(--theme-font) !important;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* 2. Left Sidebar (Premium Deep Navy) */
+/* 2. Top App Header Bar (#FFFFFF with refined border) */
+.app-header {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid var(--velora-border) !important;
+  box-shadow: 0 1px 3px rgba(16, 28, 41, 0.04) !important;
+  min-height: 64px !important;
+  padding: 0 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+}
+
+/* Fix Logo Cropping in Header & Sidebar */
+.app-header__logo,
+.app-header a.app-header__logo,
+.nav__header a {
+  overflow: visible !important;
+  max-width: none !important;
+  height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+}
+
+.app-header__logo img,
+.app-header__logo svg {
+  max-height: 38px !important;
+  width: auto !important;
+  display: block !important;
+}
+
+/* Breadcrumb Navigation */
+.step-nav {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 13px !important;
+  color: var(--velora-text-muted) !important;
+}
+
+.step-nav a {
+  color: var(--velora-text-muted) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  transition: color 0.15s ease !important;
+}
+
+.step-nav a:hover {
+  color: var(--velora-gold) !important;
+}
+
+.step-nav span.step-nav__separator {
+  color: #CBD5E1 !important;
+}
+
+.step-nav a:last-child,
+.step-nav .step-nav__last {
+  color: var(--velora-navy) !important;
+  font-weight: 700 !important;
+}
+
+/* Clean up default account button when custom header actions are active */
+.app-header__account {
+  opacity: 0.8 !important;
+  transition: opacity 0.15s ease !important;
+}
+.app-header__account:hover {
+  opacity: 1 !important;
+}
+
+/* 3. Left Sidebar (Midnight Navy #101C29) */
 aside.nav,
 .nav,
 .nav__scroll {
   background-color: var(--velora-navy) !important;
   color: #F8FAFC !important;
-  border-right: 1px solid rgba(212, 175, 55, 0.15) !important;
+  border-right: 1px solid rgba(197, 160, 89, 0.2) !important;
 }
 
-/* Sidebar Brand Header Area */
 .nav__header {
-  padding: 16px 20px !important;
+  padding: 20px 24px !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background-color: #0B141E !important;
 }
 
-/* Nav Group Headings (Velora Luxury Gold) */
+/* Nav Group Headings (Champagne Gold #C5A059) */
 .nav-group__toggle,
 .nav-group__label {
   color: var(--velora-gold) !important;
@@ -43,24 +124,28 @@ aside.nav,
   font-weight: 800 !important;
   letter-spacing: 0.14em !important;
   text-transform: uppercase !important;
-  padding-top: 14px !important;
-  padding-bottom: 6px !important;
+  padding: 16px 20px 6px !important;
+  transition: color 0.15s ease !important;
+}
+
+.nav-group__toggle:hover {
+  color: #E2C078 !important;
 }
 
 .nav-group__indicator svg {
   stroke: var(--velora-gold) !important;
 }
 
-/* Nav Links */
+/* Sidebar Links */
 .nav__link,
 .nav-group a {
   color: #CBD5E1 !important;
   font-size: 13.5px !important;
   font-weight: 500 !important;
-  padding: 8px 14px !important;
-  margin: 2px 10px !important;
+  padding: 9px 16px !important;
+  margin: 3px 12px !important;
   border-radius: 8px !important;
-  transition: all 0.15s ease !important;
+  transition: all 0.18s ease !important;
   display: flex !important;
   align-items: center !important;
   text-decoration: none !important;
@@ -68,54 +153,117 @@ aside.nav,
 
 .nav__link:hover,
 .nav-group a:hover {
-  background-color: rgba(212, 175, 55, 0.12) !important;
+  background-color: rgba(197, 160, 89, 0.15) !important;
   color: #FFFFFF !important;
-  transform: translateX(2px);
+  transform: translateX(3px) !important;
 }
 
-/* Active Nav Item (Gold Badge Pill matching wireframe) */
+/* Active Nav Link (Champagne Gold Gradient Badge) */
 .nav__link.active,
 .nav__link--active,
 .nav-group a[aria-current="page"],
 .nav-group a.active {
-  background: linear-gradient(135deg, #D4AF37 0%, #C59B27 100%) !important;
-  color: #0B1B2B !important;
+  background: linear-gradient(135deg, #C5A059 0%, #A98238 100%) !important;
+  color: #101C29 !important;
   font-weight: 700 !important;
-  box-shadow: 0 2px 6px rgba(212, 175, 55, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(197, 160, 89, 0.3) !important;
 }
 
-/* 3. Main Dashboard & View Canvas */
-.template-default {
-  background-color: var(--velora-canvas) !important;
+/* 4. Table Views, Cards & Data Grids */
+.collection-list__wrap,
+.table {
+  background-color: var(--velora-surface) !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--velora-border) !important;
+  box-shadow: 0 1px 3px rgba(16, 28, 41, 0.04) !important;
 }
 
-/* 4. Top App Header Bar */
-.app-header {
-  background-color: #FFFFFF !important;
-  border-bottom: 1px solid #E2E8F0 !important;
+.table th {
+  background-color: #F8FAFC !important;
+  color: var(--velora-text-muted) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-bottom: 1px solid var(--velora-border) !important;
 }
 
-.app-header a,
-.step-nav a {
-  color: #475569 !important;
-  font-size: 13px !important;
+.table td {
+  border-bottom: 1px solid #F1F5F9 !important;
+  font-size: 13.5px !important;
+  color: var(--velora-text-main) !important;
 }
 
-.step-nav a:last-child {
-  color: var(--velora-navy) !important;
-  font-weight: 600 !important;
-}
-
-/* 5. Buttons Styling */
-.btn--style-primary {
-  background: linear-gradient(135deg, #D4AF37 0%, #B88E1E 100%) !important;
-  color: #0B1B2B !important;
+/* 5. Primary Buttons & Controls */
+.btn--style-primary,
+button[type="submit"].btn {
+  background: linear-gradient(135deg, #C5A059 0%, #AA8010 100%) !important;
+  color: #101C29 !important;
   font-weight: 700 !important;
   border: none !important;
   border-radius: 8px !important;
-  box-shadow: 0 2px 6px rgba(212, 175, 55, 0.2) !important;
+  padding: 10px 20px !important;
+  box-shadow: 0 2px 6px rgba(197, 160, 89, 0.25) !important;
+  transition: all 0.2s ease !important;
 }
 
-.btn--style-primary:hover {
-  background: linear-gradient(135deg, #E2C04D 0%, #C59B27 100%) !important;
+.btn--style-primary:hover,
+button[type="submit"].btn:hover {
+  background: linear-gradient(135deg, #D4AF37 0%, #C5A059 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(197, 160, 89, 0.35) !important;
+}
+
+.btn--style-secondary {
+  background-color: #FFFFFF !important;
+  border: 1px solid var(--velora-border) !important;
+  color: var(--velora-text-main) !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+}
+
+.btn--style-secondary:hover {
+  background-color: #F8FAFC !important;
+  border-color: #CBD5E1 !important;
+}
+
+/* 6. Form Fields & Document Editor */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+select,
+textarea {
+  border: 1px solid #CBD5E1 !important;
+  border-radius: 8px !important;
+  color: var(--velora-text-main) !important;
+  font-size: 13.5px !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--velora-gold) !important;
+  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.18) !important;
+  outline: none !important;
+}
+
+/* 7. Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
 }

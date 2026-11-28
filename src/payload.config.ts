@@ -64,13 +64,15 @@ const getSslConfig = () => {
 export default buildConfig({
   admin: {
     user: Users.slug,
+    theme: 'light',
     importMap: {
       baseDir: path.resolve(dirname),
     },
     meta: {
-      titleSuffix: ' — Velora Elite Admin',
+      titleSuffix: ' — Velora Elite Enterprise Admin',
     },
     components: {
+      actions: ['./components/admin/AdminHeaderActions#AdminHeaderActions'],
       views: {
         dashboard: {
           Component: './components/admin/DashboardView#DashboardView',
