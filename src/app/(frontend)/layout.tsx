@@ -71,9 +71,12 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: 'en_AE',
       type: 'website',
     },
-    verification: tracking.googleSearchConsoleVerification
-      ? { google: tracking.googleSearchConsoleVerification }
-      : undefined,
+    verification: {
+      google: tracking.googleSearchConsoleVerification || undefined,
+      other: {
+        'facebook-domain-verification': ['nuhtrvk1tjh87tirt9sk81u8mm6tz2'],
+      },
+    },
     robots: {
       index: true,
       follow: true,
@@ -126,6 +129,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        <meta name="facebook-domain-verification" content="nuhtrvk1tjh87tirt9sk81u8mm6tz2" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}

@@ -44,13 +44,6 @@ const CATEGORY_LABELS: Record<string, { label: string; badgeClass: string }> = {
   },
 }
 
-const PRICE_UNIT_LABELS: Record<string, string> = {
-  hourly: '/ hour',
-  per_session: '/ visit',
-  per_sqft: '/ sq. ft.',
-  custom_quote: 'Custom Quote',
-}
-
 const SERVICE_IMAGES: Record<string, string> = {
   'marble-polishing': 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
   'home-villa-cleaning': 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80',
